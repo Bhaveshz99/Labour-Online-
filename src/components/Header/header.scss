@@ -1,0 +1,24 @@
+.header_wrapper{
+    padding: 10px;
+    .header_upper{
+        display: flex;
+        height: 50px;
+        position: sticky;
+        top: 0;
+        justify-content: space-between;
+        .icon_area{
+            width: 20%;
+        }
+        .location_area{
+    
+        }
+        .notification_area{
+            width: 15%;
+        }
+    }
+    .search_area{
+        .search_service{
+            border-radius: 15px;
+        }
+    }
+}

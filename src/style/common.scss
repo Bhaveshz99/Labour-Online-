@@ -1,0 +1,18 @@
+@import './mixin.scss';
+@import './variables.scss';
+
+
+*{
+    p{
+        font-size: 24px;
+        @include mq('lap'){
+            font-size: 14px;
+        }
+    }
+}
+
+.img{
+    img{
+        width: 100%;
+    }
+}

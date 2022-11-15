@@ -5,13 +5,16 @@ import CategorySection from './CategorySection'
 import TrendingCategories from './TrendingCategories'
 import './home.scss'
 const HomeScreen = () => {
+    
     return (
         <div className='home_wrapper'>
             <div className='banner'>
                 <ImgSrc src={MobileBanner} />
             </div>
-            <CategorySection />
-            <TrendingCategories />
+            <div className='container'>
+                <CategorySection />
+            </div>
+            {/* <TrendingCategories /> */}
         </div>
     )
 }

@@ -11,8 +11,8 @@ const CategoryCard = (props: categoryCardTypes) => {
         <div className='home_card'>
             <Card >
                 <ImgSrc src={props.img} />
-                <div>
-                    <h5 className='category_name'>{props.categoryName}</h5>
+                <div className='content'>
+                    <h3 className='category_name'>{props.categoryName}</h3>
                 </div>
             </Card>
         </div>

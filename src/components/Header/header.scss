@@ -1,0 +1,72 @@
+@import '../../style/mixin.scss';
+
+.header_wrapper {
+    padding: 10px;
+    position: sticky;
+    height: 55px;
+    background: #6446EC;
+    top: 0;
+    z-index: 1000;
+
+    @include mq('phone') {
+        height: auto;
+        background: #fff;
+        .header_upper {
+            display: flex;
+            justify-content: space-between;
+    
+            .icon_area {
+                width: 20%;
+                img{
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+    
+            .location_area {
+                p{
+                    margin-bottom: 6px;
+                }
+            }
+    
+            .notification_area {
+                width: 15%;
+            }
+        }
+    
+        .search_area {
+            .search_service {
+                border-radius: 15px;
+            }
+        }
+    }
+
+    .header_upper{
+        display: flex;
+        .header_left{
+            width: 70%;
+            display: flex;
+            .logo{
+                img{
+                    width: 30px;
+                }
+                margin-right: 10px;
+            }
+            .search_area{
+                width: 50%;
+            }
+        }
+        .header_right{
+            color: #fff;
+            font-size: 20px;
+            width: 30%;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            & > div {
+                width: 30%;
+            }
+        }
+    }
+
+}

@@ -7,7 +7,7 @@ import ImgSrc from '../CommonComponents/ImgSrc';
 
 const Header = () => {
   return (
-    <div className='header_wrapper'>
+    <header className='header_wrapper'>
       {window.innerWidth < 768 &&
         <>
           <div className="header_upper">
@@ -60,7 +60,7 @@ const Header = () => {
           </div>
         </>
       }
-    </div>
+    </header>
   )
 }
 

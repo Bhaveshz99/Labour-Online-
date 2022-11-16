@@ -54,6 +54,11 @@ h6 {
     }
 }
 
+.active{
+    @include mq('phone'){
+        color: #6446EC;
+    }
+}
 
 .container {
     padding: 0px 15px;

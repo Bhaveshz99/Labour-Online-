@@ -17,7 +17,7 @@ function App() {
       <Header />
       <Routes>
         <Route path='' element={<HomeScreen />} />
-        <Route path='services-list' element={<ServiceListPage />} />
+        <Route path='/service-list' element={<ServiceListPage />} />
       </Routes>
       <Footer />
     </div>

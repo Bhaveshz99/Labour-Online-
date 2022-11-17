@@ -6,7 +6,7 @@ interface PropTypes {
 
 const ImgSrc = (props: PropTypes) => {
     return (
-        <div className='img'><img src={props.src} alt='' /></div>
+        <div className='img'><img src={`${props.src}`} alt='' /></div>
     )
 }
 

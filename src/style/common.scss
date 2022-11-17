@@ -1,7 +1,9 @@
 @import './mixin.scss';
 @import './variables.scss';
 
-
+body{
+    background-color: #f5f5f5;
+}
 * {
     p {
         font-size: 24px;
@@ -62,7 +64,7 @@ h6 {
 
 .container {
     padding: 0px 15px;
-
+    background-color: #fff;
     @include mq('phone') {
         padding: 0 10px;
     }

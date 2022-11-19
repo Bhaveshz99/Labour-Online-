@@ -12,6 +12,7 @@ const Signup = () => {
   const [gender, setGender] = useState<string>('')
   const [mobileNumber, setMobileNumber] = useState<string>('')
   // const [userName, setUserName] = useState<string>('')
+  const [email,setEmail] = useState<string>('')
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   const [imageUrl, setImageUrl] = useState<string>();
 
@@ -22,7 +23,8 @@ const Signup = () => {
       userRole: userRole,
       gender: gender,
       mobileNumber: mobileNumber,
-      avatar: imageUrl
+      avatar: imageUrl,
+      email: email
     }
     
   }
@@ -70,9 +72,12 @@ const Signup = () => {
             <Input value={userName} placeholder='User Name' onChange={(e) => { setUserName(e.target.value) }} />
           </Form.Item>
 
-
           <Form.Item label='Full Name' required>
             <Input placeholder='Full Name' value={fullName} onChange={(e) => { setFullName(e.target.value) }} />
+          </Form.Item>
+
+          <Form.Item label='Email' >
+            <Input value={email} placeholder='Email' onChange={(e) => { setEmail(e.target.value) }} />
           </Form.Item>
 
           <Form.Item label='Role' required>

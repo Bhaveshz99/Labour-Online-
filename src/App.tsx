@@ -10,7 +10,8 @@ import ServiceListPage from './components/Collections/ServiceListPage';
 
 import 'antd/dist/antd.css';
 import './style/common.scss';
-import './App.css'
+import './App.css';
+import './style/responsive.css';
 import UserProfile from './components/Userprofile/UserProfile';
 
 function App() {

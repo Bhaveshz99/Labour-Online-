@@ -12,8 +12,8 @@ interface serviceProviderCardTypes {
 
 const ServiceProviderCard = (props: serviceProviderCardTypes) => {
 
-    const [showRequestModal, setShowRequestModal] = useState(false)
-    const [showReviewsModal, setShowReviewsModal] = useState(false)
+    const [showRequestModal, setShowRequestModal] = useState<boolean>(false)
+    const [showReviewsModal, setShowReviewsModal] = useState<boolean>(false)
 
     const onServiceRequest = () => {
 
@@ -56,18 +56,8 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
                     </div>
                 </Col>
             </Row>
-            {window.innerWidth < 768 && showRequestModal &&
-                <Drawer
-                    className='booking'
-                    title="Booking"
-                    placement={"bottom"}
-                    closable={true}
-                    onClose={() => { setShowRequestModal(false) }}
-                    visible={showRequestModal}
-                >
-                    <ServiceRequestModal />
-                </Drawer>}
-            {window.innerWidth < 768 && showReviewsModal &&
+            
+            {window.innerWidth >= 768 && showReviewsModal &&
                 <Drawer
                     className='reviews'
                     title="Rakesh's Reviews"
@@ -78,29 +68,9 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
                 >
                     <ServiceReviewsModal />
                 </Drawer>}
-            {window.innerWidth >= 768 && showRequestModal &&
-                <Modal
-                    className='booking'
-                    title="Booking"
-                    visible={showRequestModal}
-                    // onOk={this.hideModal}
-                    onCancel={() => { setShowRequestModal(false) }}
-
-                >
-                    <ServiceRequestModal />
-                </Modal>
-            }
-            {window.innerWidth >= 768 && showReviewsModal &&
-                <Modal
-                    className='reviews'
-                    title="Reviews"
-                    visible={showReviewsModal}
-                    onCancel={() => { setShowReviewsModal(false) }}
-                // onOk={this.hideModal}
-                >
-                    <ServiceReviewsModal />
-                </Modal>
-            }
+            {/* {showRequestModal &&
+                // <ServiceRequestModal showRequestModal={showRequestModal} setShowRequestModal={setShowRequestModal} />
+            } */}
 
         </section>
     )

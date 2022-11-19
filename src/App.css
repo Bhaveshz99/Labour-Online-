@@ -1315,7 +1315,6 @@ img {
 }
 
 .gradent {
-  /* background: url("./Assets/images/info-card-2.jpg") no-repeat center top; */
   background: url('../public/Assets/images/info-card-2.jpg') no-repeat center top;
   background-size: cover;
   padding: 15px;

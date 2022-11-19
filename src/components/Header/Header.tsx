@@ -1,7 +1,8 @@
 import React from 'react'
 import { Input } from 'antd';
+import { Link } from 'react-router-dom';
 import { NotificationOutlined, SearchOutlined, AppstoreOutlined, BookOutlined, FileUnknownOutlined, UserOutlined } from '@ant-design/icons'
-import Logo from '../../assets/images/man.png'
+// import Logo from '../../assets/images/man.png'
 import './header.scss'
 import ImgSrc from '../CommonComponents/ImgSrc';
 
@@ -12,7 +13,7 @@ const Header = () => {
         <>
           <div className="header_upper">
             <div className='icon_area'>
-              <img src={Logo} />
+              <img src={"./Assets/avatar/avatar1.svg"}/>
             </div>
             <div className='location_area'>
 
@@ -38,7 +39,7 @@ const Header = () => {
           <div className='header_upper'>
             <div className='header_left'>
               <div className='logo'>
-                <ImgSrc src={Logo} />
+                <ImgSrc src={"./Assets/avatar/avatar1.svg"} />
               </div>
               <div className='search_area'>
                 <div className=''>
@@ -55,6 +56,11 @@ const Header = () => {
               </div>
               <div className='notification_area'>
                 <NotificationOutlined />
+              </div>
+              <div>
+                <Link to='/login'>
+                  <label>Login/Signup</label>
+                </Link>
               </div>
             </div>
           </div>

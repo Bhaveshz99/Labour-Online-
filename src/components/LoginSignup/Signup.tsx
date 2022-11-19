@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
 import { Button, Form, Input, Radio, Upload, message } from 'antd'
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons'
+import OtpInput from 'react-otp-input'
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import ImgSrc from '../CommonComponents/ImgSrc';
+import './signup.scss';
 
 const Signup = () => {
 
@@ -12,9 +14,12 @@ const Signup = () => {
   const [gender, setGender] = useState<string>('')
   const [mobileNumber, setMobileNumber] = useState<string>('')
   // const [userName, setUserName] = useState<string>('')
-  const [email,setEmail] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   const [imageUrl, setImageUrl] = useState<string>();
+
+  const [signUpStep, setSignUpStep] = useState<number>(1)
+  const [otp, setOtp] = useState<string>('');
 
   const onFinish = (e: React.FormEvent) => {
     let objPass = {
@@ -26,7 +31,7 @@ const Signup = () => {
       avatar: imageUrl,
       email: email
     }
-    
+
   }
   const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === 'uploading') {
@@ -57,10 +62,17 @@ const Signup = () => {
     }
     return isJpgOrPng && isLt2M;
   };
+
+  const handleSignUp = () => {
+    setSignUpStep(2)
+  }
+  const handleOtpSubmit = () => {
+    setSignUpStep(3)
+  }
   return (
     <div className='signup_wrapper'>
-      <div className='container'>
-        <Form
+      <div className='container login_form'>
+        {/* <Form
           labelCol={{ span: 4 }}
           wrapperCol={{ span: 14 }}
           // layout="horizontal"
@@ -119,7 +131,76 @@ const Signup = () => {
           <Form.Item>
             <Button type="primary" htmlType="submit" loading={submitLoading}> Submit </Button>
           </Form.Item>
+        </Form> */}
+        <Form>
+          {signUpStep === 1 && <>
+            <Form.Item label='Mobile No.'>
+              <Input value={mobileNumber} maxLength={10} minLength={10} onChange={(e) => { setMobileNumber(e.target.value) }} />
+
+            </Form.Item>
+            <Form.Item label="Who are you?">
+              <Radio.Group value={userRole} className='role_selection' onChange={(e) => { setUserRole(e.target.value) }}>
+                <Radio value="customer"> <div>
+                  <ImgSrc src={'./Assets/avatar/avatar6.svg'} />
+                  <p>  Customer</p>
+                </div>
+                </Radio>
+
+                <Radio value="contractor">
+                  <div>
+                    <ImgSrc src={'./Assets/avatar/avatar20.svg'} />
+                    <p>Contractor</p>
+                  </div>
+                </Radio>
+                <Radio value="labour">
+                  <div>
+                    <ImgSrc src={'./Assets/avatar/avatar7.svg'} />
+                    <p>    Labour</p>
+                  </div>
+                </Radio>
+              </Radio.Group>
+
+            </Form.Item>
+            <Form.Item>
+              <div>
+                <Button onClick={handleSignUp} size='large' loading={submitLoading}> Proceed </Button>
+              </div>
+            </Form.Item>
+
+          </>}
+          {signUpStep === 2 && <>
+            <div className='otp_wrapper'>
+              <OtpInput
+                value={otp}
+                className='input_otp'
+                onChange={(e: string) => { setOtp(e) }}
+                numInputs={6}
+                separator={<div className='diff'> - </div>}
+              />
+            </div>
+            <div>
+              <Button onClick={handleOtpSubmit} size='large' loading={submitLoading}> Proceed </Button>
+            </div>
+          </>}
+
+          {signUpStep === 3 && <>
+            <Form.Item label='User Name' required>
+              <Input value={userName} placeholder='User Name' onChange={(e) => { setUserName(e.target.value) }} />
+            </Form.Item>
+
+            <Form.Item label='Full Name' required>
+              <Input placeholder='Full Name' value={fullName} onChange={(e) => { setFullName(e.target.value) }} />
+            </Form.Item>
+
+            <Form.Item label='Email' >
+              <Input value={email} placeholder='Email' onChange={(e) => { setEmail(e.target.value) }} />
+            </Form.Item>
+            <div>
+              <Button onClick={onFinish} size='large' loading={submitLoading}> Submit </Button>
+            </div>
+          </>}
         </Form>
+
       </div>
     </div>
   )

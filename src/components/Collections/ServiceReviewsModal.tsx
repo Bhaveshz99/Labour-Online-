@@ -1,36 +1,44 @@
 import React, { useEffect, useState } from 'react'
-import { List } from 'antd'
+import { List, Avatar } from 'antd'
 const ServiceReviewsModal = () => {
 
-    const [reviews, setReviews] = useState<String[]>([])
+    interface ReviewItemTypes {
+        title: String
+    }
+    const [reviews, setReviews] = useState<ReviewItemTypes[]>([])
 
     useEffect(() => {
-        setReviews(['Racing car sprays burning fuel into crowd.',
-            'Japanese princess to wed commoner.',
-            'Australian walks 100km after outback crash.',
-            'Man charged over missing wedding girl.',
-            'Japanese princess to wed commoner.',
-            'Australian walks 100km after outback crash.',
-            'Man charged over missing wedding girl.',
-            'Japanese princess to wed commoner.',
-            'Australian walks 100km after outback crash.',
-            'Man charged over missing wedding girl.',
-            'Japanese princess to wed commoner.',
-            'Australian walks 100km after outback crash.',
-            'Man charged over missing wedding girl.',
-            'Los Angeles battles huge wildfires.'])
+        setReviews([
+            {
+                title: 'Ant Design Title 1',
+            },
+            {
+                title: 'Ant Design Title 2',
+            },
+            {
+                title: 'Ant Design Title 3',
+            },
+            {
+                title: 'Ant Design Title 4',
+            },
+        ])
     })
 
     return (
         <div>
             <List
-                size="small"
-                bordered
-            >
-                {reviews.map((x, i) => {
-                    return (<List.Item key={i}> {x} </List.Item>)
-                })}
-            </List>
+                itemLayout="horizontal"
+                dataSource={reviews}
+                renderItem={item => (
+                    <List.Item>
+                        <List.Item.Meta
+                            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                            title={<a href="https://ant.design">{item.title}</a>}
+                            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                        />
+                    </List.Item>
+                )}
+            />
         </div>
     )
 }

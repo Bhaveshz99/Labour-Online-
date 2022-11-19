@@ -10,6 +10,8 @@ import ServiceListPage from './components/Collections/ServiceListPage';
 
 import 'antd/dist/antd.css';
 import './style/common.scss';
+import './App.css'
+import UserProfile from './components/Userprofile/UserProfile';
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
       <Routes>
         <Route path='' element={<HomeScreen />} />
         <Route path='/service-list' element={<ServiceListPage />} />
+        <Route path='/profile' element={<UserProfile />} />
       </Routes>
       <Footer />
     </div>

@@ -13,6 +13,7 @@ const Signup = () => {
   const [userRole, setUserRole] = useState<string>('')
   const [gender, setGender] = useState<string>('')
   const [mobileNumber, setMobileNumber] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
   // const [userName, setUserName] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
@@ -29,7 +30,8 @@ const Signup = () => {
       gender: gender,
       mobileNumber: mobileNumber,
       avatar: imageUrl,
-      email: email
+      email: email,
+      password: password
     }
 
   }
@@ -190,6 +192,14 @@ const Signup = () => {
 
             <Form.Item label='Full Name' required>
               <Input placeholder='Full Name' value={fullName} onChange={(e) => { setFullName(e.target.value) }} />
+            </Form.Item>
+
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+              <Input.Password value={password} onChange={(e)=>{setPassword(e.target.value)}} />
             </Form.Item>
 
             <Form.Item label='Email' >

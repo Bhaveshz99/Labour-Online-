@@ -30,7 +30,7 @@ const Header = () => {
             </div>
           </div>
           <div className='search_area'>
-            <Input size="large" className='search_service' placeholder="Search For Services" prefix={<SearchOutlined />} />
+            <Input className='search_service' size='small' placeholder="Search For Services" prefix={<SearchOutlined />} />
           </div>
         </>
       }
@@ -43,7 +43,7 @@ const Header = () => {
               </div>
               <div className='search_area'>
                 <div className=''>
-                  <Input size="large" className='search_service' placeholder="Search For Services" prefix={<SearchOutlined />} />
+                  <Input className='search_service' placeholder="Search For Services" prefix={<SearchOutlined />} />
                 </div>
               </div>
             </div>

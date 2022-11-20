@@ -9,6 +9,7 @@ import HomeScreen from './components/HomePage/HomeScreen';
 import ServiceListPage from './components/Collections/ServiceListPage';
 import Login from './components/LoginSignup/Login';
 import Signup from './components/LoginSignup/Signup';
+import ChangePassword from './components/LoginSignup/ChangePassword';
 import 'antd/dist/antd.css';
 import './style/common.scss';
 import './App.css';
@@ -25,6 +26,7 @@ function App() {
         <Route path='/profile' element={<UserProfile />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/change-password' element={<ChangePassword />} />
       </Routes>
       <Footer />
     </div>

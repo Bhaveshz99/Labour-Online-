@@ -14,6 +14,15 @@
         padding: 25px;
         text-align: center;
 
+        @include mq('phone') {
+            width: 90%;
+            transform: translate(0, 0);
+            position: relative;
+            margin: 30px auto;
+            top: unset;
+            left: unset;
+        }
+
         .role_selection {
             text-align: center;
 

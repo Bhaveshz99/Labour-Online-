@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form, Input, Radio, Upload, message } from 'antd'
 import OtpInput from 'react-otp-input'
+import { ArrowLeftOutlined } from '@ant-design/icons'
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import ImgSrc from '../CommonComponents/ImgSrc';
@@ -21,7 +22,7 @@ const Login = () => {
   const [otp, setOtp] = useState<string>('');
 
   const onFinish = (e: React.FormEvent) => {
-    
+
 
   }
   const handleSignUp = () => {
@@ -29,13 +30,7 @@ const Login = () => {
   }
   const handleOtpSubmit = () => {
     let objPass = {
-      // userName: userName,
-      // fullName: fullName,
-      // userRole: userRole,
-      // gender: gender,
-      // mobileNumber: mobileNumber,
-      // avatar: imageUrl,
-      // email: email
+     
     }
 
   }
@@ -43,6 +38,11 @@ const Login = () => {
     <div className='signup_wrapper'>
       <div className='container login_form'>
         <Form>
+          {signUpStep > 1 &&
+            <div className='back_button'>
+              <Button onClick={() => { setSignUpStep(signUpStep - 1) }}><ArrowLeftOutlined /></Button>
+            </div>
+          }
           {signUpStep === 1 && <>
             <Form.Item label='Mobile No.'>
               <Input value={mobileNumber} maxLength={10} minLength={10} onChange={(e) => { setMobileNumber(e.target.value) }} />

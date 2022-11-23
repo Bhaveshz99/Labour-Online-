@@ -15,6 +15,7 @@ import './style/common.scss';
 import './App.css';
 import './style/responsive.css';
 import UserProfile from './components/Userprofile/UserProfile';
+import ServicesRequest from './components/ServiceRequest/ServicesRequest';
 
 function App() {
 
@@ -28,6 +29,8 @@ function App() {
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route path='/change-password' element={<ChangePassword />} />
+        <Route path='/service-request-list' element={<ServicesRequest />} />
+
       </Routes>
       <Footer />
     </div>

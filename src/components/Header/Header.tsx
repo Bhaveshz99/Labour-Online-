@@ -13,7 +13,9 @@ const Header = () => {
         <>
           <div className="header_upper">
             <div className='icon_area'>
-              <img src={"./Assets/avatar/avatar1.svg"}/>
+              <Link to='/'>
+                <img src={"./Assets/avatar/avatar1.svg"} />
+              </Link>
             </div>
             <div className='location_area'>
 
@@ -38,9 +40,11 @@ const Header = () => {
         <>
           <div className='header_upper'>
             <div className='header_left'>
-              <div className='logo'>
-                <ImgSrc src={"./Assets/avatar/avatar1.svg"} />
-              </div>
+              <Link to='/'>
+                <div className='logo'>
+                  <ImgSrc src={"./Assets/avatar/avatar1.svg"} />
+                </div>
+              </Link>
               <div className='search_area'>
                 <div className=''>
                   <Input className='search_service' placeholder="Search For Services" prefix={<SearchOutlined />} />

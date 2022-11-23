@@ -23,6 +23,15 @@
             left: unset;
         }
 
+        .back_button {
+            text-align: left;
+            margin-bottom: 30px;
+
+            button {
+                font-size: 20px;
+            }
+        }
+
         .role_selection {
             text-align: center;
 
@@ -87,6 +96,17 @@
                     font-size: 31px;
                     padding-bottom: 10px;
                 }
+            }
+        }
+
+        .ant-upload {
+            position: relative;
+
+            .cancel {
+                position: absolute;
+                top: -12px;
+                right: -8px;
+                color: red;
             }
         }
     }

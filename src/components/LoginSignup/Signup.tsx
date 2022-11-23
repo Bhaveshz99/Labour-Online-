@@ -5,12 +5,14 @@ import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import ImgSrc from '../CommonComponents/ImgSrc';
 import './signup.scss';
+import { callPost } from "../../services/Apis";
 
 const Signup = () => {
 
   const [userName, setUserName] = useState<string>('')
   const [fullName, setFullName] = useState<string>('')
   const [userRole, setUserRole] = useState<string>('')
+  console.log('🚀 ~ file: Signup.tsx ~ line 15 ~ Signup ~ userRole', userRole);
   const [gender, setGender] = useState<string>('')
   const [mobileNumber, setMobileNumber] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -65,8 +67,13 @@ const Signup = () => {
     return isJpgOrPng && isLt2M;
   };
 
-  const handleSignUp = () => {
-    setSignUpStep(2)
+  const handleSignUp = async () => {
+    setSignUpStep(2);
+    const input = {
+      mobile: mobileNumber,
+      role: ""
+    }
+    await callPost('/user/signup', input)
   }
   const handleOtpSubmit = () => {
     setSignUpStep(3)
@@ -199,7 +206,7 @@ const Signup = () => {
               name="password"
               rules={[{ required: true, message: 'Please input your password!' }]}
             >
-              <Input.Password value={password} onChange={(e)=>{setPassword(e.target.value)}} />
+              <Input.Password value={password} onChange={(e) => { setPassword(e.target.value) }} />
             </Form.Item>
 
             <Form.Item label='Email' >

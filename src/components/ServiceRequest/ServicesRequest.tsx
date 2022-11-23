@@ -25,7 +25,7 @@ const ServicesRequest = () => {
 	}
 
 	const handleAcceptRequest = (requestAction: boolean) => {
-		
+
 	}
 
 	const onModalClose = () => {
@@ -71,13 +71,8 @@ const ServicesRequest = () => {
 			title: "Actions",
 			render: (text: any, record: any, index: any) => (
 				<>
-
 					<Button type="primary" onClick={() => { handleRequestAction(record, true, index) }}> <CheckOutlined /> </Button>
-
-
 					<Button type="primary" onClick={() => { handleRequestAction(record, false, index) }} > <CloseOutlined />  </Button>
-
-
 				</>
 			)
 		},
@@ -91,7 +86,39 @@ const ServicesRequest = () => {
 					<h3> Service Requests </h3>
 				</div>
 				<div className="content">
-					<Table dataSource={data} columns={columns} />
+					<div className='xs-hide'>
+						<Table dataSource={data} columns={columns} />
+					</div>
+					<div className="xs-show">
+						<List
+							itemLayout="horizontal"
+							dataSource={data}
+							renderItem={(item, i) => (
+								<List.Item>
+									<List.Item.Meta
+										avatar={<UserOutlined />}
+										title={<a href="https://ant.design">{item.customer_name}</a>}
+										description={<div>
+											<label> Date :-</label>	<p>{item.date_time}</p>
+											<label> Price :-</label>	<p>{item.price}</p>
+
+										</div>}
+									/>
+									<div>
+										<div>
+											<label> Address :-</label>	<p>{item.address}</p>
+
+										</div>
+										<div>
+											<Button type="primary" onClick={() => { handleRequestAction(item, true, i) }}> <CheckOutlined /> </Button>
+											<Button type="primary" onClick={() => { handleRequestAction(item, false, i) }} > <CloseOutlined />  </Button>
+
+										</div>
+									</div>
+								</List.Item>
+							)}
+						/>
+					</div>
 				</div>
 			</div>
 			{selectedIndex >= 0 && modelType === 'cancel' && <>

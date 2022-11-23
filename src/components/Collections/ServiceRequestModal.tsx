@@ -3,8 +3,8 @@ import { Button, Radio, Modal, Form, DatePicker, TimePicker, Drawer } from 'antd
 import moment from 'moment';
 
 interface ServiceRequestModalTypes {
-  showReviewsModal: boolean,
-  setShowReviewsModal(a: boolean): VoidFunction
+  showRequestModal: boolean,
+  setShowRequestModal(a: boolean): void
 }
 
 const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
@@ -13,7 +13,7 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
   const [addressMode, setAddressMode] = useState('selection')
 
   const onSaveAddress = () => {
-
+    setAddressMode('selection')
   }
 
   let component = (<div>
@@ -22,7 +22,7 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
         {addressMode === 'selection' && <div>
           <h4>Select Address</h4>
           <div>
-            <span className='add_address'> + add </span>
+            <span className='add_address' onClick={()=>{setAddressMode('addition')}}> + add </span>
             <Radio.Group className='address_selection' value={selectedAddress}>
               <Radio value={1}> B/203 Hariom Avenue, Sardarnagar, Ahmedabad Pincode- 382475</Radio>
               <Radio value={2}> B/203 Hariom Avenue, Sardarnagar, Ahmedabad Pincode- 382475</Radio>
@@ -36,7 +36,9 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
         {addressMode === 'addition' && <div>
           <h4>Add Address</h4>
           <Form>
+            {/* <Form.Item >
 
+            </Form.Item> */}
           </Form>
           <Button onClick={() => { onSaveAddress() }} >
             Save
@@ -59,21 +61,21 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
 
     <div>
       {window.innerWidth <= 768 && <Drawer
-        className='reviews'
-        title="Rakesh's Reviews"
+        className='request'
+        title="Request Service"
         placement={"bottom"}
         closable={true}
-        onClose={() => { props.setShowReviewsModal(false) }}
-        visible={props.showReviewsModal}
+        onClose={() => { props.setShowRequestModal(false) }}
+        visible={props.showRequestModal}
       >
         {component}
       </Drawer>}
       {window.innerWidth > 768 && <Modal
-        className='reviews'
+        className='request'
         title="Reviews"
-        visible={props.showReviewsModal}
-        onCancel={() => { props.setShowReviewsModal(false) }}
-      // onOk={this.hideModal}
+        visible={props.showRequestModal}
+        onCancel={() => { props.setShowRequestModal(false) }}
+        footer={null}
       >
         {component}
       </Modal>}

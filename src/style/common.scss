@@ -74,9 +74,16 @@ h6 {
     // .xs-show{
     //     display: block;
     // }
-    // .xs-hide{
-    //     display: none;
-    // }
+    
+}
+
+@include mq('phone'){
+    .xs-show{
+        display: block;
+    }
+    .xs-hide{
+        display: none;
+    }
 }
 
 .xs .img {

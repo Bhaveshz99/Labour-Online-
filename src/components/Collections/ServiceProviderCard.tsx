@@ -19,6 +19,8 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
 
     }
 
+    // const handle
+
     return (
         <section className='service_provider_card'>
             <Row>
@@ -56,21 +58,12 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
                     </div>
                 </Col>
             </Row>
-            
-            {window.innerWidth >= 768 && showReviewsModal &&
-                <Drawer
-                    className='reviews'
-                    title="Rakesh's Reviews"
-                    placement={"bottom"}
-                    closable={true}
-                    onClose={() => { setShowReviewsModal(false) }}
-                    visible={showReviewsModal}
-                >
-                    <ServiceReviewsModal />
-                </Drawer>}
-            {/* {showRequestModal &&
-                // <ServiceRequestModal showRequestModal={showRequestModal} setShowRequestModal={setShowRequestModal} />
-            } */}
+            {showReviewsModal && 
+                <ServiceReviewsModal showReviewsModal={showReviewsModal} setShowReviewsModal={setShowReviewsModal} />
+            }
+            {showRequestModal &&
+                <ServiceRequestModal showRequestModal={showRequestModal} setShowRequestModal={setShowRequestModal} />
+            }
 
         </section>
     )

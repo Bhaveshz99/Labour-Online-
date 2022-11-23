@@ -53,14 +53,20 @@ const Header = () => {
             </div>
             <div className='header_right'>
               <div className='requests'>
-                <FileUnknownOutlined />
+                 <Link to='/service-requests' >
+                  <h4>Requests</h4><FileUnknownOutlined />
+                 </Link>
               </div>
               <div className='bookings'>
-                <BookOutlined />
+                 <Link to='/bookings' >
+                  <h4>Bookings</h4> <BookOutlined />
+                 </Link>
               </div>
-              <div className='notification_area'>
-                <NotificationOutlined />
-              </div>
+              {/* <div className='notification_area'>
+                 <Link to='/service-requests' >
+                  <h4>Bookings</h4> <NotificationOutlined />
+                 </Link>
+              </div> */}
               <div>
                 <Link to='/login'>
                   <label>Login/Signup</label>

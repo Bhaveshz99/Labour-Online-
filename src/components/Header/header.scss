@@ -53,18 +53,24 @@
                 margin-right: 10px;
             }
             .search_area{
-                width: 50%;
+                width: 70%;
             }
         }
         .header_right{
             color: #fff;
             font-size: 20px;
-            width: 30%;
+            width: 40%;
             display: flex;
             justify-content: center;
             text-align: center;
             & > div {
                 // width: 30%;
+            }
+            a{
+                h4{
+                    margin-right: 2px;
+                    display: inline-block;
+                }
             }
         }
     }

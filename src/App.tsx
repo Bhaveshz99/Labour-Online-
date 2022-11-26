@@ -16,7 +16,7 @@ import './App.css';
 import './style/responsive.css';
 import UserProfile from './components/Userprofile/UserProfile';
 import ServicesRequest from './components/ServiceRequest/ServicesRequest';
-
+import Bookings from './components/Bookings/Bookings';
 function App() {
 
   return (
@@ -30,6 +30,7 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/change-password' element={<ChangePassword />} />
         <Route path='/service-requests' element={<ServicesRequest />} />
+        <Route path='/bookings' element={<Bookings />} />
 
       </Routes>
       <Footer />

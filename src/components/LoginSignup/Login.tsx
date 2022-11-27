@@ -6,36 +6,41 @@ import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import ImgSrc from '../CommonComponents/ImgSrc';
 import './signup.scss';
+import { callPost } from "../../services/Apis";
 
 const Login = () => {
-  const [userName, setUserName] = useState<string>('')
-  const [fullName, setFullName] = useState<string>('')
-  const [userRole, setUserRole] = useState<string>('')
-  const [gender, setGender] = useState<string>('')
-  const [mobileNumber, setMobileNumber] = useState<string>('')
-  // const [userName, setUserName] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [submitLoading, setSubmitLoading] = useState<boolean>(false)
-  const [imageUrl, setImageUrl] = useState<string>();
 
+  const [mobileNumber, setMobileNumber] = useState<string>('')
+  const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   const [signUpStep, setSignUpStep] = useState<number>(1)
   const [otp, setOtp] = useState<string>('');
 
-  const onFinish = (e: React.FormEvent) => {
+  const [messageApi, contextHolder] = message.useMessage();
+  const messagePopup = (type: any, content: string) => {
+    messageApi.open({
+      type,
+      content
+    });
+  };
 
-
+  const handleSignUp = async () => {
+    let input = { mobile: mobileNumber }
+    await callPost('/otp/send', input).then((result: any) => {
+      messagePopup('success', 'Otp send successfully');
+      setSignUpStep(2)
+    }).catch((error: any) => messagePopup('error', error.message))
   }
-  const handleSignUp = () => {
-    setSignUpStep(2)
-  }
-  const handleOtpSubmit = () => {
-    let objPass = {
-     
-    }
-
+  const handleOtpSubmit = async () => {
+    let input = { mobile: mobileNumber, otps: otp }
+    await callPost('/user/loginWithOtp', input).then((result: any) => {
+      console.log('🚀 ~ file: Login.tsx ~ line 36 ~ awaitcallPost ~ result', result);
+      messagePopup('success', 'Login successfully');
+      setSignUpStep(2)
+    }).catch((error: any) => messagePopup('error', error.message))
   }
   return (
     <div className='signup_wrapper'>
+      {contextHolder}
       <div className='container login_form'>
         <Form>
           {signUpStep > 1 &&

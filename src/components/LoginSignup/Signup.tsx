@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Form, Input, Radio, Upload, message, } from 'antd'
+import { Button, Form, Input, Radio, Upload, message } from 'antd'
 import OtpInput from 'react-otp-input'
 import { ArrowLeftOutlined, PlusOutlined, CloseCircleOutlined } from '@ant-design/icons'
 import type { UploadChangeParam } from 'antd/es/upload';
@@ -7,23 +7,25 @@ import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import ImgSrc from '../CommonComponents/ImgSrc';
 import './signup.scss';
 import { callPost } from "../../services/Apis";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../../Redux/slices/authSlice";
 
 const Signup = () => {
 
   const [userName, setUserName] = useState<string>('')
   const [fullName, setFullName] = useState<string>('')
   const [userRole, setUserRole] = useState<string>('')
-  console.log('🚀 ~ file: Signup.tsx ~ line 15 ~ Signup ~ userRole', userRole);
   const [gender, setGender] = useState<string>('')
   const [mobileNumber, setMobileNumber] = useState<string>('')
   const [password, setPassword] = useState<string>('')
-  // const [userName, setUserName] = useState<string>('')
   const [email, setEmail] = useState<string>('')
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   const [imageUrl, setImageUrl] = useState<string>();
 
   const [signUpStep, setSignUpStep] = useState<number>(1)
   const [otp, setOtp] = useState<string>('');
+
+  const dispatch = useDispatch();
 
   const onFinish = (e: React.FormEvent) => {
     let objPass = {
@@ -50,7 +52,7 @@ const Signup = () => {
     }
   };
 
-  const handleCustomUpload: UploadProps['customRequest'] = ( info ) =>{
+  const handleCustomUpload: UploadProps['customRequest'] = (info) => {
     console.log(info);
     getBase64(info.file as RcFile, (url) => {
       setImageUrl(url);
@@ -75,19 +77,56 @@ const Signup = () => {
     return isJpgOrPng && isLt2M;
   };
 
+  const [messageApi, contextHolder] = message.useMessage();
+  const messagePopup = (type: any, content: string) => {
+    messageApi.open({
+      type,
+      content
+    });
+  };
+
   const handleSignUp = async () => {
-    setSignUpStep(2);
     const input = {
       mobile: mobileNumber,
-      role: ""
+      role: userRole
     }
-    await callPost('/user/signup', input)
+    dispatch(addUser({
+      "isValid": false,
+      "isKyc": false,
+      "_id": "637316175325cf65db099bc5",
+      "gender": "male",
+      "mobile": 7894561231,
+      "isAdmin": false,
+      "role": "user",
+      "serviceAreaId": [],
+      "needsCategoryId": [],
+      "needsLocationId": [],
+      "isDeleted": false,
+      "createdAt": "2022-11-15T04:31:19.128Z",
+      "updatedAt": "2022-11-15T04:31:19.128Z",
+    }));
+    // await callPost('/user/signup', input).then((res: any) => {
+    //   messagePopup('success', 'Send otp');
+    //   setSignUpStep(2);
+    // }).catch((error: any) => {
+    //   messagePopup('error', error.message);
+    // })
   }
-  const handleOtpSubmit = () => {
-    setSignUpStep(3)
+  const handleOtpSubmit = async () => {
+    let input = {
+      mobile: mobileNumber,
+      otp
+    };
+    await callPost('/user/loginWithOtp', input).then((res: any) => {
+      messagePopup('success', 'Signup successfully');
+      setSignUpStep(3)
+    }).catch((error: any) => {
+      messagePopup('error', error.message);
+    })
   }
   return (
     <div className='signup_wrapper'>
+      {contextHolder}
       <div className='container login_form'>
         <Form>
           {signUpStep > 1 &&
@@ -102,7 +141,7 @@ const Signup = () => {
             </Form.Item>
             <Form.Item label="Who are you?">
               <Radio.Group value={userRole} className='role_selection' onChange={(e) => { setUserRole(e.target.value) }}>
-                <Radio value="customer"> <div>
+                <Radio value="user"> <div>
                   <ImgSrc src={'./Assets/avatar/avatar6.svg'} />
                   <p>  Customer</p>
                 </div>
@@ -136,7 +175,7 @@ const Signup = () => {
                 value={otp}
                 className='input_otp'
                 onChange={(e: string) => { setOtp(e) }}
-                numInputs={6}
+                numInputs={4}
                 separator={<div className='diff'> - </div>}
               />
             </div>
@@ -162,11 +201,11 @@ const Signup = () => {
                 className="avatar-uploader"
                 showUploadList={false}
                 customRequest={handleCustomUpload}
-                // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                // beforeUpload={beforeUpload}
+              // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              // beforeUpload={beforeUpload}
               // onChange={handleChange}
               >
-                {imageUrl ? <div> <span className='cancel' onClick={()=>{setImageUrl('')}}><CloseCircleOutlined /></span> <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> </div> : <div>
+                {imageUrl ? <div> <span className='cancel' onClick={() => { setImageUrl('') }}><CloseCircleOutlined /></span> <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> </div> : <div>
                   <PlusOutlined />
                   <div style={{ marginTop: 8 }}>Upload</div>
                 </div>}

@@ -90,27 +90,12 @@ const Signup = () => {
       mobile: mobileNumber,
       role: userRole
     }
-    dispatch(addUser({
-      "isValid": false,
-      "isKyc": false,
-      "_id": "637316175325cf65db099bc5",
-      "gender": "male",
-      "mobile": 7894561231,
-      "isAdmin": false,
-      "role": "user",
-      "serviceAreaId": [],
-      "needsCategoryId": [],
-      "needsLocationId": [],
-      "isDeleted": false,
-      "createdAt": "2022-11-15T04:31:19.128Z",
-      "updatedAt": "2022-11-15T04:31:19.128Z",
-    }));
-    // await callPost('/user/signup', input).then((res: any) => {
-    //   messagePopup('success', 'Send otp');
-    //   setSignUpStep(2);
-    // }).catch((error: any) => {
-    //   messagePopup('error', error.message);
-    // })
+    await callPost('/user/signup', input).then((res: any) => {
+      messagePopup('success', 'Send otp');
+      setSignUpStep(2);
+    }).catch((error: any) => {
+      messagePopup('error', error.message);
+    })
   }
   const handleOtpSubmit = async () => {
     let input = {
@@ -119,6 +104,7 @@ const Signup = () => {
     };
     await callPost('/user/loginWithOtp', input).then((res: any) => {
       messagePopup('success', 'Signup successfully');
+      dispatch(addUser(res?.data));
       setSignUpStep(3)
     }).catch((error: any) => {
       messagePopup('error', error.message);

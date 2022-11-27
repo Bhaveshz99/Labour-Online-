@@ -7,7 +7,6 @@ const config: any = {
 };
 
 const baseUrl = process.env.BASE_URL || 'http://localhost:8080';
-console.log('🚀 ~ file: Apis.ts ~ line 10 ~ baseUrl', baseUrl);
 
 export const callGet = (path: string) => {
     return new Promise(async (resolve, reject) => {
@@ -17,7 +16,6 @@ export const callGet = (path: string) => {
 
 export const callPost = (path: string, body: any) => {
     return new Promise(async (resolve, reject) => {
-
         await axios.post(`${baseUrl}${path}`, body, config).then((result: any) => resolve(result)).catch((error: any) => reject(error));
     })
 }

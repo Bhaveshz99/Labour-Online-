@@ -7,6 +7,8 @@ import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import ImgSrc from '../CommonComponents/ImgSrc';
 import './signup.scss';
 import { callPost } from "../../services/Apis";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../../Redux/slices/authSlice";
 
 const Login = () => {
 
@@ -14,8 +16,12 @@ const Login = () => {
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   const [signUpStep, setSignUpStep] = useState<number>(1)
   const [otp, setOtp] = useState<string>('');
-
   const [messageApi, contextHolder] = message.useMessage();
+
+  const dispatch = useDispatch();
+  const user = useSelector((store: any) => store.users);
+  console.log('🚀 ~ file: Login.tsx ~ line 23 ~ Login ~ user', user);
+
   const messagePopup = (type: any, content: string) => {
     messageApi.open({
       type,
@@ -23,17 +29,19 @@ const Login = () => {
     });
   };
 
-  const handleSignUp = async () => {
-    let input = { mobile: mobileNumber }
+  const handleLogin = async () => {
+    let input = { mobile: mobileNumber, messageFor: "Login user" }
+
     await callPost('/otp/send', input).then((result: any) => {
       messagePopup('success', 'Otp send successfully');
       setSignUpStep(2)
     }).catch((error: any) => messagePopup('error', error.message))
   }
   const handleOtpSubmit = async () => {
-    let input = { mobile: mobileNumber, otps: otp }
+    let input = { mobile: mobileNumber, otp }
     await callPost('/user/loginWithOtp', input).then((result: any) => {
-      console.log('🚀 ~ file: Login.tsx ~ line 36 ~ awaitcallPost ~ result', result);
+      console.log('🚀 ~ file: Login.tsx ~ line 37 ~ awaitcallPost ~ result', result);
+      dispatch(addUser(result?.data));
       messagePopup('success', 'Login successfully');
       setSignUpStep(2)
     }).catch((error: any) => messagePopup('error', error.message))
@@ -55,7 +63,7 @@ const Login = () => {
             </Form.Item>
             <Form.Item>
               <div>
-                <Button onClick={handleSignUp} size='large' loading={submitLoading}> Proceed </Button>
+                <Button onClick={handleLogin} size='large' loading={submitLoading}> Proceed </Button>
               </div>
             </Form.Item>
 
@@ -66,7 +74,7 @@ const Login = () => {
                 value={otp}
                 className='input_otp'
                 onChange={(e: string) => { setOtp(e) }}
-                numInputs={6}
+                numInputs={4}
                 separator={<div className='diff'> - </div>}
               />
             </div>

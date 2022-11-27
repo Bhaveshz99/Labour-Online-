@@ -1,10 +1,21 @@
-import React from 'react';
-import { Avatar, Image, Radio, Card, Row, Col } from 'antd';
+import React, { useState } from 'react';
+import { Avatar, Image, Radio, Card, Row, Col, Collapse, Form, Input } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import "./userProfile.css"
-
+const { Panel } = Collapse;
 const UserProfile: React.FC = () => {
+    
+    const[email,setEmail] = useState<string>('');
+    const[mobile,setMobile] = useState<string>('');
+    const[gender,setGender] = useState<string>('');
+    const[city,setCity] = useState<string>('');
+    const[state,setState] = useState<string>('');
+    const[photo,setPhoto] = useState<string>('');
+    // const[email,set] = useState<string>('');
 
+    const handleOnChnage = () => {
+
+    }
     return (
         <div className="container">
             <div
@@ -39,6 +50,31 @@ const UserProfile: React.FC = () => {
                     </Row>
                 }
             ></Card>
+            <Collapse defaultActiveKey={['1']} onChange={handleOnChnage}>
+                <Panel key='general' header={"General Settings"}>
+                    <Form >
+                        <Form.Item>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item>
+                            <Input />
+                        </Form.Item>
+                        
+                    </Form>
+                </Panel>
+                <Panel key='work' header={"work Settings"}>
+                    <Form >
+                        <Input />
+                    </Form>
+                </Panel>
+
+            </Collapse>
         </div>
     )
 }

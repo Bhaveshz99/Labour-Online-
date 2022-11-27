@@ -27,7 +27,7 @@ const ServiceReviewsModal = (props: ServiceReviewsModalTypes) => {
                 title: 'Ant Design Title 4',
             },
         ])
-    })
+    },[])
 
 
     let content = <div>

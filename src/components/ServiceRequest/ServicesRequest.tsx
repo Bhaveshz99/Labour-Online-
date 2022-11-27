@@ -1,7 +1,6 @@
 import { UserOutlined, CheckOutlined, CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Button, List, Table, Modal, Result, Typography } from 'antd'
 import React, { useState } from 'react'
-import type { ColumnsType } from 'antd/es/table';
 
 const { Paragraph, Text } = Typography
 const ServicesRequest = () => {

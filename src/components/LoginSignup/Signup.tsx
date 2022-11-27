@@ -201,9 +201,7 @@ const Signup = () => {
                 className="avatar-uploader"
                 showUploadList={false}
                 customRequest={handleCustomUpload}
-              // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              // beforeUpload={beforeUpload}
-              // onChange={handleChange}
+              
               >
                 {imageUrl ? <div> <span className='cancel' onClick={() => { setImageUrl('') }}><CloseCircleOutlined /></span> <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> </div> : <div>
                   <PlusOutlined />

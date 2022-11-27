@@ -26,7 +26,7 @@ const Signup = () => {
   const [otp, setOtp] = useState<string>('');
 
   const dispatch = useDispatch();
-
+  const user = useSelector((state:  any) => state.user)
   const onFinish = (e: React.FormEvent) => {
     let objPass = {
       userName: userName,
@@ -110,6 +110,8 @@ const Signup = () => {
       messagePopup('error', error.message);
     })
   }
+  console.log(user);
+  
   return (
     <div className='signup_wrapper'>
       {contextHolder}

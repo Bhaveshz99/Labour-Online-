@@ -1,21 +1,31 @@
 import React, { useState } from 'react';
-import { Avatar, Image, Radio, Card, Row, Col, Collapse, Form, Input } from 'antd';
+import { Avatar, Image, Radio, Card, Row, Col, Collapse, Form, Input, InputNumber, Select, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import "./userProfile.css"
 const { Panel } = Collapse;
 const UserProfile: React.FC = () => {
-    
-    const[email,setEmail] = useState<string>('');
-    const[mobile,setMobile] = useState<string>('');
-    const[gender,setGender] = useState<string>('');
-    const[city,setCity] = useState<string>('');
-    const[state,setState] = useState<string>('');
-    const[photo,setPhoto] = useState<string>('');
-    // const[email,set] = useState<string>('');
 
-    const handleOnChnage = () => {
+    const [email, setEmail] = useState<string>('');
+    const [fullName, setFullName] = useState<string>('');
+    const [mobile, setMobile] = useState<string>('');
+    const [gender, setGender] = useState<string>('');
+    const [city, setCity] = useState<string>('');
+    const [state, setState] = useState<string>('');
+    const [pincode, setPincode] = useState<string>('');
+    const [photo, setPhoto] = useState<string>('');
+    const [price, setPrice] = useState<any>(200);
+    const [serviceAreas, setServiceAreas] = useState<string[]>()
+    const [gsLoading, setGsLoading] = useState<boolean>(false)
+    const [wpLoading, setWpLoading] = useState<boolean>(false)
+
+    const handleGeneralSettingsChange = () => {
 
     }
+
+    const handleWorkProfileChanges = () => {
+
+    }
+
     return (
         <div className="container">
             <div
@@ -50,32 +60,97 @@ const UserProfile: React.FC = () => {
                     </Row>
                 }
             ></Card>
-            <Collapse defaultActiveKey={['1']} onChange={handleOnChnage}>
-                <Panel key='general' header={"General Settings"}>
-                    <Form >
+            <Collapse defaultActiveKey={['general']} >
+                <Panel key='general' header={"General Settings"} >
+                    <Form onFinish={handleGeneralSettingsChange} >
+                        <Row gutter={[8, 8]}>
+                            <Col xs={24} sm={24} md={12} lg={12} span={12} >
+                                <Form.Item label='email'>
+                                    <Input value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                                </Form.Item>
+                            </Col>
+                            <Col xs={24} sm={24} md={12} lg={12} span={12} >
+                                <Form.Item label='email'>
+                                    <Input value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                                </Form.Item>
+
+                            </Col>
+
+                            <Col xs={24} sm={24} md={12} lg={12} span={12} >
+                                <Form.Item label='Number'>
+                                    <Input value={mobile} maxLength={10} minLength={10} onChange={(e) => { setMobile(e.target.value) }} />
+
+                                </Form.Item>
+                            </Col>
+                            <Col xs={24} sm={24} md={12} lg={12} span={12} >
+                                <Form.Item label='Gender'>
+                                    <Radio.Group value={gender} className='role_selection' onChange={(e) => { setGender(e.target.value) }}>
+                                        <Radio value="male"> Male </Radio>
+                                        <Radio value="female"> Female </Radio>
+
+                                    </Radio.Group>
+                                </Form.Item>
+                            </Col>
+                            <Col xs={24} sm={24} md={12} lg={12} span={12} >
+                                <Form.Item label='State'>
+                                    <Input value={state} onChange={(e) => { setState(e.target.value) }} />
+                                </Form.Item>
+                            </Col>
+
+                            <Col xs={24} sm={24} md={12} lg={12} span={12} >
+                                <Form.Item label='City'>
+                                    <Input value={city} onChange={(e) => { setCity(e.target.value) }} />
+                                </Form.Item>
+                            </Col>
+
+                            <Col xs={24} sm={24} md={12} lg={12} span={12} >
+                                <Form.Item label='Pincode'>
+                                    <Input value={state} onChange={(e) => { setPincode(e.target.value) }} />
+                                </Form.Item>
+                            </Col>
+                        </Row>
                         <Form.Item>
-                            <Input />
+                            <div>
+                                <Button onClick={handleGeneralSettingsChange} size='large' loading={gsLoading}> Submit </Button>
+                            </div>
                         </Form.Item>
-                        <Form.Item>
-                            <Input />
-                        </Form.Item>
-                        <Form.Item>
-                            <Input />
-                        </Form.Item>
-                        <Form.Item>
-                            <Input />
-                        </Form.Item>
-                        
                     </Form>
                 </Panel>
                 <Panel key='work' header={"work Settings"}>
-                    <Form >
-                        <Input />
+                    <Form onFinish={handleWorkProfileChanges} >
+                        <Row>
+                            <Col xs={24} sm={24} md={12} lg={12} span={12} >
+                                <Form.Item label='Price'>
+                                    <InputNumber value={price} defaultValue={price} onChange={(e) => { setPrice(e) }} />
+                                </Form.Item>
+                            </Col>
+                            <Col xs={24} sm={24} md={12} lg={12} span={12} >
+                                <Form.Item label='Areas'>
+                                    <Select
+                                        mode="multiple"
+                                        allowClear
+                                        style={{ width: '100%' }}
+                                        placeholder="Select Areas"
+                                        defaultValue={serviceAreas}
+                                        onChange={(e) => {
+                                            console.log(e);
+                                        }}
+                                        value={serviceAreas}
+                                        options={[{ label: 'Ahmedabad', value: 'ahmedabad' }, { label: 'Surat', value: 'surat' },]}
+                                    />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                        <Form.Item>
+                            <div>
+                                <Button onClick={handleWorkProfileChanges} size='large' loading={wpLoading}> Submit </Button>
+                            </div>
+                        </Form.Item>
                     </Form>
                 </Panel>
 
             </Collapse>
-        </div>
+        </div >
     )
 }
 

@@ -30,7 +30,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/change-password' element={<ChangePassword />} />
         <Route path='/service-requests' element={<ServicesRequest />} />
-        <Route path='/bookings' element={<Bookings />} />
+        <Route path='/bookings' element={<Bookings />} />yarn
+
       </Routes>
       <Footer />
     </div>

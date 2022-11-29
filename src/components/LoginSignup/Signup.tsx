@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../../Redux/slices/authSlice";
 import { useNavigate } from 'react-router-dom';
 
-const Signup : React.FC = () => {
+const Signup: React.FC = () => {
 
   const [userName, setUserName] = useState<string>('')
   const [fullName, setFullName] = useState<string>('')
@@ -26,7 +26,7 @@ const Signup : React.FC = () => {
   const [otp, setOtp] = useState<string>('');
 
   const dispatch = useDispatch();
-  const user = useSelector((state:  any) => state.user)
+  const user = useSelector((state: any) => state.user)
   const navigate = useNavigate();
 
   const onFinish = async (e: React.FormEvent) => {
@@ -43,16 +43,17 @@ const Signup : React.FC = () => {
 
     try {
       await callPut('/user/update', objPass).then((res: any) => {
-        if(res.data.status === 200){
+        if (res.data.status === 200) {
+          dispatch(addUser(res?.data.data));
           messagePopup('success', 'Update Successfully');
-          if(res.data.data.role === 'user'){
+          if (res.data.data.role === 'user') {
             navigate('/')
           }
         }
-        else{
+        else {
           messagePopup('error', res.data.message);
         }
-        
+
       })
     } catch (error: any) {
       messagePopup('error', error);
@@ -122,15 +123,20 @@ const Signup : React.FC = () => {
       otp
     };
     await callPost('/user/loginWithOtp', input).then((res: any) => {
-      messagePopup('success', 'Account Created Successfully');
-      localStorage.setItem('token',res.data.token)
-      dispatch(addUser(res?.data.data));
-      setSignUpStep(3)
+      if(res.data.data && res.data.token){
+        messagePopup('success', 'Account Created Successfully');
+        localStorage.setItem('token', res.data.token)
+        dispatch(addUser(res?.data.data));
+        setSignUpStep(3)
+      }
+      else{
+        messagePopup('error',res.data.message)
+      }
     }).catch((error: any) => {
       messagePopup('error', error.message);
     })
   }
-  
+
   return (
     <div className='signup_wrapper'>
       {contextHolder}
@@ -208,7 +214,7 @@ const Signup : React.FC = () => {
                 className="avatar-uploader"
                 showUploadList={false}
                 customRequest={handleCustomUpload}
-              
+
               >
                 {imageUrl ? <div> <span className='cancel' onClick={() => { setImageUrl('') }}><CloseCircleOutlined /></span> <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> </div> : <div>
                   <PlusOutlined />
@@ -223,6 +229,25 @@ const Signup : React.FC = () => {
               rules={[{ required: true, message: 'Please input your password!' }]}
             >
               <Input.Password value={password} onChange={(e) => { setPassword(e.target.value) }} />
+            </Form.Item>
+
+
+            <Form.Item
+              label="Gender"
+              name="gender"
+              rules={[{ required: true, message: 'Please input your password!' }]}
+            >
+              <Radio.Group value={gender} className='role_selection' onChange={(e) => { setGender(e.target.value) }}>
+                <Radio value="female">
+                  Female
+                </Radio>
+
+                <Radio value="male">
+                  Male
+                </Radio>
+
+              </Radio.Group>
+
             </Form.Item>
 
             <Form.Item label='Email' >

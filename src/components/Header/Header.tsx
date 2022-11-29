@@ -1,12 +1,18 @@
 import React from 'react'
 import { Input } from 'antd';
 import { Link } from 'react-router-dom';
-import { NotificationOutlined, SearchOutlined, AppstoreOutlined, BookOutlined, FileUnknownOutlined, UserOutlined } from '@ant-design/icons'
+import { NotificationOutlined, SearchOutlined, AppstoreOutlined, BookOutlined, FileUnknownOutlined, UserOutlined, PoweroffOutlined, LoginOutlined } from '@ant-design/icons'
 // import Logo from '../../assets/images/man.png'
 import './header.scss'
 import ImgSrc from '../CommonComponents/ImgSrc';
 
 const Header = () => {
+
+
+  const onLogout = () => {
+
+  }
+
   return (
     <header className='header_wrapper'>
       {window.innerWidth < 768 &&
@@ -27,7 +33,10 @@ const Header = () => {
             </div>
             <div className='notification_area'>
               <div>
-                <NotificationOutlined />
+                {true ?
+                  <PoweroffOutlined onClick={() => { onLogout() }} />
+                  : <Link to='/login'> <LoginOutlined /> </Link>
+                }
               </div>
             </div>
           </div>
@@ -47,20 +56,20 @@ const Header = () => {
               </Link>
               <div className='search_area'>
                 <div className=''>
-                  <Input className='search_service' placeholder="Search For Services" prefix={<SearchOutlined />} />
+                  <Input size='small' className='search_service' placeholder="Search For Services" prefix={<SearchOutlined />} />
                 </div>
               </div>
             </div>
             <div className='header_right'>
               <div className='requests'>
-                 <Link to='/service-requests' >
+                <Link to='/service-requests' >
                   <h4>Requests</h4><FileUnknownOutlined />
-                 </Link>
+                </Link>
               </div>
               <div className='bookings'>
-                 <Link to='/bookings' >
+                <Link to='/bookings' >
                   <h4>Bookings</h4> <BookOutlined />
-                 </Link>
+                </Link>
               </div>
               {/* <div className='notification_area'>
                  <Link to='/service-requests' >
@@ -68,9 +77,9 @@ const Header = () => {
                  </Link>
               </div> */}
               <div>
-                <Link to='/login'>
-                  <label>Login/Signup</label>
-                </Link>
+                {true ? <PoweroffOutlined onClick={() => { onLogout() }} /> : <Link to='/login'>
+                  <LoginOutlined />
+                </Link>}
               </div>
             </div>
           </div>

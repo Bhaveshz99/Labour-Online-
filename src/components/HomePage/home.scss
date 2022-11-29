@@ -1,6 +1,9 @@
 @import '../../style/mixin.scss';
 
 .home_wrapper {
+    @include mq('phone'){
+        padding-bottom: 60px;
+    }
     .banner {
         img {
             width: 100%;

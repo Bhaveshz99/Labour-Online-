@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Image, Radio, Card, Row, Col, Collapse, Form, Input, InputNumber, Select, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import "./userProfile.css"
@@ -17,6 +17,11 @@ const UserProfile: React.FC = () => {
     const [serviceAreas, setServiceAreas] = useState<string[]>()
     const [gsLoading, setGsLoading] = useState<boolean>(false)
     const [wpLoading, setWpLoading] = useState<boolean>(false)
+
+
+    useEffect(()=>{
+        
+    },[])
 
     const handleGeneralSettingsChange = () => {
 

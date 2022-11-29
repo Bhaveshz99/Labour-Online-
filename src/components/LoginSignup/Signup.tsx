@@ -6,11 +6,12 @@ import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import ImgSrc from '../CommonComponents/ImgSrc';
 import './signup.scss';
-import { callPost } from "../../services/Apis";
+import { callPost, callPut } from "../../services/Apis";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../../Redux/slices/authSlice";
+import { useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const Signup : React.FC = () => {
 
   const [userName, setUserName] = useState<string>('')
   const [fullName, setFullName] = useState<string>('')
@@ -21,13 +22,14 @@ const Signup = () => {
   const [email, setEmail] = useState<string>('')
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   const [imageUrl, setImageUrl] = useState<string>();
-
   const [signUpStep, setSignUpStep] = useState<number>(1)
   const [otp, setOtp] = useState<string>('');
 
   const dispatch = useDispatch();
   const user = useSelector((state:  any) => state.user)
-  const onFinish = (e: React.FormEvent) => {
+  const navigate = useNavigate();
+
+  const onFinish = async (e: React.FormEvent) => {
     let objPass = {
       userName: userName,
       fullName: fullName,
@@ -37,6 +39,23 @@ const Signup = () => {
       avatar: imageUrl,
       email: email,
       password: password
+    }
+
+    try {
+      await callPut('/user/update', objPass).then((res: any) => {
+        if(res.data.status === 200){
+          messagePopup('success', 'Update Successfully');
+          if(res.data.data.role === 'user'){
+            navigate('/')
+          }
+        }
+        else{
+          messagePopup('error', res.data.message);
+        }
+        
+      })
+    } catch (error: any) {
+      messagePopup('error', error);
     }
 
   }
@@ -103,14 +122,14 @@ const Signup = () => {
       otp
     };
     await callPost('/user/loginWithOtp', input).then((res: any) => {
-      messagePopup('success', 'Signup successfully');
-      dispatch(addUser(res?.data));
+      messagePopup('success', 'Account Created Successfully');
+      localStorage.setItem('token',res.data.token)
+      dispatch(addUser(res?.data.data));
       setSignUpStep(3)
     }).catch((error: any) => {
       messagePopup('error', error.message);
     })
   }
-  console.log(user);
   
   return (
     <div className='signup_wrapper'>

@@ -3,18 +3,18 @@
 .header_wrapper {
     padding: 10px;
     position: sticky;
-    height: 55px;
+    height: 60px;
     background: #6446EC;
     top: 0;
     z-index: 1000;
 
     @include mq('phone') {
         height: auto;
-        background: #fff;
+        // background: #fff;
         .header_upper {
             display: flex;
             justify-content: space-between;
-    
+            margin-bottom: 5px;
             .icon_area {
                 width: 20%;
                 img{
@@ -26,11 +26,14 @@
             .location_area {
                 p{
                     margin-bottom: 6px;
+                    font-size: 18px;
                 }
             }
     
             .notification_area {
                 width: 15%;
+                text-align: right;
+                font-size: 22px;
             }
         }
     
@@ -43,17 +46,21 @@
 
     .header_upper{
         display: flex;
+        color: #fff;
         .header_left{
-            width: 70%;
+            width: 60%;
             display: flex;
             .logo{
                 img{
-                    width: 30px;
+                    width: 38px;
                 }
                 margin-right: 10px;
             }
             .search_area{
                 width: 70%;
+                .search_service{
+                    font-size: 16px;
+                }
             }
         }
         .header_right{
@@ -61,13 +68,15 @@
             font-size: 20px;
             width: 40%;
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
             text-align: center;
             & > div {
                 // width: 30%;
             }
             a{
+                color: #fff;
                 h4{
+                    color: #fff;
                     margin-right: 2px;
                     display: inline-block;
                 }

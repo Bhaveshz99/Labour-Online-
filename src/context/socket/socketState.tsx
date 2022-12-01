@@ -1,7 +1,7 @@
 import { SocketContext } from "./socketContext";
 import * as io from 'socket.io-client';
 
-export const socketState = (props: any) => {
+export const SocketState = (props: any) => {
 
     const socket: any = io.connect('http://localhost:8080', {
         transports: ["websocket"],
@@ -14,9 +14,7 @@ export const socketState = (props: any) => {
 
     return (
         <SocketContext.Provider value={{ socket }}>
-            complete recommendedProducts module
-            testing in changes query and mutation
-            try to set xlsx import formate
+            {props.children}
         </SocketContext.Provider>
     )
 }

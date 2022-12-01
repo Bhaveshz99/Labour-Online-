@@ -1,16 +1,17 @@
 import React from 'react'
 import { Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { NotificationOutlined, SearchOutlined, AppstoreOutlined, BookOutlined, FileUnknownOutlined, UserOutlined, PoweroffOutlined, LoginOutlined } from '@ant-design/icons'
 // import Logo from '../../assets/images/man.png'
 import './header.scss'
 import ImgSrc from '../CommonComponents/ImgSrc';
 
 const Header = () => {
-
+  const naviagte = useNavigate()
 
   const onLogout = () => {
-
+    localStorage.removeItem('token')
+    naviagte('/')
   }
 
   return (

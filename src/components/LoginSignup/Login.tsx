@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button, Form, Input, Radio, Upload, message } from 'antd'
 import OtpInput from 'react-otp-input'
 import { ArrowLeftOutlined } from '@ant-design/icons'
@@ -17,6 +18,8 @@ const Login = () => {
   const [signUpStep, setSignUpStep] = useState<number>(1)
   const [otp, setOtp] = useState<string>('');
   const [messageApi, contextHolder] = message.useMessage();
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const user = useSelector((store: any) => store.users);
@@ -41,9 +44,13 @@ const Login = () => {
     let input = { mobile: mobileNumber, otp }
     await callPost('/user/loginWithOtp', input).then((result: any) => {
       console.log('🚀 ~ file: Login.tsx ~ line 37 ~ awaitcallPost ~ result', result);
-      dispatch(addUser(result?.data));
+      dispatch(addUser(result.data?.data));
       messagePopup('success', 'Login successfully');
-      setSignUpStep(2)
+      // setSignUpStep(2)
+      if(result.data.data.role === 'user'){
+        navigate('/')
+      }
+      
     }).catch((error: any) => messagePopup('error', error.message))
   }
   return (

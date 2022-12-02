@@ -22,6 +22,7 @@ import 'antd/dist/antd.css';
 import './style/common.scss';
 import './App.css';
 import './style/responsive.css';
+import PrivateRouter from './components/LoginSignup/PrivateRouter';
 function App() {
 
   const dispatch = useDispatch();
@@ -42,13 +43,13 @@ function App() {
       <Header />
       <Routes>
         <Route path='' element={<HomeScreen />} />
-        {hasToken && <Route path='/service-list' element={<ServiceListPage />} />}
-        {hasToken && <Route path='/profile' element={<UserProfile />} />}
-        {!hasToken && <Route path='/signup' element={<Signup />} />}
-        {!hasToken && <Route path='/login' element={<Login />} />}
-        {hasToken && <Route path='/change-password' element={<ChangePassword />} />}
-        {hasToken && <Route path='/service-requests' element={<ServicesRequest />} />}
-        {hasToken && <Route path='/bookings' element={<Bookings />} />}
+        <Route path='/service-list' element={<ServiceListPage />} />
+        <Route path='/profile' element={<PrivateRouter><UserProfile /></PrivateRouter>} />
+        <Route path='/signup' element={<Signup />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/change-password' element={<PrivateRouter><ChangePassword /></PrivateRouter>} />
+        <Route path='/service-requests' element={<PrivateRouter><ServicesRequest /></PrivateRouter>} />
+        <Route path='/bookings' element={<PrivateRouter><Bookings /></PrivateRouter>} />
         <Route path='*' element={<Page404 />} />
       </Routes>
       <Footer />

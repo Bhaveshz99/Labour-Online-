@@ -1315,7 +1315,7 @@ img {
 }
 
 .gradent {
-  background: url('../public/Assets/images/info-card-2.jpg') no-repeat center top;
+  background: url('../public/assets/images/info-card-2.jpg') no-repeat center top;
   background-size: cover;
   padding: 15px;
   border-radius: 15px;
@@ -1867,7 +1867,7 @@ body {
   background-size: cover;
   background-position: 50%;
   text-align: center;
-  background: url("../public//Assets/images/bg-profile.jpg") no-repeat center top;
+  background: url("../public/assets/images/bg-profile.jpg") no-repeat center top;
 }
 .header-col.header-brand {
   white-space: nowrap;
@@ -2333,7 +2333,7 @@ section.ant-layout.layout-content .ant-layout-content.content-ant {
 }
 
 .card-credit {
-  background-image: url("../public//Assets/images/info-card-3.jpg");
+  background-image: url("../public/assets/images/info-card-3.jpg");
   background-position: 50%;
   background-size: cover;
   border: none;

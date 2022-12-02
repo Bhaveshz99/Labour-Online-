@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Route,
   Routes
@@ -10,27 +10,46 @@ import ServiceListPage from './components/Collections/ServiceListPage';
 import Login from './components/LoginSignup/Login';
 import Signup from './components/LoginSignup/Signup';
 import ChangePassword from './components/LoginSignup/ChangePassword';
+import UserProfile from './components/Userprofile/UserProfile';
+import ServicesRequest from './components/ServiceRequest/ServicesRequest';
+import Bookings from './components/Bookings/Bookings';
+import Page404 from './components/Page404';
+import { getTokenPass } from './utils'
+import { callGet } from './services/Apis';
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "./Redux/slices/authSlice";
 import 'antd/dist/antd.css';
 import './style/common.scss';
 import './App.css';
 import './style/responsive.css';
-import UserProfile from './components/Userprofile/UserProfile';
-import ServicesRequest from './components/ServiceRequest/ServicesRequest';
-import Bookings from './components/Bookings/Bookings';
 function App() {
 
+  const dispatch = useDispatch();
+  const user = useSelector((store: any) => store.users);
+
+  let hasToken = getTokenPass()
+  useEffect(() => {
+    if (hasToken) {
+      callGet('/user/userDetails').then((res: any) => {
+        if (res.data.status === 200) {
+          dispatch(addUser(res?.data.data));
+        }
+      })
+    }
+  }, [])
   return (
     <div>
       <Header />
       <Routes>
         <Route path='' element={<HomeScreen />} />
-        <Route path='/service-list' element={<ServiceListPage />} />
-        <Route path='/profile' element={<UserProfile />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/change-password' element={<ChangePassword />} />
-        <Route path='/service-requests' element={<ServicesRequest />} />
-        <Route path='/bookings' element={<Bookings />} />
+        {hasToken && <Route path='/service-list' element={<ServiceListPage />} />}
+        {hasToken && <Route path='/profile' element={<UserProfile />} />}
+        {!hasToken && <Route path='/signup' element={<Signup />} />}
+        {!hasToken && <Route path='/login' element={<Login />} />}
+        {hasToken && <Route path='/change-password' element={<ChangePassword />} />}
+        {hasToken && <Route path='/service-requests' element={<ServicesRequest />} />}
+        {hasToken && <Route path='/bookings' element={<Bookings />} />}
+        <Route path='*' element={<Page404 />} />
       </Routes>
       <Footer />
     </div>

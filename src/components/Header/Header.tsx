@@ -5,13 +5,15 @@ import { NotificationOutlined, SearchOutlined, AppstoreOutlined, BookOutlined, F
 // import Logo from '../../assets/images/man.png'
 import './header.scss'
 import ImgSrc from '../CommonComponents/ImgSrc';
+import { getTokenPass, successToast } from '../../utils';
 
 const Header = () => {
   const naviagte = useNavigate()
-
+  let hasToken = getTokenPass()
   const onLogout = () => {
     localStorage.removeItem('token')
     naviagte('/')
+    successToast('User Logged Out')
   }
 
   return (
@@ -34,7 +36,7 @@ const Header = () => {
             </div>
             <div className='notification_area'>
               <div>
-                {true ?
+                {hasToken ?
                   <PoweroffOutlined onClick={() => { onLogout() }} />
                   : <Link to='/login'> <LoginOutlined /> </Link>
                 }
@@ -78,7 +80,7 @@ const Header = () => {
                  </Link>
               </div> */}
               <div>
-                {true ? <PoweroffOutlined onClick={() => { onLogout() }} /> : <Link to='/login'>
+                {hasToken ? <PoweroffOutlined onClick={() => { onLogout() }} /> : <Link to='/login'>
                   <LoginOutlined />
                 </Link>}
               </div>

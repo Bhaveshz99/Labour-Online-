@@ -9,35 +9,37 @@ import './home.scss'
 const HomeScreen = () => {
 
     const contentStyle: React.CSSProperties = {
-        height: '350px',
+        height: '400px',
+        // width: 'auto',
         lineHeight: '160px',
         textAlign: 'center',
         // background: '#364d79',
     };
 
+    window.innerWidth <= 768 && (contentStyle.height = "200px")
+
     const [dotPosition, setDotPosition] = useState<DotPosition>('right');
 
+    const imgArr = [
+        "./assets/Carousel/img3.jpg",
+        "./assets/Carousel/img1.jpg",
+        "./assets/Carousel/img2.jpg",
+        "./assets/Carousel/img4.jpg",
+        "./assets/Carousel/img5.jpg",
+    ]
 
     return (
         <div className='home_wrapper'>
             <div className='banner'>
                 {/* <ImgSrc src={MobileBanner} /> */}
-                <Carousel dotPosition={dotPosition} autoplay>
-                    <div>
-                        <img style={contentStyle} src="./assets/Carousel/img3.jpg" />
-                    </div>
-                    <div>
-                        {/* <h3 style={contentStyle}>2</h3> */}
-                        <img style={contentStyle} src="./assets/Carousel/img2.jpg" />
-                    </div>
-                    <div>
-                        <img style={contentStyle} src="./assets/Carousel/img1.jpg" />
-                        {/* <h3 style={contentStyle}>3</h3> */}
-                    </div>
-                    <div>
-                        <img style={contentStyle} src="./assets/Carousel/img4.jpg" />
-                        {/* <h3 style={contentStyle}>4</h3> */}
-                    </div>
+                <Carousel dotPosition={dotPosition} autoplay autoplaySpeed={3000} draggable={true} touchMove={true}>
+                    {
+                        imgArr.map((src: string) => {
+                            return <div>
+                                <img style={contentStyle} src={src} />
+                            </div>
+                        })
+                    }
                 </Carousel>
             </div>
             <div className='container'>

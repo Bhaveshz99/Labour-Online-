@@ -141,6 +141,7 @@ const Signup: React.FC = () => {
     <div className='signup_wrapper'>
       {contextHolder}
       <div className='container login_form'>
+        <h3> Sign Up </h3>
         <Form>
           {signUpStep > 1 &&
             <div className='back_button'>

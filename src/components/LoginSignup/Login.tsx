@@ -43,14 +43,13 @@ const Login = () => {
   const handleOtpSubmit = async () => {
     let input = { mobile: mobileNumber, otp }
     await callPost('/user/loginWithOtp', input).then((result: any) => {
-      console.log('🚀 ~ file: Login.tsx ~ line 37 ~ awaitcallPost ~ result', result);
       dispatch(addUser(result.data?.data));
       messagePopup('success', 'Login successfully');
       // setSignUpStep(2)
-      if(result.data.data.role === 'user'){
+      if (result.data.data.role === 'user') {
         navigate('/')
       }
-      
+
     }).catch((error: any) => messagePopup('error', error.message))
   }
   return (

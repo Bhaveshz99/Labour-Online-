@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { UserOutlined, CheckOutlined, CloseOutlined, EyeOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Button, List, Table, Modal, Result, Typography } from 'antd'
-
+import { UserProps } from '../../interfaces/user'
 const { Paragraph, Text } = Typography
-const Bookings = () => {
+const Bookings: React.FC<UserProps> = (props: UserProps) => {
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
     const [modelType, setModalType] = useState<string>('');
 

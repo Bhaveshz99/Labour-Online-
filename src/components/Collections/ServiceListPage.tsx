@@ -3,8 +3,8 @@ import { UserAddOutlined, IconProvider } from '@ant-design/icons';
 import ServiceProviderCard from './ServiceProviderCard'
 import './servicelist.scss'
 import Icon from '@ant-design/icons/lib/components/AntdIcon';
-
-const ServiceListPage = () => {
+import { UserProps } from '../../interfaces/user'
+const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
 
   return (
     <div className='service_list_wrapper'>

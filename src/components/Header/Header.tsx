@@ -28,10 +28,13 @@ const Header = () => {
             </div>
             <div className='location_area'>
 
-              <p>Hi, Raju </p>
+              <p>Hi, {hasToken ? 'Raju' : 'Guest'} </p>
               <div className='location'>
 
               </div>
+
+            </div>
+            <div id="change-language">
 
             </div>
             <div className='notification_area'>
@@ -42,9 +45,6 @@ const Header = () => {
                 }
               </div>
             </div>
-            <div id="change-language">
-                
-              </div>
           </div>
           <div className='search_area'>
             <Input className='search_service' size='small' placeholder="Search For Services" prefix={<SearchOutlined />} />
@@ -83,7 +83,6 @@ const Header = () => {
                  </Link>
               </div> */}
               <div id="change-language">
-
               </div>
               <div>
                 {hasToken ? <PoweroffOutlined onClick={() => { onLogout() }} /> : <Link to='/login'>

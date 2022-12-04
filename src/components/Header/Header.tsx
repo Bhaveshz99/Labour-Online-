@@ -34,10 +34,8 @@ const Header = () => {
               </div>
 
             </div>
-            <div id="change-language">
-
-            </div>
             <div className='notification_area'>
+              <div id="change-language"></div>
               <div>
                 {hasToken ?
                   <PoweroffOutlined onClick={() => { onLogout() }} />

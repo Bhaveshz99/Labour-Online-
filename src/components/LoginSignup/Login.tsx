@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Form, Input, Radio, Upload, message } from 'antd'
 import OtpInput from 'react-otp-input'
@@ -10,6 +10,8 @@ import './signup.scss';
 import { callPost } from "../../services/Apis";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../../Redux/slices/authSlice";
+import { GoogleLogin } from 'react-google-login';
+import { gapi } from 'gapi-script';
 
 const Login = () => {
 
@@ -23,7 +25,25 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const user = useSelector((store: any) => store.users);
-  console.log('🚀 ~ file: Login.tsx ~ line 23 ~ Login ~ user', user);
+
+  const clientId: string = process.env.REACT_APP_BASE_URL || '';
+
+  useEffect(() => {
+    const initClient = () => {
+      gapi.client.init({
+        clientId: clientId,
+        scope: ''
+      });
+    };
+    gapi.load('client:auth2', initClient);
+  }, []);
+
+  const onSuccess = (res: any) => {
+    console.log('success:', res);
+  };
+  const onFailure = (err: any) => {
+    console.log('failed:', err);
+  };
 
   const messagePopup = (type: any, content: string) => {
     messageApi.open({
@@ -72,7 +92,14 @@ const Login = () => {
                 <Button onClick={handleLogin} size='large' loading={submitLoading}> Proceed </Button>
               </div>
             </Form.Item>
-
+            <GoogleLogin
+              clientId={clientId}
+              buttonText="Sign in with Google"
+              onSuccess={onSuccess}
+              onFailure={onFailure}
+              cookiePolicy={'single_host_origin'}
+              isSignedIn={true}
+            />
           </>}
           {signUpStep === 2 && <>
             <div className='otp_wrapper'>

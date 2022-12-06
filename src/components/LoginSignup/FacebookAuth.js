@@ -1,6 +1,6 @@
 import FacebookLogin from 'react-facebook-login';
 
-export const FacebookAuth = () => {
+export const FacebookAuth = (props) => {
 
     const responseFacebook = (response) => {
         console.log("🚀 ~ file: App.tsx:30 ~ responseFacebook ~ response", response)
@@ -8,7 +8,7 @@ export const FacebookAuth = () => {
     return (
         <>
             <FacebookLogin
-                appId="1778489199191523"
+                appId={process.env.REACT_APP_FACEBOOK_APPID}
                 autoLoad={true}
                 fields="name,email,picture"
                 callback={responseFacebook}

@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../../Redux/slices/authSlice";
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from 'gapi-script';
+import { FacebookAuth } from './FacebookAuth'
 
 const Login = () => {
 
@@ -26,7 +27,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const user = useSelector((store: any) => store.users);
 
-  const clientId: string = process.env.REACT_APP_BASE_URL || '';
+  const clientId: string = process.env.REACT_APP_GOOGLE_KEY || '';
 
   useEffect(() => {
     const initClient = () => {
@@ -101,6 +102,7 @@ const Login = () => {
               cookiePolicy={'single_host_origin'}
               isSignedIn={true}
             />
+            <FacebookAuth />
           </>}
           {signUpStep === 2 && <>
             <div className='otp_wrapper'>

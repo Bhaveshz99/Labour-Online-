@@ -16,12 +16,9 @@
     "@types/socket.io": "^3.0.2",
     "antd": "^4.24.2",
     "axios": "^1.1.3",
-<<<<<<< HEAD
     "gapi-script": "^1.2.0",
-=======
     "i18next": "^22.0.6",
     "i18next-http-backend": "^2.0.2",
->>>>>>> 18e45dfa8aee100bc9bc13773bc76d2d3b3a763e
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

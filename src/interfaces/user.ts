@@ -28,3 +28,7 @@ export interface IUser {
     createdAt: Date
     updatedAt: Date
 }
+
+export interface UserProps {
+    userData: any
+}

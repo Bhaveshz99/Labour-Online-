@@ -16,7 +16,7 @@
             justify-content: space-between;
             margin-bottom: 5px;
             .icon_area {
-                width: 20%;
+                width: 10%;
                 img{
                     width: 30px;
                     height: 30px;
@@ -31,7 +31,9 @@
             }
     
             .notification_area {
-                width: 15%;
+                width: 55%;
+                display: flex;
+                justify-content: space-evenly;
                 text-align: right;
                 font-size: 22px;
             }

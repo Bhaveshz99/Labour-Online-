@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Radio, Modal, Form, DatePicker, TimePicker, Drawer } from 'antd';
 import moment from 'moment';
 
@@ -12,6 +12,14 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
   const [selectedAddress, setSelectedAddress] = useState('');
   const [addressMode, setAddressMode] = useState('selection')
 
+  useEffect(() => {
+    fetchAddress()
+  }, [])
+
+  const fetchAddress = () => {
+    
+  }
+
   const onSaveAddress = () => {
     setAddressMode('selection')
   }
@@ -22,7 +30,7 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
         {addressMode === 'selection' && <div>
           <h4>Select Address</h4>
           <div>
-            <span className='add_address' onClick={()=>{setAddressMode('addition')}}> + add </span>
+            <span className='add_address' onClick={() => { setAddressMode('addition') }}> + add </span>
             <Radio.Group className='address_selection' value={selectedAddress}>
               <Radio value={1}> B/203 Hariom Avenue, Sardarnagar, Ahmedabad Pincode- 382475</Radio>
               <Radio value={2}> B/203 Hariom Avenue, Sardarnagar, Ahmedabad Pincode- 382475</Radio>

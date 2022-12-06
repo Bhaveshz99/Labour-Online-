@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Form, Button, Input } from 'antd'
-const ChangePassword = () => {
+import { UserProps } from '../../interfaces/user'
+const ChangePassword: React.FC<UserProps> = (props: UserProps) => {
     const [password, setPassword] = useState<string>('')
     const [oldPassword, setOldPassword] = useState<string>('')
     const [confirmPassword, setConfirmPassword] = useState<string>('')
@@ -8,8 +9,8 @@ const ChangePassword = () => {
     const handleSubmit = () => {
         console.log();
 
-        
-        
+
+
     }
     return (
         <div className='signup_wrapper'>

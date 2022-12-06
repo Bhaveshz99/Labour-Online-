@@ -40,16 +40,16 @@ function App() {
       <Header />
       <Routes>
         <Route path='' element={<HomeScreen />} />
-        <Route path='/service-list' element={<ServiceListPage />} />
-        <Route path='/profile' element={<PrivateRouter><UserProfile /></PrivateRouter>} />
+        <Route path='/service-list' element={<ServiceListPage userData={user} />} />
+        <Route path='/profile' element={<PrivateRouter><UserProfile userData={user} /></PrivateRouter>} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/change-password' element={<PrivateRouter><ChangePassword /></PrivateRouter>} />
-        <Route path='/service-requests' element={<PrivateRouter><ServicesRequest /></PrivateRouter>} />
-        <Route path='/bookings' element={<PrivateRouter><Bookings /></PrivateRouter>} />
+        <Route path='/change-password' element={<PrivateRouter><ChangePassword userData={user} /></PrivateRouter>} />
+        <Route path='/service-requests' element={<PrivateRouter><ServicesRequest userData={user} /></PrivateRouter>} />
+        <Route path='/bookings' element={<PrivateRouter><Bookings userData={user} /></PrivateRouter>} />
         <Route path='*' element={<Page404 />} />
       </Routes>
-      <Footer />
+      {hasToken && <Footer />}
     </div>
   );
 }

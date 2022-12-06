@@ -1,9 +1,9 @@
 import { UserOutlined, CheckOutlined, CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Button, List, Table, Modal, Result, Typography } from 'antd'
 import React, { useState } from 'react'
-
+import { UserProps } from '../../interfaces/user'
 const { Paragraph, Text } = Typography
-const ServicesRequest = () => {
+const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 	const [modelType, setModalType] = useState<string>('');

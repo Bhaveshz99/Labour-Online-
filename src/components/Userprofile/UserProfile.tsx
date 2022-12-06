@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Avatar, Image, Radio, Card, Row, Col, Collapse, Form, Input, InputNumber, Select, Button } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import "./userProfile.css"
+import { UserProps } from '../../interfaces/user'
 const { Panel } = Collapse;
-const UserProfile: React.FC = () => {
+
+const UserProfile: React.FC<UserProps> = (props: UserProps) => {
 
     const [email, setEmail] = useState<string>('');
     const [fullName, setFullName] = useState<string>('');
@@ -19,9 +21,9 @@ const UserProfile: React.FC = () => {
     const [wpLoading, setWpLoading] = useState<boolean>(false)
 
 
-    useEffect(()=>{
-        
-    },[])
+    useEffect(() => {
+
+    }, [])
 
     const handleGeneralSettingsChange = () => {
 
@@ -121,7 +123,7 @@ const UserProfile: React.FC = () => {
                         </Form.Item>
                     </Form>
                 </Panel>
-                <Panel key='work' header={"work Settings"}>
+                {<Panel key='work' header={"work Settings"}>
                     <Form onFinish={handleWorkProfileChanges} >
                         <Row>
                             <Col xs={24} sm={24} md={12} lg={12} span={12} >
@@ -152,7 +154,7 @@ const UserProfile: React.FC = () => {
                             </div>
                         </Form.Item>
                     </Form>
-                </Panel>
+                </Panel>}
 
             </Collapse>
         </div >

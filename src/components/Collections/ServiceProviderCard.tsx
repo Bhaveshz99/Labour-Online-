@@ -1,20 +1,24 @@
 import React, { useState } from 'react'
 import { Avatar, Card, Col, Row, Rate, Button, Drawer, Modal } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import ImgSrc from '../CommonComponents/ImgSrc'
 import ServiceReviewsModal from './ServiceReviewsModal'
 import ServiceRequestModal from './ServiceRequestModal'
+import { getTokenPass, errorToast } from '../../utils'
 
 interface serviceProviderCardTypes {
     labourId: Number
 }
 
 const ServiceProviderCard = (props: serviceProviderCardTypes) => {
-
+    let hasToken = getTokenPass()
     const [showRequestModal, setShowRequestModal] = useState<boolean>(false)
     const [showReviewsModal, setShowReviewsModal] = useState<boolean>(false)
 
+    const user = useSelector((store: any) => store.users);
+    const navigate = useNavigate();
     const onServiceRequest = () => {
 
     }
@@ -48,7 +52,13 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
                                 <p> <label>Mother Tongue :- </label> Gujarati </p>
                                 <p> <label > Service Locations :- </label> Ghatloadia, Satellite, Vejalpur </p>
                                 <div className='actions'>
-                                    <Button onClick={() => { setShowRequestModal(true) }}>
+                                    <Button onClick={() => {
+                                        if (hasToken) { setShowRequestModal(true) }
+                                        else {
+                                            errorToast('Please Login')
+                                            navigate('/login')
+                                        }
+                                    }}>
                                         Request
                                     </Button>
                                     <p className='reviews' onClick={() => { setShowReviewsModal(true) }}> <u> Reviews </u> </p>
@@ -58,7 +68,7 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
                     </div>
                 </Col>
             </Row>
-            {showReviewsModal && 
+            {showReviewsModal &&
                 <ServiceReviewsModal showReviewsModal={showReviewsModal} setShowReviewsModal={setShowReviewsModal} />
             }
             {showRequestModal &&

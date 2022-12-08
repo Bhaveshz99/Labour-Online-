@@ -35,7 +35,7 @@ const Header = () => {
 
             </div>
             <div className='notification_area'>
-              <div id="change-language"></div>
+              {/* <div id="change-language"></div> */}
               <div>
                 {hasToken ?
                   <PoweroffOutlined onClick={() => { onLogout() }} />
@@ -80,8 +80,8 @@ const Header = () => {
                   <h4>Bookings</h4> <NotificationOutlined />
                  </Link>
               </div> */}
-              <div id="change-language">
-              </div>
+              {/* <div id="change-language">
+              </div> */}
               <div>
                 {hasToken ? <PoweroffOutlined onClick={() => { onLogout() }} /> : <Link to='/login'>
                   <LoginOutlined />

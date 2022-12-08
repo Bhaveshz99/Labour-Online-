@@ -31,7 +31,7 @@ const HomeScreen = () => {
     return (
         <div className='home_wrapper'>
             <div className='banner'>
-                <Carousel dotPosition={dotPosition} autoplay autoplaySpeed={3000} draggable={true} touchMove={true}>
+                <Carousel dotPosition={"bottom"} autoplay autoplaySpeed={3000} draggable={true} touchMove={true}>
                     {
                         imgArr.map((src: string) => {
                             return <div>

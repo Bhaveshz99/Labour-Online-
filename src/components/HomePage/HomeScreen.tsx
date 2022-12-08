@@ -18,7 +18,7 @@ const HomeScreen = () => {
 
     window.innerWidth <= 768 && (contentStyle.height = "200px")
 
-    const [dotPosition, setDotPosition] = useState<DotPosition>('right');
+    const [dotPosition, setDotPosition] = useState<DotPosition>('top');
 
     const imgArr = [
         "./assets/Carousel/img3.jpg",

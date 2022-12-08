@@ -73,6 +73,7 @@ const Login = () => {
 
     }).catch((error: any) => messagePopup('error', error.message))
   }
+
   return (
     <div className='signup_wrapper'>
       {contextHolder}
@@ -96,7 +97,15 @@ const Login = () => {
             </Form.Item>
             <GoogleLogin
               clientId={clientId}
-              buttonText="Sign in with Google"
+              render={renderProps => (
+                <div onClick={renderProps.onClick} className="google-btn">
+                  <div className="google-icon-wrapper">
+                    <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+                  </div>
+                  <p className="btn-text"><b>Sign in with google</b></p>
+                </div>
+              )}
+              // buttonText="Sign in with Google"
               onSuccess={onSuccess}
               onFailure={onFailure}
               cookiePolicy={'single_host_origin'}

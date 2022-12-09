@@ -1,23 +1,69 @@
-import FacebookLogin from 'react-facebook-login';
-import classes from './facebook.module.css';
+// import FacebookLogin from 'react-facebook-login';
+import { FacebookFilled, AppleFilled } from '@ant-design/icons';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import './facebook.css';
+import { callPost } from '../../services/Apis';
+import { IUser } from '../../interfaces/user';
+import { Button, message } from 'antd';
+import { useNavigate } from "react-router-dom";
 
 
-export const FacebookAuth = (props) => {
+export const FacebookAuth = ({ googleWith }) => {
 
-    const responseFacebook = (response) => {
-        if (response.status == "unknown") {
+    const [messageApi, contextHolder] = message.useMessage();
+    const navigate = useNavigate();
+    const messagePopup = (type, content) => {
+        messageApi.open({
+            type,
+            content
+        });
+    };
 
+    const responseFacebook = async (response) => {
+        console.log('🚀 ~ file: FacebookAuth.js:22 ~ responseFacebook ~ response', response);
+        if (response.status == "unknown") console.log();
+        const Obj = {
+            userName: response?.name,
+            fullName: response?.name,
+            email: response?.email,
+            avatar: response?.picture?.data?.url,
+        };
+        if (googleWith == "Login") {
+            await callPost('/user/socialLogin', response).then((data) => {
+                // messagePopup('success', 'Login success fully');
+                navigate('/');
+            }).catch((error) => {
+                console.log('🚀 ~ file: GoogleAuth.tsx:50 ~ awaitcallPost ~ error', error);
+                // messagePopup('error', error.message);
+            })
+        } else {
+            // Obj.role = "user"
+            await callPost('/user/socialSignup', Obj).then((data) => {
+                // messagePopup('success', 'Signup success fully');
+                navigate('/');
+            }).catch((error) => {
+                console.log('🚀 ~ file: FacebookAuth.js:45 ~ awaitcallPost ~ error', error);
+                // messagePopup('error', error.message);
+            })
         }
-        else console.log("🚀 ~ file: App.tsx:30 ~ responseFacebook ~ response", response)
     }
     return (
         <FacebookLogin
             appId={process.env.REACT_APP_FACEBOOK_APPID}
             autoLoad={true}
-            cssClass={classes.login__btn}
+            // cssClass={classes.faceBook_btn}
             fields="name,email,picture"
-            callback={responseFacebook}
             textButton="Login with Facebook"
+            icon="fa-facebook"
+            render={renderProps => (
+                <div className="container">
+                    <span onClick={renderProps.onClick} className="btn btn-lg btn-social btn-facebook">
+                        <FacebookFilled />
+                        {googleWith} in with Facebook
+                    </span>
+                </div>
+            )}
+            callback={responseFacebook}
         />
     )
 }

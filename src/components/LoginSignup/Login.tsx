@@ -13,6 +13,7 @@ import { addUser } from "../../Redux/slices/authSlice";
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from 'gapi-script';
 import { FacebookAuth } from './FacebookAuth'
+import GoogleAuth from './GoogleAuth'
 
 const Login = () => {
 
@@ -26,25 +27,6 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const user = useSelector((store: any) => store.users);
-
-  const clientId: string = process.env.REACT_APP_GOOGLE_KEY || '';
-
-  useEffect(() => {
-    const initClient = () => {
-      gapi.client.init({
-        clientId: clientId,
-        scope: ''
-      });
-    };
-    gapi.load('client:auth2', initClient);
-  }, []);
-
-  const onSuccess = (res: any) => {
-    console.log('success:', res);
-  };
-  const onFailure = (err: any) => {
-    console.log('failed:', err);
-  };
 
   const messagePopup = (type: any, content: string) => {
     messageApi.open({
@@ -86,32 +68,16 @@ const Login = () => {
             </div>
           }
           {signUpStep === 1 && <>
-            <Form.Item label='Mobile No.'>
-              <Input value={mobileNumber} maxLength={10} minLength={10} onChange={(e) => { setMobileNumber(e.target.value) }} />
-
+            <Form.Item label='Email'>
+              <Input value={mobileNumber} onChange={(e) => { setMobileNumber(e.target.value) }} />
             </Form.Item>
             <Form.Item>
               <div>
                 <Button onClick={handleLogin} size='large' loading={submitLoading}> Proceed </Button>
               </div>
             </Form.Item>
-            <GoogleLogin
-              clientId={clientId}
-              render={renderProps => (
-                <div onClick={renderProps.onClick} className="google-btn">
-                  <div className="google-icon-wrapper">
-                    <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
-                  </div>
-                  <p className="btn-text"><b>Sign in with google</b></p>
-                </div>
-              )}
-              // buttonText="Sign in with Google"
-              onSuccess={onSuccess}
-              onFailure={onFailure}
-              cookiePolicy={'single_host_origin'}
-              isSignedIn={true}
-            />
-            <FacebookAuth />
+            <GoogleAuth googleWith={"Login"} />
+            <FacebookAuth googleWith={"Login"} />
           </>}
           {signUpStep === 2 && <>
             <div className='otp_wrapper'>

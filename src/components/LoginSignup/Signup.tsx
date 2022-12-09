@@ -10,6 +10,8 @@ import { callPost, callPut } from "../../services/Apis";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../../Redux/slices/authSlice";
 import { useNavigate } from 'react-router-dom';
+import GoogleAuth from './GoogleAuth';
+import { FacebookAuth } from './FacebookAuth';
 
 const Signup: React.FC = () => {
 
@@ -123,14 +125,14 @@ const Signup: React.FC = () => {
       otp
     };
     await callPost('/user/loginWithOtp', input).then((res: any) => {
-      if(res.data.data && res.data.token){
+      if (res.data.data && res.data.token) {
         messagePopup('success', 'Account Created Successfully');
         localStorage.setItem('token', res.data.token)
         dispatch(addUser(res?.data.data));
         setSignUpStep(3)
       }
-      else{
-        messagePopup('error',res.data.message)
+      else {
+        messagePopup('error', res.data.message)
       }
     }).catch((error: any) => {
       messagePopup('error', error.message);
@@ -174,7 +176,8 @@ const Signup: React.FC = () => {
                   </div>
                 </Radio>
               </Radio.Group>
-
+              <GoogleAuth googleWith={"signUp"} />
+              <FacebookAuth googleWith={"signUp"} />
             </Form.Item>
             <Form.Item>
               <div>

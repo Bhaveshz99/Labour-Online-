@@ -1,46 +1,50 @@
-# Getting Started with Create React App
+[![Netlify Status](https://api.netlify.com/api/v1/badges/3a60744f-678f-4f08-a360-7d2e2dcb6560/deploy-status)](https://app.netlify.com/sites/pesto-n8-dbacs/deploys)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Pro DB kit
 
-## Available Scripts
+![ProDB-kit Logo](./src/assets/database-icon.svg)
 
-In the project directory, you can run:
+Pro DB kit enables teams to manage database access without involving DB Admins / Devops / IT teams. It allows developers and their managers ( Team Lead, Engineering Managers etc. ) to grant access to the databases they have access to without any intervention from any of the teams administering databases.
+<br/>
+The goal is to reduce the dependency on Devops / IT teams for granting access to databases and thus enabling them to channelise their energies to more productive tasks at the same time the developers can get access to the systems they need to without going through the vicious cycle of approvals and escalations.
 
-### `npm start`
+<br/>
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+# Table of Contents
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+1. [Technology Stack](#technology-stack)
+2. [Authors](#authors)
+3. [License](#license)
 
-### `npm test`
+<br/>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<br/>
 
-### `npm run build`
+# Installation
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Fork or directly clone this repository to your local machine
+- Use the `npm install` command to install dependencies
+- Once the dependencies are finished installing, use the `npm start` command inside the root directory to open the app in your local browser of choice
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<br/>
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Technology Stack
 
-### `npm run eject`
+We tried to use a completely modern tech stack while testing out some new technologies that we had never used before. This resulted in a fast, performant, and easily-extensible web app that should be fairly future-proof for the coming next several years. We used:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- [Ant design](https://ant.design/)
+- [Redux toolkit](https://redux-toolkit.js.org/)
+- [Axios](https://axios-http.com/docs/intro)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<br/>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+# Authors
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- [Raj Bhayani](https://github.com/Rajbhayani4)
+- [Rahul Khanchandani](https://github.com/rahul-rk197)
 
-## Learn More
+<br/>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# License
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+[MIT](https://opensource.org/licenses/MIT)

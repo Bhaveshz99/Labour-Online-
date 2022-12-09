@@ -1,10 +1,11 @@
 @import '../../style/mixin.scss';
+@import '../../style/variables.scss';
 
 .header_wrapper {
     padding: 10px;
     position: sticky;
     height: 60px;
-    background: #6446EC;
+    background: $base-color;
     top: 0;
     z-index: 1000;
 
@@ -31,7 +32,7 @@
             }
     
             .notification_area {
-                width: 55%;
+                // width: 55%;
                 display: flex;
                 justify-content: space-evenly;
                 text-align: right;

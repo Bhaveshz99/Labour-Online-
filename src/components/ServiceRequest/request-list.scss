@@ -1,14 +1,10 @@
-@import '../../style/mixin.scss';
-@import '../../style/variables.scss';
-
-.bookings_wrapper {
+.request_list_wrapper {
     padding: 15px 0;
     .service-requests {
         .accept-requests {
             color: green;
         }
-
-        .reject-requests {
+        .reject-requests{
             color: red;
         }
     }

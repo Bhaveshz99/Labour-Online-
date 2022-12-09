@@ -1,8 +1,11 @@
 import React, { useState } from 'react'
 import { UserOutlined, CheckOutlined, CloseOutlined, EyeOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { Button, List, Table, Modal, Result, Typography } from 'antd'
+import { Button, List, Table, Modal, Result, Typography, Card, Avatar } from 'antd'
 import { UserProps } from '../../interfaces/user'
+import './bookings.scss'
+
 const { Paragraph, Text } = Typography
+const { Meta } = Card;
 const Bookings: React.FC<UserProps> = (props: UserProps) => {
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
     const [modelType, setModalType] = useState<string>('');
@@ -87,33 +90,39 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
                         <Table dataSource={data} columns={columns} />
                     </div>
                     <div className="xs-show">
-                        <List
-                            itemLayout="horizontal"
-                            dataSource={data}
-                            renderItem={(item, i) => (
-                                <List.Item>
-                                    <List.Item.Meta
-                                        avatar={<UserOutlined />}
-                                        title={<a href="https://ant.design">{item.name}</a>}
-                                        description={<div>
-                                            <label> Date :-</label>	<p>{item.date_time}</p>
-                                            <label> Price :-</label>	<p>{item.price}</p>
+                        <div className="service-requests">
+                            {data.length > 0 && data.map((item, i) => {
+                                return (
+                                    <Card
+                                        className='request-card'
+                                    // actions={[
+                                    //     <div className='accept-requests' onClick={() => { handleRequestAction(item, true, i) }}> Accept </div>,
+                                    //     <div className='reject-requests' onClick={() => { handleRequestAction(item, false, i) }}> Reject </div>,
+                                    // ]}
+                                    >
+                                        <Meta
+                                            avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+                                            title={`${item.name}`}
+                                            description={
+                                                <div>
+                                                    <div>
+                                                        <label> Date :-</label> <label>{item.date_time}</label>
+                                                    </div>
+                                                    <div>
+                                                        <label> Price :-</label> <label>{item.price}</label>
 
-                                        </div>}
-                                    />
-                                    <div>
-                                        <div>
-                                            <label> Address :-</label>	<p>{item.address}</p>
+                                                    </div>
+                                                    <div>
+                                                        <label> Address :-</label> <label>{item.address}</label>
+                                                    </div>
+                                                </div>
+                                            }
+                                        />
 
-                                        </div>
-                                        <div>
-                                            <div onClick={() => { handleRequestAction(item, false, i) }} > <EyeOutlined />  </div>
-
-                                        </div>
-                                    </div>
-                                </List.Item>
-                            )}
-                        />
+                                    </Card>
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
             </div>

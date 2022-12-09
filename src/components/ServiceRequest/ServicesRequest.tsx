@@ -1,8 +1,10 @@
 import { UserOutlined, CheckOutlined, CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { Button, List, Table, Modal, Result, Typography } from 'antd'
+import { Button, List, Table, Modal, Result, Typography, Card, Avatar } from 'antd'
 import React, { useState } from 'react'
 import { UserProps } from '../../interfaces/user'
+import './request-list.scss'
 const { Paragraph, Text } = Typography
+const { Meta } = Card;
 const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
@@ -89,34 +91,39 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 						<Table dataSource={data} columns={columns} />
 					</div>
 					<div className="xs-show">
-						<List
-							itemLayout="horizontal"
-							dataSource={data}
-							renderItem={(item, i) => (
-								<List.Item>
-									<List.Item.Meta
-										avatar={<UserOutlined />}
-										title={<a href="https://ant.design">{item.customer_name}</a>}
-										description={<div>
-											<label> Date :-</label>	<p>{item.date_time}</p>
-											<label> Price :-</label>	<p>{item.price}</p>
+						<div className="service-requests">
+							{data.length > 0 && data.map((item, i) => {
+								return (
+									<Card
+										className='request-card'
+										actions={[
+											<div className='accept-requests' onClick={() => { handleRequestAction(item, true, i) }}> Accept </div>,
+											<div className='reject-requests' onClick={() => { handleRequestAction(item, false, i) }}> Reject </div>,
+										]}
+									>
+										<Meta
+											avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+											title={`${item.customer_name}`}
+											description={
+												<div>
+													<div>
+														<label> Date :-</label> <label>{item.date_time}</label>
+													</div>
+													<div>
+														<label> Price :-</label> <label>{item.price}</label>
 
-										</div>}
-									/>
-									<div>
-										<div>
-											<label> Address :-</label>	<p>{item.address}</p>
+													</div>
+													<div>
+														<label> Address :-</label> <label>{item.address}</label>
+													</div>
+												</div>
+											}
+										/>
 
-										</div>
-										<div>
-											<Button type="primary" onClick={() => { handleRequestAction(item, true, i) }}> <CheckOutlined /> </Button>
-											<Button type="primary" onClick={() => { handleRequestAction(item, false, i) }} > <CloseOutlined />  </Button>
-
-										</div>
-									</div>
-								</List.Item>
-							)}
-						/>
+									</Card>
+								)
+							})}
+						</div>
 					</div>
 				</div>
 			</div>

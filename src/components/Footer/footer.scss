@@ -1,9 +1,35 @@
-.footer_wrapper{
-    position: sticky;
+@import '../../style/variables.scss';
+@import '../../style/mixin.scss';
+
+.footer_wrapper {
+    position: fixed;
     bottom: 0;
     width: 100%;
     text-align: center;
     border-top: 1px solid #EBEBEB;
     padding: 10px;
     background-color: #fff;
+    font-size: 12px;
+
+    a {
+        color: $base-color;
+
+        .nav {
+            width: 50%;
+            margin: auto;
+            width: 70%;
+            margin: auto;
+            border-radius: 50px;
+            padding: 8px;
+            background-color: #fff;
+
+            &.active {
+                background-color: $base-color;
+                opacity: 0.5;
+                color: $white-color;
+            }
+        }
+
+    }
+
 }

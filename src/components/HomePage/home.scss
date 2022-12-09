@@ -1,6 +1,10 @@
 @import '../../style/mixin.scss';
 
 .home_wrapper {
+    @include mq('phone') {
+        padding-bottom: 60px;
+    }
+
     .banner {
         img {
             width: 100%;
@@ -17,6 +21,10 @@
 
 
     .category_section {
+        h3 {
+            text-align: center;
+        }
+
         .category_list {
             display: flex;
             flex-wrap: wrap;
@@ -36,15 +44,23 @@
                 box-shadow: 0 1px 2px -2px rgb(0 0 0 / 16%),
                     0 3px 6px 0 rgb(0 0 0 / 12%),
                     0 5px 12px 4px rgb(0 0 0 / 9%);
-                
+
+                border-radius: 22px;
+                .ant-card{
+                    border-radius: 22px;
+                }
                 img {
                     width: 100%;
                     height: 200px;
+                    border-radius: 22px;
+
                 }
-                .content{
+
+                .content {
                     text-align: center;
                     padding: 20px;
                 }
+
                 @include mq('phone') {
                     width: 40%;
                     margin: 10px;
@@ -52,7 +68,8 @@
                     img {
                         height: 140px;
                     }
-                    .content{
+
+                    .content {
                         padding: 10px;
                     }
                 }

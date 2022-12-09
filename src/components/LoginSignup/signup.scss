@@ -1,0 +1,168 @@
+@import '../../style/mixin.scss';
+@import '../../style/variables.scss';
+
+.signup_wrapper {
+    position: relative;
+
+    .login_form {
+        width: 50%;
+        margin: auto;
+        position: absolute;
+        transform: translate(-50%, 20%);
+        top: 50%;
+        left: 50%;
+        padding: 25px;
+        text-align: center;
+
+        @include mq('phone') {
+            width: 90%;
+            transform: translate(0, 0);
+            position: relative;
+            margin: 30px auto;
+            top: unset;
+            left: unset;
+        }
+
+        .back_button {
+            text-align: left;
+            margin-bottom: 30px;
+
+            button {
+                font-size: 20px;
+            }
+        }
+
+        .role_selection {
+            text-align: center;
+
+            .img {
+                width: 50px;
+                height: 50px;
+                margin: auto;
+
+                img {
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+
+            .ant-radio-wrapper {
+                margin-right: 10px;
+                padding: 5px;
+                border: 1px solid transparent;
+                width: 100px;
+
+                &>span {
+                    width: 100%;
+                }
+            }
+
+            p {
+                text-align: center;
+            }
+
+            .ant-radio {
+                display: none;
+            }
+
+            .ant-radio-wrapper-checked {
+                border: 1px solid #1890ff;
+                border-radius: 20px;
+            }
+        }
+
+        button {
+            text-align: center;
+        }
+
+        .otp_wrapper {
+            margin-bottom: 20px;
+
+            &>div {
+                justify-content: center;
+            }
+
+            .input_otp {
+
+                // justify-content: center;
+                .diff {
+                    margin: 0 5px;
+                }
+
+                input {
+                    width: 25px !important;
+                    border-radius: 10px;
+                    height: 35px;
+                    font-size: 31px;
+                    padding-bottom: 10px;
+                }
+            }
+        }
+
+        .ant-upload {
+            position: relative;
+
+            .cancel {
+                position: absolute;
+                top: -12px;
+                right: -8px;
+                color: red;
+            }
+        }
+    }
+}
+
+$white: #fff;
+$google-blue: #4285f4;
+$button-active-blue: #1669F2;
+
+.googleBtnPo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.google-btn {
+    width: 184px;
+    height: 42px;
+    background-color: $google-blue;
+    border-radius: 2px;
+    box-shadow: 0 3px 4px 0 rgba(0, 0, 0, .25);
+
+    .google-icon-wrapper {
+        position: absolute;
+        margin-top: 1px;
+        margin-left: 1px;
+        width: 40px;
+        height: 40px;
+        border-radius: 2px;
+        background-color: $white;
+    }
+
+    .google-icon {
+        position: absolute;
+        margin-top: 12px;
+        margin-left: -8px;
+        width: 18px;
+        height: 18px;
+    }
+
+    .btn-text {
+        float: right;
+        margin: 11px 11px 0 0;
+        color: $white;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+        font-family: "Roboto";
+    }
+
+    &:hover {
+        box-shadow: 0 0 6px $google-blue;
+    }
+
+    &:active {
+        background: $button-active-blue;
+    }
+}
+
+@import url(https://fonts.googleapis.com/css?family=Roboto:500);

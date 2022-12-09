@@ -1,9 +1,10 @@
 import React from 'react'
 import { Row, Col } from 'antd'
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AppstoreOutlined, BookOutlined, FileUnknownOutlined, UserOutlined } from '@ant-design/icons';
 import './footer.scss'
 const Footer = () => {
+  let location = useLocation()
   if (window.innerWidth < 768) {
     return (
       <footer className='footer_wrapper'>
@@ -11,7 +12,7 @@ const Footer = () => {
           <Row>
             <Col sm={6} xs={6}>
               <Link to='/'>
-                <div>
+                <div className={`nav ${location.pathname === '/' ? 'active' : ''}`}>
                   <div>
                     <AppstoreOutlined />
                   </div>
@@ -21,7 +22,7 @@ const Footer = () => {
             </Col>
             <Col sm={6} xs={6}>
               <Link to='/bookings'>
-                <div>
+                <div className={`nav ${location.pathname === '/bookings' ? 'active' : ''}`}>
                   <div>
                     <BookOutlined />
                   </div>
@@ -31,7 +32,7 @@ const Footer = () => {
             </Col>
             <Col sm={6} xs={6}>
               <Link to='/service-requests'>
-                <div>
+                <div className={`nav ${location.pathname === '/service-requests' ? 'active' : ''}`}>
                   <div>
 
                     <FileUnknownOutlined />
@@ -41,8 +42,8 @@ const Footer = () => {
               </Link>
             </Col>
             <Col sm={6} xs={6}>
-              <Link to='profile'>
-                <div>
+              <Link to='/profile'>
+                <div className={`nav ${location.pathname === '/profile' ? 'active' : ''}`}>
                   <div>
                     <UserOutlined />
                   </div>

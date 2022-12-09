@@ -1,0 +1,11 @@
+.request_list_wrapper {
+    padding: 15px 0;
+    .service-requests {
+        .accept-requests {
+            color: green;
+        }
+        .reject-requests{
+            color: red;
+        }
+    }
+}

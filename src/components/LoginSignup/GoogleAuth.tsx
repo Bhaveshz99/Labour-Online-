@@ -50,7 +50,7 @@ const GoogleAuth: React.FC<googleAuth> = ({ googleWith, role }) => {
         role?: string
     }
 
-    const responseGoogle = async (res: any) => {
+    const responseGoogleSuccess = async (res: any) => {
         console.log("🚀 ~ file: GoogleAuth.tsx:54 ~ responseGoogle ~ res", res)
         let googleUser: any = res?.profileObj;
         const Obj: userSignup = {
@@ -76,7 +76,7 @@ const GoogleAuth: React.FC<googleAuth> = ({ googleWith, role }) => {
             })
         }
     };
-    const onFailure = (err: any) => {
+    const responseGoogleError = (err: any) => {
         console.log("🚀 ~ file: GoogleAuth.tsx:82 ~ onFailure ~ err", err)
     };
 
@@ -113,8 +113,8 @@ const GoogleAuth: React.FC<googleAuth> = ({ googleWith, role }) => {
                 </button>
             )}
             // buttonText="Sign in with Google"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
+            onSuccess={responseGoogleSuccess}
+            onFailure={responseGoogleError}
             cookiePolicy={'single_host_origin'}
             isSignedIn={true}
         />

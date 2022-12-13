@@ -117,8 +117,9 @@ $google-blue: #4285f4;
 $button-active-blue: #1669F2;
 
 .googleBtnPo {
-    display: flex;
-    justify-content: center;
+    // display: flex;
+    // justify-content: center;
+    border: 0;
     margin-bottom: 10px;
 }
 

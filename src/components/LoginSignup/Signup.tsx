@@ -109,7 +109,7 @@ const Signup: React.FC = () => {
 
   const handleSignUp = async () => {
     const input = {
-      mobile: mobileNumber,
+      email,
       role: userRole
     }
     await callPost('/user/signup', input).then((res: any) => {
@@ -121,7 +121,7 @@ const Signup: React.FC = () => {
   }
   const handleOtpSubmit = async () => {
     let input = {
-      mobile: mobileNumber,
+      email,
       otp
     };
     await callPost('/user/loginWithOtp', input).then((res: any) => {
@@ -151,8 +151,8 @@ const Signup: React.FC = () => {
             </div>
           }
           {signUpStep === 1 && <>
-            <Form.Item label='Mobile No.'>
-              <Input value={mobileNumber} maxLength={10} minLength={10} onChange={(e) => { setMobileNumber(e.target.value) }} />
+            <Form.Item label='Email'>
+              <Input value={email} type={email} onChange={(e) => { setEmail(e.target.value) }} />
 
             </Form.Item>
             <Form.Item label="Who are you?">
@@ -176,10 +176,10 @@ const Signup: React.FC = () => {
                   </div>
                 </Radio>
               </Radio.Group>
-              <GoogleAuth googleWith={"signUp"} />
-              <FacebookAuth googleWith={"signUp"} />
             </Form.Item>
             <Form.Item>
+              <GoogleAuth googleWith={"signUp"} />
+              <FacebookAuth googleWith={"signUp"} />
               <div>
                 <Button onClick={handleSignUp} size='large' loading={submitLoading}> Proceed </Button>
               </div>

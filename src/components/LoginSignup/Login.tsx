@@ -17,7 +17,7 @@ import GoogleAuth from './GoogleAuth'
 
 const Login = () => {
 
-  const [mobileNumber, setMobileNumber] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
   const [submitLoading, setSubmitLoading] = useState<boolean>(false)
   const [signUpStep, setSignUpStep] = useState<number>(1)
   const [otp, setOtp] = useState<string>('');
@@ -36,7 +36,7 @@ const Login = () => {
   };
 
   const handleLogin = async () => {
-    let input = { mobile: mobileNumber, messageFor: "Login user" }
+    let input = { email: email, messageFor: "Login user" }
 
     await callPost('/otp/send', input).then((result: any) => {
       messagePopup('success', 'Otp send successfully');
@@ -44,7 +44,7 @@ const Login = () => {
     }).catch((error: any) => messagePopup('error', error.message))
   }
   const handleOtpSubmit = async () => {
-    let input = { mobile: mobileNumber, otp }
+    let input = { email: email, otp }
     await callPost('/user/loginWithOtp', input).then((result: any) => {
       dispatch(addUser(result.data?.data));
       messagePopup('success', 'Login successfully');
@@ -69,7 +69,7 @@ const Login = () => {
           }
           {signUpStep === 1 && <>
             <Form.Item label='Email'>
-              <Input value={mobileNumber} onChange={(e) => { setMobileNumber(e.target.value) }} />
+              <Input value={email} onChange={(e) => { setEmail(e.target.value) }} />
             </Form.Item>
             <Form.Item>
               <div>

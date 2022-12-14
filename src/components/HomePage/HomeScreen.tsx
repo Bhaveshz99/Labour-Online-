@@ -4,9 +4,10 @@ import ImgSrc from '../CommonComponents/ImgSrc'
 import CategorySection from './CategorySection'
 import { Carousel } from 'antd';
 import type { DotPosition } from 'antd/es/carousel';
+import { UserProps } from '../../interfaces/user'
 import TrendingCategories from './TrendingCategories'
 import './home.scss'
-const HomeScreen = () => {
+const HomeScreen : React.FC<UserProps> = (props: UserProps) => {
 
     const contentStyle: React.CSSProperties = {
         height: '400px',

@@ -6,16 +6,22 @@ import { NotificationOutlined, SearchOutlined, AppstoreOutlined, BookOutlined, F
 import './header.scss'
 import ImgSrc from '../CommonComponents/ImgSrc';
 import { getTokenPass, successToast } from '../../utils';
-
-const Header = () => {
+import { UserProps } from '../../interfaces/user'
+import { useDispatch } from 'react-redux';
+import { addUser } from '../../Redux/slices/authSlice'
+const Header: React.FC<UserProps> = (props: UserProps) => {
   const naviagte = useNavigate()
   let hasToken = getTokenPass()
+  const dispatch = useDispatch();
+
   const onLogout = () => {
     localStorage.removeItem('token')
     naviagte('/')
+    dispatch(addUser(null));
     successToast('User Logged Out')
   }
-
+  console.log(props.userData);
+  
   return (
     <header className='header_wrapper'>
       {window.innerWidth < 768 &&
@@ -23,7 +29,7 @@ const Header = () => {
           <div className="header_upper">
             <div className='icon_area'>
               <Link to='/'>
-                <img src={"./Assets/avatar/avatar1.svg"} />
+                <img src={"./Assets/images/logo.svg"} />
               </Link>
             </div>
             <div className='location_area'>
@@ -37,8 +43,8 @@ const Header = () => {
             <div className='notification_area'>
               {/* <div id="change-language"></div> */}
               <div>
-                {hasToken ?
-                  <PoweroffOutlined onClick={() => { onLogout() }} />
+                {props.userData ?
+                  <PoweroffOutlined className='logout' onClick={() => { onLogout() }} />
                   : <Link to='/login'> <LoginOutlined /> </Link>
                 }
               </div>
@@ -55,7 +61,7 @@ const Header = () => {
             <div className='header_left'>
               <Link to='/'>
                 <div className='logo'>
-                  <ImgSrc src={"./Assets/avatar/avatar1.svg"} />
+                  <ImgSrc src={"./Assets/images/logo.svg"} />
                 </div>
               </Link>
               <div className='search_area'>
@@ -66,24 +72,17 @@ const Header = () => {
             </div>
             <div className='header_right'>
               <div className='requests'>
-                <Link to='/service-requests' >
+                {props.userData && <Link to='/service-requests' >
                   <h4>Requests</h4><FileUnknownOutlined />
-                </Link>
+                </Link>}
               </div>
               <div className='bookings'>
-                <Link to='/bookings' >
+                {props.userData && <Link to='/bookings' >
                   <h4>Bookings</h4> <BookOutlined />
-                </Link>
+                </Link>}
               </div>
-              {/* <div className='notification_area'>
-                 <Link to='/service-requests' >
-                  <h4>Bookings</h4> <NotificationOutlined />
-                 </Link>
-              </div> */}
-              {/* <div id="change-language">
-              </div> */}
               <div>
-                {hasToken ? <PoweroffOutlined onClick={() => { onLogout() }} /> : <Link to='/login'>
+                {props.userData ? <PoweroffOutlined className='logout' onClick={() => { onLogout() }} /> : <Link to='/login'>
                   <LoginOutlined />
                 </Link>}
               </div>

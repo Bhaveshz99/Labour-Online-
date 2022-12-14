@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Form, Input, Radio, Upload, message } from 'antd'
+import { Button, Form, Input, message } from 'antd'
 import OtpInput from 'react-otp-input'
+import { Link } from 'react-router-dom'
 import { ArrowLeftOutlined } from '@ant-design/icons'
 import type { UploadChangeParam } from 'antd/es/upload';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
@@ -26,7 +27,6 @@ const Login = () => {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const user = useSelector((store: any) => store.users);
 
   const messagePopup = (type: any, content: string) => {
     messageApi.open({
@@ -49,6 +49,7 @@ const Login = () => {
       dispatch(addUser(result.data?.data));
       messagePopup('success', 'Login successfully');
       // setSignUpStep(2)
+      localStorage.setItem('token', result.data.token)
       if (result.data.data.role === 'user') {
         navigate('/')
       }
@@ -76,8 +77,11 @@ const Login = () => {
                 <Button onClick={handleLogin} size='large' loading={submitLoading}> Proceed </Button>
               </div>
             </Form.Item>
-            <GoogleAuth googleWith={"Login"} />
-            <FacebookAuth googleWith={"Login"} />
+            {/* <GoogleAuth googleWith={"Login"} />
+            <FacebookAuth googleWith={"Login"} /> */}
+            <div className='align-center'>
+                <Link to="/signup"> <u>Create Account </u> </Link>
+            </div>
           </>}
           {signUpStep === 2 && <>
             <div className='otp_wrapper'>

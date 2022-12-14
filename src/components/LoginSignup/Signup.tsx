@@ -178,8 +178,8 @@ const Signup: React.FC = () => {
               </Radio.Group>
             </Form.Item>
             <Form.Item>
-              <GoogleAuth googleWith={"signUp"} />
-              <FacebookAuth googleWith={"signUp"} />
+              {/* <GoogleAuth googleWith={"signUp"} />
+              <FacebookAuth googleWith={"signUp"} /> */}
               <div>
                 <Button onClick={handleSignUp} size='large' loading={submitLoading}> Proceed </Button>
               </div>

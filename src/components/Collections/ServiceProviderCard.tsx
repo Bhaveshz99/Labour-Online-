@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Avatar, Card, Col, Row, Rate, Button, Drawer, Modal } from 'antd'
+import { Avatar, Card, Carousel, Col, Row, Rate, Button, Drawer, Modal } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -29,7 +29,25 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
         <section className='service_provider_card'>
             <Row>
                 <Col lg={8} xs={24} sm={24} md={8}>
-                    <ImgSrc src='https://www.energosindia.com/images/plumber.jpg' />
+                    <Carousel style={{
+                        margin: 0,
+                        color: '#fff',
+                        textAlign: 'center',
+                    }}
+                        dotPosition={"bottom"} autoplay autoplaySpeed={3000} draggable={true} touchMove={true}
+                    >
+                        <div>
+                            <ImgSrc src='https://www.energosindia.com/images/plumber.jpg' />
+                        </div>
+
+                        <div>
+                            <ImgSrc src='https://www.energosindia.com/images/plumber.jpg' />
+                        </div>
+
+                        <div>
+                            <ImgSrc src='https://www.energosindia.com/images/plumber.jpg' />
+                        </div>
+                    </Carousel>
                 </Col>
                 <Col className='content_area' xs={24} sm={24} lg={16} md={16}>
                     <div>

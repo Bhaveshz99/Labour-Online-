@@ -1,7 +1,8 @@
 import { UserOutlined, CheckOutlined, CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Button, List, Table, Modal, Result, Typography, Card, Avatar } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { UserProps } from '../../interfaces/user'
+import { callPost } from '../../services/Apis'
 import './request-list.scss'
 const { Paragraph, Text } = Typography
 const { Meta } = Card;
@@ -9,7 +10,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 	const [modelType, setModalType] = useState<string>('');
-
+	const [requestData,setRequestData] =  useState<any[]>([]);
 	interface DataType {
 		avatar: JSX.Element,
 		customer_name: string,
@@ -17,6 +18,17 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		address: string,
 		price: number,
 		status: string
+	}
+
+	useEffect(()=>{
+		fetchRequests();
+	},[])
+
+	const fetchRequests = () =>{
+		callPost('/request/get',{}).then((res: any) => {
+			console.log(res.data);
+			setRequestData(res.data.data)
+		})
 	}
 
 	const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {

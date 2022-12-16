@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { UserOutlined, CheckOutlined, CloseOutlined, EyeOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Button, List, Table, Modal, Result, Typography, Card, Avatar } from 'antd'
 import { UserProps } from '../../interfaces/user'
+import { callPost } from '../../services/Apis'
 import './bookings.scss'
 
 const { Paragraph, Text } = Typography
@@ -9,6 +10,7 @@ const { Meta } = Card;
 const Bookings: React.FC<UserProps> = (props: UserProps) => {
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
     const [modelType, setModalType] = useState<string>('');
+    const [bookingsData, setBookingsData] = useState<any[]>([]);
 
     interface DataType {
         avatar: JSX.Element,
@@ -19,8 +21,18 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
         status: string
     }
 
+    useEffect(() => {
+        fetchBookings()
+    }, [])
+
+    const fetchBookings = () => {
+        callPost('/orders/get', {}).then((res: any) => {
+            console.log(res);
+            setBookingsData(res.data.data)
+        })
+    }
+
     const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
-        console.log(rowData);
         setSelectedIndex(ind)
         setModalType(confirmRequest ? 'accept' : 'cancel')
     }

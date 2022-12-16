@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import ImgSrc from '../CommonComponents/ImgSrc'
 interface categoryCardTypes {
     categoryName: string,
-    img: string,
+    imgs: string[],
 }
 
 const CategoryCard = (props: categoryCardTypes) => {
@@ -20,15 +20,14 @@ const CategoryCard = (props: categoryCardTypes) => {
                     }}
                         dotPosition={"bottom"} autoplay autoplaySpeed={3000} draggable={true} touchMove={true}
                     >
-                        <div>
-                            <ImgSrc src={props.img} />
-                        </div>
-                        <div>
-                            <ImgSrc src={props.img} />
-                        </div>
-                        <div>
-                            <ImgSrc src={props.img} />
-                        </div>
+                        {props.imgs.map((img) => {
+                            return (
+                                <div className='img'>
+                                    <ImgSrc src={img} />
+                                </div>
+                            )
+                        })}
+
                     </Carousel>
 
                     <div className='content'>

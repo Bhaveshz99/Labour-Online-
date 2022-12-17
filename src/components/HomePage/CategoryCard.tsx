@@ -3,14 +3,16 @@ import { Card, Carousel } from 'antd'
 import { Link } from 'react-router-dom'
 import ImgSrc from '../CommonComponents/ImgSrc'
 interface categoryCardTypes {
+    categoryId: string,
     categoryName: string,
     imgs: string[],
 }
 
-const CategoryCard = (props: categoryCardTypes) => {
+const CategoryCard = ({ categoryId, imgs, categoryName }: categoryCardTypes) => {
+
     return (
         <div className='home_card'>
-            <Link to='service-list'>
+            <Link to={`service-list/${categoryId}`}>
 
                 <Card >
                     <Carousel style={{
@@ -20,7 +22,7 @@ const CategoryCard = (props: categoryCardTypes) => {
                     }}
                         dotPosition={"bottom"} autoplay autoplaySpeed={3000} draggable={true} touchMove={true}
                     >
-                        {props.imgs.map((img) => {
+                        {imgs.map((img) => {
                             return (
                                 <div className='img'>
                                     <ImgSrc src={img} />
@@ -31,7 +33,7 @@ const CategoryCard = (props: categoryCardTypes) => {
                     </Carousel>
 
                     <div className='content'>
-                        <h3 className='category_name'>{props.categoryName}</h3>
+                        <h3 className='category_name'>{categoryName}</h3>
                     </div>
                 </Card>
             </Link>

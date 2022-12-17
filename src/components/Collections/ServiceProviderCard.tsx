@@ -7,12 +7,12 @@ import ImgSrc from '../CommonComponents/ImgSrc'
 import ServiceReviewsModal from './ServiceReviewsModal'
 import ServiceRequestModal from './ServiceRequestModal'
 import { getTokenPass, errorToast } from '../../utils'
-
-interface serviceProviderCardTypes {
+import { IUser } from "../../interfaces/user";
+interface serviceProviderCardTypes extends IUser {
     labourId: Number
 }
 
-const ServiceProviderCard = (props: serviceProviderCardTypes) => {
+const ServiceProviderCard = (props: any) => {
     let hasToken = getTokenPass()
     const [showRequestModal, setShowRequestModal] = useState<boolean>(false)
     const [showReviewsModal, setShowReviewsModal] = useState<boolean>(false)
@@ -29,25 +29,7 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
         <section className='service_provider_card'>
             <Row>
                 <Col lg={8} xs={24} sm={24} md={8}>
-                    <Carousel style={{
-                        margin: 0,
-                        color: '#fff',
-                        textAlign: 'center',
-                    }}
-                        dotPosition={"bottom"} autoplay autoplaySpeed={3000} draggable={true} touchMove={true}
-                    >
-                        <div>
-                            <ImgSrc src='https://www.energosindia.com/images/plumber.jpg' />
-                        </div>
-
-                        <div>
-                            <ImgSrc src='https://www.energosindia.com/images/plumber.jpg' />
-                        </div>
-
-                        <div>
-                            <ImgSrc src='https://www.energosindia.com/images/plumber.jpg' />
-                        </div>
-                    </Carousel>
+                    <ImgSrc src='https://www.energosindia.com/images/plumber.jpg' />
                 </Col>
                 <Col className='content_area' xs={24} sm={24} lg={16} md={16}>
                     <div>

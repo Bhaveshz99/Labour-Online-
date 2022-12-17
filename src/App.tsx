@@ -27,7 +27,6 @@ function App() {
 
   let hasToken = getTokenPass();
   useEffect(() => {
-    
     if (hasToken && !user) {
       callGet('/user/userDetails').then((res: any) => {
         if (res.status === 200) {
@@ -38,10 +37,10 @@ function App() {
   }, [])
   return (
     <div>
-      <Header  userData={user} />
+      <Header userData={user} />
       <Routes>
-        <Route path='' element={<HomeScreen  userData={user} />} />
-        <Route path='/service-list' element={<ServiceListPage userData={user} />} />
+        <Route path='' element={<HomeScreen userData={user} />} />
+        <Route path='/service-list/:id' element={<ServiceListPage userData={user} />} />
         <Route path='/profile' element={<PrivateRouter><UserProfile userData={user} /></PrivateRouter>} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />

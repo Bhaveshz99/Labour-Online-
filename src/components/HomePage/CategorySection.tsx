@@ -25,7 +25,7 @@ const CategorySection = () => {
             <div className='category_list'>
                 {categoryData.map((category) => {
                     return (
-                        <CategoryCard categoryName={category.name} imgs={category.img} />
+                        <CategoryCard categoryId={category?._id} categoryName={category?.name} imgs={category?.img} />
                     )
                 })}
             </div>

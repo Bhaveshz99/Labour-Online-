@@ -17,7 +17,7 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
   }, [])
 
   const fetchAddress = () => {
-    
+
   }
 
   const onSaveAddress = () => {
@@ -59,8 +59,11 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
     }
     {bookingStep === 'selectDateTime' &&
       <div>
-        <DatePicker defaultValue={moment(new Date)} format={'DD/MM/YYYY'} />
-        <TimePicker use12Hours={true} format="HH" />
+        <DatePicker onChange={(date: any) => console.log("e.target.value", date?._d)} defaultValue={moment(new Date)} format={'DD/MM/YYYY'} />
+        <TimePicker onChange={(date: any) => console.log("123465", date)} use12Hours={true} format="HH" />
+        <Button type="primary" style={{ marginTop: "10px" }} onClick={() => { onSaveAddress() }} block>
+          Conform
+        </Button>
       </div>
     }
   </div>)

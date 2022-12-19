@@ -10,7 +10,7 @@ import { Alert, Space, Spin } from 'antd';
 import { callPost } from '../../services/Apis';
 const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
 
-  const [data, setData] = useState<any>([]);
+  const [data, setData] = useState<any>([1,2,3]);
   const [loader, setLoader] = useState(true);
 
   const { id } = useParams();
@@ -37,8 +37,8 @@ const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
             <div className="content" />
           </Spin>
             :
-            data?.map((d: any) => {
-              return <ServiceProviderCard data={d} />
+            data?.map((data: any) => {
+              return <ServiceProviderCard data={data} />
             })
           }
         </div>

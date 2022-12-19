@@ -13,6 +13,9 @@ interface serviceProviderCardTypes extends IUser {
 }
 
 const ServiceProviderCard = (props: any) => {
+
+    const { data } = props;
+
     let hasToken = getTokenPass()
     const [showRequestModal, setShowRequestModal] = useState<boolean>(false)
     const [showReviewsModal, setShowReviewsModal] = useState<boolean>(false)
@@ -38,7 +41,7 @@ const ServiceProviderCard = (props: any) => {
                                 <Avatar size="large" icon={<UserAddOutlined />} />
                             </div>
                             <div className='name_section'>
-                                <h3 className='name'>Rakesh Ojha</h3>
+                                <h3 className='name'>{data?.name}</h3>
                                 <div className='rate_review'>
                                     <Rate value={3} />
                                     <span > 218 Reviews</span>
@@ -48,7 +51,7 @@ const ServiceProviderCard = (props: any) => {
                         <div className='details'>
                             <div>
 
-                                <p> <label>Rate :-</label> ₹ 400/Day </p>
+                                <p> <label>Rate :-</label> ₹ {data?.price}/Day </p>
                                 <p> <label>Mother Tongue :- </label> Gujarati </p>
                                 <p> <label > Service Locations :- </label> Ghatloadia, Satellite, Vejalpur </p>
                                 <div className='actions'>

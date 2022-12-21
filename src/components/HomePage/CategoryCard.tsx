@@ -25,7 +25,7 @@ const CategoryCard = ({ categoryId, imgs, categoryName }: categoryCardTypes) => 
                         {imgs.map((img) => {
                             return (
                                 <div className='img'>
-                                    <ImgSrc src={img} />
+                                    <ImgSrc src={img} alt='' />
                                 </div>
                             )
                         })}

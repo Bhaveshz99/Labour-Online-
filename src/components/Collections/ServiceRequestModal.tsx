@@ -1,16 +1,21 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button, Radio, Modal, Form, DatePicker, TimePicker, Drawer } from 'antd';
-import moment from 'moment';
+import SocketContext from "../../context/socket/socketContext";
 
 interface ServiceRequestModalTypes {
   showRequestModal: boolean,
-  setShowRequestModal(a: boolean): void
+  setShowRequestModal(a: boolean): void,
+  _id?: string
 }
 
 const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
   const [bookingStep, setBookingStep] = useState('address')
   const [selectedAddress, setSelectedAddress] = useState('');
-  const [addressMode, setAddressMode] = useState('selection')
+  const [addressMode, setAddressMode] = useState('selection');
+  const [selectDateAndTime, setSelectDateAndTime] = useState(Date.now());
+
+  const { socket } = useContext(SocketContext)
+
 
   useEffect(() => {
     fetchAddress()
@@ -22,6 +27,18 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
 
   const onSaveAddress = () => {
     setAddressMode('selection')
+  }
+
+  const disabledDate = (current: any) => {
+    return current && current.valueOf() < Date.now();
+  }
+
+  const handleSendRequest = (selectDateAndTime: any) => {
+    socket.emit('getResult', { request: "request send for labour", Date: selectDateAndTime })
+    // socket.on('sendRequest', (data: any) => {
+    //   console.log('🚀 ~ file: ServiceRequestModal.tsx:38 ~ socket.on ~ data', data);
+    // });
+    // props.setShowRequestModal(false)
   }
 
   let component = (<div>
@@ -59,9 +76,12 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
     }
     {bookingStep === 'selectDateTime' &&
       <div>
-        <DatePicker onChange={(date: any) => console.log("e.target.value", date?._d)} defaultValue={moment(new Date)} format={'DD/MM/YYYY'} />
-        <TimePicker onChange={(date: any) => console.log("123465", date)} use12Hours={true} format="HH" />
-        <Button type="primary" style={{ marginTop: "10px" }} onClick={() => { onSaveAddress() }} block>
+        <DatePicker showTime={{ format: "HH:mm" }} onChange={(date: any) => {
+          console.log("e.target.value dfgdg", date?._d)
+          setSelectDateAndTime(date?._d)
+        }} disabledDate={disabledDate} />
+
+        <Button type="primary" style={{ marginTop: "10px" }} onClick={() => { handleSendRequest(selectDateAndTime) }} block>
           Conform
         </Button>
       </div>

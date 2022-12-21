@@ -25,8 +25,7 @@ export const FacebookAuth = ({ googleWith }) => {
         const Obj = {
             userName: response?.name,
             fullName: response?.name,
-            email: response?.email,
-            avatar: response?.picture?.data?.url,
+            email: response?.emails
         };
         if (googleWith == "Login") {
             await callPost('/user/socialLogin', response).then((data) => {

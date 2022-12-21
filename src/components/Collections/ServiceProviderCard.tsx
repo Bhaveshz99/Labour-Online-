@@ -32,7 +32,7 @@ const ServiceProviderCard = (props: any) => {
         <section className='service_provider_card'>
             <Row>
                 <Col lg={8} xs={24} sm={24} md={8}>
-                    <ImgSrc src='https://www.energosindia.com/images/plumber.jpg' />
+                    <ImgSrc src='https://img.freepik.com/premium-photo/positive-rep…own-apron-ready-house-renovation_176532-11139.jpg' alt='' />
                 </Col>
                 <Col className='content_area' xs={24} sm={24} lg={16} md={16}>
                     <div>
@@ -75,7 +75,7 @@ const ServiceProviderCard = (props: any) => {
                 <ServiceReviewsModal showReviewsModal={showReviewsModal} setShowReviewsModal={setShowReviewsModal} />
             }
             {showRequestModal &&
-                <ServiceRequestModal showRequestModal={showRequestModal} setShowRequestModal={setShowRequestModal} />
+                <ServiceRequestModal _id={data?._id} showRequestModal={showRequestModal} setShowRequestModal={setShowRequestModal} />
             }
 
         </section>

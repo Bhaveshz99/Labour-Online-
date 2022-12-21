@@ -21,7 +21,7 @@ const Header: React.FC<UserProps> = (props: UserProps) => {
     successToast('User Logged Out')
   }
   console.log(props.userData);
-  
+
   return (
     <header className='header_wrapper'>
       {window.innerWidth < 768 &&
@@ -61,7 +61,7 @@ const Header: React.FC<UserProps> = (props: UserProps) => {
             <div className='header_left'>
               <Link to='/'>
                 <div className='logo'>
-                  <ImgSrc src={"./Assets/images/logo.svg"} />
+                  <ImgSrc src={"./Assets/images/logo.svg"} alt='' />
                 </div>
               </Link>
               <div className='search_area'>

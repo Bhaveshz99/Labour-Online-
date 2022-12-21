@@ -158,20 +158,20 @@ const Signup: React.FC = () => {
             <Form.Item label="Who are you?">
               <Radio.Group value={userRole} className='role_selection' onChange={(e) => { setUserRole(e.target.value) }}>
                 <Radio value="user"> <div>
-                  <ImgSrc src={'./Assets/avatar/avatar6.svg'} />
+                  <ImgSrc src={'./Assets/avatar/avatar6.svg'} alt='' />
                   <p>  Customer</p>
                 </div>
                 </Radio>
 
                 <Radio value="contractor">
                   <div>
-                    <ImgSrc src={'./Assets/avatar/avatar20.svg'} />
+                    <ImgSrc src={'./Assets/avatar/avatar20.svg'} alt='' />
                     <p>Contractor</p>
                   </div>
                 </Radio>
                 <Radio value="labour">
                   <div>
-                    <ImgSrc src={'./Assets/avatar/avatar7.svg'} />
+                    <ImgSrc src={'./Assets/avatar/avatar7.svg'} alt='' />
                     <p>    Labour</p>
                   </div>
                 </Radio>

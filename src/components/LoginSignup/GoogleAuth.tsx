@@ -46,7 +46,6 @@ const GoogleAuth: React.FC<googleAuth> = ({ googleWith, role }) => {
         userName: string
         fullName: string
         email: string
-        avatar: string
         role?: string
     }
 
@@ -56,8 +55,7 @@ const GoogleAuth: React.FC<googleAuth> = ({ googleWith, role }) => {
         const Obj: userSignup = {
             userName: googleUser?.givenName,
             fullName: googleUser?.givenName,
-            email: googleUser?.email,
-            avatar: googleUser?.imageUrl
+            email: googleUser?.email
         };
         if (googleWith == "Login") {
             await callPost('/user/socialLogin', Obj).then((data: any) => {
@@ -90,7 +88,7 @@ const GoogleAuth: React.FC<googleAuth> = ({ googleWith, role }) => {
                 <button onClick={renderProps.onClick} className='googleBtnPo' >
                     <div className={"google-btn disable"} >
                         <div className="google-icon-wrapper">
-                            <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+                            <img className="google-icon" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_" />
                         </div>
                         <p className="btn-text"><b>{googleWith} in with google</b></p>
                     </div>

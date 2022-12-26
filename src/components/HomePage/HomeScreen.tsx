@@ -7,7 +7,7 @@ import type { DotPosition } from 'antd/es/carousel';
 import { UserProps } from '../../interfaces/user'
 import TrendingCategories from './TrendingCategories'
 import './home.scss'
-const HomeScreen : React.FC<UserProps> = (props: UserProps) => {
+const HomeScreen: React.FC<UserProps> = (props: UserProps) => {
 
     const contentStyle: React.CSSProperties = {
         height: '400px',

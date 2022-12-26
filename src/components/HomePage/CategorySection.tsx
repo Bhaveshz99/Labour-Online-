@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import CategoryCard from './CategoryCard'
 import CategoryImage1 from '../../assets/images/CategoryImage1.png'
-import { callPost } from '../../services/Apis'
+import { callGet } from '../../services/Apis'
+import { Pagination } from "antd";
 const CategorySection = () => {
 
     const [categoryData, setCategoryData] = useState<any[]>([])
 
     useEffect(() => {
-        fetchCategoriesData();
+        // fetchCategoriesData();
+        const handlePagination = (page: number, limit: number) => {
+            callGet('/category/get/1/6').then((res: any) => {
+                setCategoryData(res.data.data)
+            })
+        }
     }, [])
 
-    const fetchCategoriesData = () => {
-        callPost('/category/get', {
-            page: 1,
-            limit: 6
-        }).then((res: any) => {
+    // const fetchCategoriesData = () => {
+    //     callGet('/category/get/1/6').then((res: any) => {
+    //         setCategoryData(res.data.data)
+    //     })
+    // }
+
+    const handlePagination = (page: number, limit: number) => {
+        callGet('/category/get/1/6').then((res: any) => {
             setCategoryData(res.data.data)
         })
     }
@@ -28,6 +37,7 @@ const CategorySection = () => {
                         <CategoryCard categoryId={category?._id} categoryName={category?.name} imgs={category?.img} />
                     )
                 })}
+                <Pagination onChange={handlePagination} defaultCurrent={1} total={50} />
             </div>
         </div>
     )

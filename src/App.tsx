@@ -23,18 +23,22 @@ import PrivateRouter from './components/LoginSignup/PrivateRouter';
 function App() {
 
   const dispatch = useDispatch();
-  const user = useSelector((store: any) => store.user);
 
+  let user: any, userData: any;
   let hasToken = getTokenPass();
   useEffect(() => {
     if (hasToken && !user) {
       callGet('/user/userDetails').then((res: any) => {
         if (res.status === 200) {
           dispatch(addUser(res?.data.data));
+          userData = res?.data.data
         }
       })
     }
-  }, [])
+  }, []);
+
+  user = userData;
+
   return (
     <div>
       <Header userData={user} />

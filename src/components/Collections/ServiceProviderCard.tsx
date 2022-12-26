@@ -12,7 +12,7 @@ interface serviceProviderCardTypes extends IUser {
     labourId: Number
 }
 
-const ServiceProviderCard = (props: any) => {
+const ServiceProviderCard = (props: any, key: number) => {
 
     const { data } = props;
 
@@ -32,7 +32,7 @@ const ServiceProviderCard = (props: any) => {
         <section className='service_provider_card'>
             <Row>
                 <Col lg={8} xs={24} sm={24} md={8}>
-                    <ImgSrc src='https://img.freepik.com/premium-photo/positive-rep…own-apron-ready-house-renovation_176532-11139.jpg' alt='' />
+                    {/* <ImgSrc src='https://img.freepik.com/premium-photo/positive-rep…own-apron-ready-house-renovation_176532-11139.jpg' alt='' /> */}
                 </Col>
                 <Col className='content_area' xs={24} sm={24} lg={16} md={16}>
                     <div>
@@ -52,7 +52,7 @@ const ServiceProviderCard = (props: any) => {
                             <div>
 
                                 <p> <label>Rate :-</label> ₹ {data?.price}/Day </p>
-                                <p> <label>Mother Tongue :- </label> Gujarati </p>
+                                <p> <label>Mother Tongue :- </label> English </p>
                                 <p> <label > Service Locations :- </label> Ghatloadia, Satellite, Vejalpur </p>
                                 <div className='actions'>
                                     <Button onClick={() => {

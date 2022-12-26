@@ -8,7 +8,7 @@ import ImgSrc from '../CommonComponents/ImgSrc';
 import { getTokenPass, successToast } from '../../utils';
 import { UserProps } from '../../interfaces/user'
 import { useDispatch } from 'react-redux';
-import { addUser } from '../../Redux/slices/authSlice'
+import { deleteUser } from '../../Redux/slices/authSlice'
 const Header: React.FC<UserProps> = (props: UserProps) => {
   const naviagte = useNavigate()
   let hasToken = getTokenPass()
@@ -17,10 +17,9 @@ const Header: React.FC<UserProps> = (props: UserProps) => {
   const onLogout = () => {
     localStorage.removeItem('token')
     naviagte('/')
-    dispatch(addUser(null));
+    dispatch(deleteUser(null));
     successToast('User Logged Out')
   }
-  console.log(props.userData);
 
   return (
     <header className='header_wrapper'>
@@ -34,7 +33,7 @@ const Header: React.FC<UserProps> = (props: UserProps) => {
             </div>
             <div className='location_area'>
 
-              <p>Hi, {hasToken ? 'Raju' : 'Guest'} </p>
+              <p>Hi, {hasToken ? '' : 'Guest'} </p>
               <div className='location'>
 
               </div>

@@ -5,11 +5,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { UserProps } from '../../interfaces/user'
 // import rootReducer from '../../Redux/store';
 import { Alert, Spin, Switch, message, Upload } from 'antd';
-import { callGet, callPost } from '../../services/Apis';
-import { addUser } from '../../Redux/slices/authSlice';
+import { callGet, callPost, callPut } from '../../services/Apis';
+import { editUser } from '../../Redux/slices/authSlice';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import type { UploadChangeParam } from 'antd/es/upload';
 import { LoadingOutlined, PlusOutlined, EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import cityJson from './city.json';
 const { Panel } = Collapse;
 
 const getBase64 = (img: RcFile, callback: (url: string) => void) => {
@@ -32,23 +33,24 @@ const beforeUpload = (file: RcFile) => {
 
 const UserProfile: React.FC<UserProps> = (props: UserProps) => {
 
-    const user = useSelector((store: any) => store.user)
+    const user = useSelector((store: any) => store.user[0])
     const dispatch = useDispatch();
+
     const [email, setEmail] = useState<string>('');
     const [fullName, setFullName] = useState<string>('');
-    const [mobile, setMobile] = useState<string>('');
+    const [mobile, setMobile] = useState<number>();
     const [gender, setGender] = useState<string>('');
     const [city, setCity] = useState<string>('');
     const [state, setState] = useState<string>('');
     const [pincode, setPincode] = useState<string>('');
     const [photo, setPhoto] = useState<string>('');
-    const [price, setPrice] = useState<any>('');
-    const [serviceAreas, setServiceAreas] = useState<string[]>();
+    const [price, setPrice] = useState<number>();
+    const [serviceAreaId, setServiceAreaId] = useState<any>([]);
     const [gsLoading, setGsLoading] = useState<boolean>(false)
     const [wpLoading, setWpLoading] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(true);
-    // const [workShip, setWorkShip] = useState<boolean>(user?.role == 'user' ? false : true);
-    const [workShip, setWorkShip] = useState<boolean>(true);
+    const [workShip, setWorkShip] = useState<boolean>(user?.role == 'user' ? false : true);
+    // const [workShip, setWorkShip] = useState<boolean>(true);
     const [updateProfilePic, setupdateProfilePic] = useState<boolean>(false)
     const [imgLoading, setImgLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState<string>();
@@ -68,19 +70,51 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
             setPincode(user?.pincode);
             setPhoto(`${process.env.REACT_APP_BASE_URL}/${user?.avatar}`);
             setPrice(user?.price);
-            setServiceAreas(user?.serviceAreaId);
+            setServiceAreaId(user?.serviceAreaId.map((item: any) => item?.name))
             setLoading(false)
         } else {
             setLoading(true)
         }
     }, [user])
 
-    const handleGeneralSettingsChange = () => {
+    const sendMessage = (messageType: any, content: string) => {
+        messageApi.open({
+            type: messageType,
+            content,
+        });
+    }
 
+    const handleGeneralSettingsChange = () => {
+        const Obj = {
+            fullName,
+            email,
+            mobile,
+            gender,
+            state,
+            city,
+            pincode
+        }
+        callPut('/user/update', Obj).then((res: any) => {
+            dispatch(editUser(res?.data?.data))
+            sendMessage('success', 'User profile updated successFully')
+        }).catch((error: any) => {
+            sendMessage('error', error.message)
+        })
     }
 
     const handleWorkProfileChanges = () => {
-
+        const Obj: any = {
+            price
+        }
+        serviceAreaId.length > 0 && (Obj.serviceAreaId = serviceAreaId)
+        callPut('/user/update', Obj).then((res: any) => {
+            dispatch(editUser(res?.data?.data))
+            console.log("🚀 ~ file: UserProfile.tsx:120 ~ callPut ~ res?.data?.data", res?.data?.data)
+            sendMessage('success', 'User profile updated successFully')
+        }).catch((error: any) => {
+            console.log("🚀 ~ file: UserProfile.tsx:115 ~ callPut ~ error", error)
+            sendMessage('error', error.message)
+        })
     }
 
     // uplaod image
@@ -109,32 +143,19 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
 
     const handleSavePassword = () => {
         if (!password && !conPassword) {
-            messageApi.open({
-                type: 'error',
-                content: 'Password are required',
-            });
+            sendMessage('error', 'Password are required');
         }
         else if (password.length < 8 && conPassword.length < 8) {
-            messageApi.open({
-                type: 'error',
-                content: 'Password must be 8 character',
-            });
+            sendMessage('error', 'Password must be 8 character');
         }
         else if (password && conPassword && password === conPassword) {
             callPost('/user/savePassword', { password }).then((res) => {
-                console.log("🚀 ~ file: UserProfile.tsx:125 ~ callPost ~ res", res)
+                sendMessage('success', 'Password same successfully');
             }).catch((error) => {
-                console.log("🚀 ~ file: UserProfile.tsx:127 ~ callPost ~ error", error)
+                sendMessage('error', error.message);
             })
-            messageApi.open({
-                type: 'success',
-                content: 'Password same successfully',
-            });
         } else {
-            messageApi.open({
-                type: 'error',
-                content: 'Passwords fields are not same',
-            });
+            sendMessage('error', 'Passwords fields are not same');
         }
     }
 
@@ -195,20 +216,17 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
                             <Row gutter={[8, 8]}>
                                 <Col xs={24} sm={24} md={12} lg={12} span={12} >
                                     <Form.Item label='Full Name'>
-                                        <Input value={fullName} onChange={(e) => { setFullName(e.target.value) }} />
+                                        <Input value={fullName} onChange={(e: any) => { setFullName(e.target.value) }} />
                                     </Form.Item>
                                 </Col>
                                 <Col xs={24} sm={24} md={12} lg={12} span={12} >
                                     <Form.Item label='Email'>
-                                        <Input value={email} onChange={(e) => { setEmail(e.target.value) }} />
+                                        <Input value={email} onChange={(e: any) => { setEmail(e.target.value) }} />
                                     </Form.Item>
-
                                 </Col>
-
                                 <Col xs={24} sm={24} md={12} lg={12} span={12} >
-                                    <Form.Item label='Number'>
-                                        <Input value={mobile} maxLength={10} minLength={10} onChange={(e) => { setMobile(e.target.value) }} />
-
+                                    <Form.Item label='Mobile'>
+                                        <InputNumber style={{ width: '50%' }} value={mobile} type="number" maxLength={10} minLength={10} onChange={(value: any) => setMobile(value)} />
                                     </Form.Item>
                                 </Col>
                                 <Col xs={24} sm={24} md={12} lg={12} span={12} >
@@ -216,7 +234,6 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
                                         <Radio.Group value={gender} className='role_selection' onChange={(e) => { setGender(e.target.value) }}>
                                             <Radio value="male"> Male </Radio>
                                             <Radio value="female"> Female </Radio>
-
                                         </Radio.Group>
                                     </Form.Item>
                                 </Col>
@@ -234,7 +251,7 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
 
                                 <Col xs={24} sm={24} md={12} lg={12} span={12} >
                                     <Form.Item label='Pincode'>
-                                        <Input value={state} onChange={(e) => { setPincode(e.target.value) }} />
+                                        <Input value={pincode} onChange={(e) => { setPincode(e.target.value) }} />
                                     </Form.Item>
                                 </Col>
                             </Row>
@@ -250,21 +267,18 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
                             <Row>
                                 <Col xs={24} sm={24} md={12} lg={12} span={12} >
                                     <Form.Item label='Price'>
-                                        <InputNumber value={price} onChange={(e) => { setPrice(e) }} />
+                                        <InputNumber value={price} onChange={(value: any) => setPrice(value)} />
                                     </Form.Item>
                                 </Col>
                                 <Col xs={24} sm={24} md={12} lg={12} span={12} >
                                     <Form.Item label='Areas'>
                                         <Select
-                                            mode="multiple"
-                                            allowClear
+                                            mode="tags"
+                                            placeholder="Please select"
+                                            onChange={(value: string[]) => setServiceAreaId(value)}
                                             style={{ width: '100%' }}
-                                            placeholder="Select Areas"
-                                            onChange={(e) => {
-
-                                            }}
-                                            value={serviceAreas}
-                                            options={[{ label: 'Ahmedabad', value: 'ahmedabad' }, { label: 'Surat', value: 'surat' },]}
+                                            value={serviceAreaId}
+                                            options={cityJson}
                                         />
                                     </Form.Item>
                                 </Col>
@@ -281,14 +295,14 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
                         <Space direction="vertical">
                             <Form.Item>
                                 <Input.Password
-                                    style={{ width: '400px' }}
+                                    style={{ borderRadius: '6px' }}
                                     size="small"
                                     placeholder="input password"
                                     iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
                                 <Input.Password
-                                    style={{ width: '400px', marginLeft: '10px' }}
+                                    style={{ marginTop: '10px', borderRadius: '6px' }}
                                     size="small"
                                     placeholder="input password"
                                     iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}

@@ -9,11 +9,11 @@ const CategorySection = () => {
 
     useEffect(() => {
         // fetchCategoriesData();
-        const handlePagination = (page: number, limit: number) => {
-            callGet('/category/get/1/6').then((res: any) => {
-                setCategoryData(res.data.data)
-            })
-        }
+        // const handlePagination = (page: number, limit: number) => {
+        callGet('/category/get/1/6').then((res: any) => {
+            setCategoryData(res.data.data)
+        })
+        // }
     }, [])
 
     // const fetchCategoriesData = () => {
@@ -23,7 +23,7 @@ const CategorySection = () => {
     // }
 
     const handlePagination = (page: number, limit: number) => {
-        callGet('/category/get/1/6').then((res: any) => {
+        callGet(`/category/get/${page}/${limit}`).then((res: any) => {
             setCategoryData(res.data.data)
         })
     }
@@ -37,8 +37,9 @@ const CategorySection = () => {
                         <CategoryCard categoryId={category?._id} categoryName={category?.name} imgs={category?.img} />
                     )
                 })}
-                <Pagination onChange={handlePagination} defaultCurrent={1} total={50} />
+
             </div>
+            <Pagination className='category_list' onChange={handlePagination} defaultCurrent={1} defaultPageSize={6} total={127} />
         </div>
     )
 }

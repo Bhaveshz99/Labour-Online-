@@ -109,10 +109,8 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
         serviceAreaId.length > 0 && (Obj.serviceAreaId = serviceAreaId)
         callPut('/user/update', Obj).then((res: any) => {
             dispatch(editUser(res?.data?.data))
-            console.log("🚀 ~ file: UserProfile.tsx:120 ~ callPut ~ res?.data?.data", res?.data?.data)
             sendMessage('success', 'User profile updated successFully')
         }).catch((error: any) => {
-            console.log("🚀 ~ file: UserProfile.tsx:115 ~ callPut ~ error", error)
             sendMessage('error', error.message)
         })
     }

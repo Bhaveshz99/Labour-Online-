@@ -22,9 +22,9 @@ const CategoryCard = ({ categoryId, imgs, categoryName }: categoryCardTypes) => 
                     }}
                         dotPosition={"bottom"} autoplay autoplaySpeed={3000} draggable={true} touchMove={true}
                     >
-                        {imgs.map((img) => {
+                        {imgs?.map((img, i) => {
                             return (
-                                <div className='img'>
+                                <div key={i} className='img'>
                                     <ImgSrc src={img} alt='' />
                                 </div>
                             )

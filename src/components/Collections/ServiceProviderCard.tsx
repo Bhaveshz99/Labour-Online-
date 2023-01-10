@@ -32,7 +32,7 @@ const ServiceProviderCard = (props: any, key: number) => {
         <section className='service_provider_card'>
             <Row>
                 <Col lg={8} xs={24} sm={24} md={8}>
-                    {/* <ImgSrc src='https://img.freepik.com/premium-photo/positive-rep…own-apron-ready-house-renovation_176532-11139.jpg' alt='' /> */}
+                    <ImgSrc src='https://img.freepik.com/premium-photo/positive-rep…own-apron-ready-house-renovation_176532-11139.jpg' alt='' />
                 </Col>
                 <Col className='content_area' xs={24} sm={24} lg={16} md={16}>
                     <div>
@@ -56,7 +56,7 @@ const ServiceProviderCard = (props: any, key: number) => {
                                 <p> <label > Service Locations :- </label> Ghatloadia, Satellite, Vejalpur </p>
                                 <div className='actions'>
                                     <Button onClick={() => {
-                                        if (hasToken) { setShowRequestModal(true) }
+                                        if (hasToken) setShowRequestModal(true)
                                         else {
                                             errorToast('Please Login')
                                             navigate('/login')
@@ -75,7 +75,7 @@ const ServiceProviderCard = (props: any, key: number) => {
                 <ServiceReviewsModal showReviewsModal={showReviewsModal} setShowReviewsModal={setShowReviewsModal} />
             }
             {showRequestModal &&
-                <ServiceRequestModal _id={data?._id} showRequestModal={showRequestModal} setShowRequestModal={setShowRequestModal} />
+                <ServiceRequestModal data={data} showRequestModal={showRequestModal} setShowRequestModal={setShowRequestModal} />
             }
 
         </section>

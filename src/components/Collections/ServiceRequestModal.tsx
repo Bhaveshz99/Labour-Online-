@@ -1,18 +1,26 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, Radio, Modal, Form, DatePicker, TimePicker, Drawer } from 'antd';
+import { Button, Radio, Modal, Form, DatePicker, TimePicker, Drawer, message, Input, RadioChangeEvent } from 'antd';
 import SocketContext from "../../context/socket/socketContext";
+import moment from "moment";
+import { callGet, callPost } from '../../services/Apis';
+import { useParams } from 'react-router-dom';
 
 interface ServiceRequestModalTypes {
   showRequestModal: boolean,
   setShowRequestModal(a: boolean): void,
-  _id?: string
+  data?: any
 }
 
 const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
+  const { id } = useParams();
+  const [messageApi, contextHolder] = message.useMessage();
+
   const [bookingStep, setBookingStep] = useState('address')
   const [selectedAddress, setSelectedAddress] = useState('');
   const [addressMode, setAddressMode] = useState('selection');
   const [selectDateAndTime, setSelectDateAndTime] = useState(Date.now());
+  const [addressList, setAddressList] = useState([1, 2, 3]);
+  const [addressSave, setAddressSave] = useState<string>('');
 
   const { socket } = useContext(SocketContext)
 
@@ -22,11 +30,28 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
   }, [])
 
   const fetchAddress = () => {
-
+    callGet('/address/get').then((res: any) => {
+      setAddressList(res?.data);
+    })
   }
 
   const onSaveAddress = () => {
-    setAddressMode('selection')
+    callPost('/address/post', { address: addressSave }).then((res) => {
+      messageApi.open({
+        type: 'success',
+        content: 'This is a success message',
+      });
+    }).catch((error: any) => {
+      messageApi.open({
+        type: 'error',
+        content: 'This is an error message',
+      });
+    })
+    // setAddressMode('selection')
+  }
+
+  const setAddress = () => {
+    setBookingStep('selectDateTime')
   }
 
   const disabledDate = (current: any) => {
@@ -34,7 +59,17 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
   }
 
   const handleSendRequest = (selectDateAndTime: any) => {
-    socket.emit('getResult', { request: "request send for labour", Date: selectDateAndTime })
+    const Obj = {
+      to: props?.data?.id,
+      categoryId: id,
+      date: selectDateAndTime,
+      price: props?.data?.price
+    }
+
+    socket.emit('createRequest', { data: Obj });
+    socket.on('resendRequest', (data: any) => {
+      console.log('🚀 ~ file: ServiceRequestModal.tsx:72 ~ socket.on ~ data', data);
+    });
     // socket.on('sendRequest', (data: any) => {
     //   console.log('🚀 ~ file: ServiceRequestModal.tsx:38 ~ socket.on ~ data', data);
     // });
@@ -47,13 +82,16 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
         {addressMode === 'selection' && <div>
           <h4>Select Address</h4>
           <div>
-            <span className='add_address' onClick={() => { setAddressMode('addition') }}> + add </span>
-            <Radio.Group className='address_selection' value={selectedAddress}>
-              <Radio value={1}> B/203 Hariom Avenue, Sardarnagar, Ahmedabad Pincode- 382475</Radio>
-              <Radio value={2}> B/203 Hariom Avenue, Sardarnagar, Ahmedabad Pincode- 382475</Radio>
+            <span className='add_address' onClick={() => setAddressMode('addition')}> + add </span>
+            <Radio.Group className='address_selection' onChange={(e: RadioChangeEvent) => setSelectedAddress(e.target.value)} value={addressList[0]}>
+              {
+                addressList?.map((d: any, i: any) => {
+                  return <Radio value={i}> {d?.address}</Radio>
+                })
+              }
             </Radio.Group>
           </div>
-          <Button onClick={() => { setBookingStep('selectDateTime') }}
+          <Button onClick={() => { setAddress() }}
           // disabled={selectedAddress ? false : true} 
           > Proceed </Button>
         </div>}
@@ -61,11 +99,9 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
         {addressMode === 'addition' && <div>
           <h4>Add Address</h4>
           <Form>
-            {/* <Form.Item >
-
-            </Form.Item> */}
+            <Input size="small" type="text" onChange={(e: any) => setAddressSave(e.target.value)} />
           </Form>
-          <Button onClick={() => { onSaveAddress() }} >
+          <Button style={{ marginTop: '10px' }} onClick={onSaveAddress} >
             Save
           </Button>
 
@@ -77,7 +113,6 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
     {bookingStep === 'selectDateTime' &&
       <div>
         <DatePicker showTime={{ format: "HH:mm" }} onChange={(date: any) => {
-          console.log("e.target.value dfgdg", date?._d)
           setSelectDateAndTime(date?._d)
         }} disabledDate={disabledDate} />
 

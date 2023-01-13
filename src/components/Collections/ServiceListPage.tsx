@@ -17,8 +17,9 @@ const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
 
   useEffect(() => {
     callPost('/user/getLabourContractorList', { id, page: 1, limit: 20 }).then((res: any) => {
-      // setData(res);
+      setData(res?.data?.data);
       setLoader(true);
+      // console.log('🚀 ~ file: ServiceListPage.tsx:25 ~ callPost ~ res', res);
     }).catch((error: any) => {
       console.log('🚀 ~ file: ServiceListPage.tsx:24 ~ callPost ~ error', error);
     })

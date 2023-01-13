@@ -70,10 +70,7 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
     socket.on('resendRequest', (data: any) => {
       console.log('🚀 ~ file: ServiceRequestModal.tsx:72 ~ socket.on ~ data', data);
     });
-    // socket.on('sendRequest', (data: any) => {
-    //   console.log('🚀 ~ file: ServiceRequestModal.tsx:38 ~ socket.on ~ data', data);
-    // });
-    // props.setShowRequestModal(false)
+    props.setShowRequestModal(false)
   }
 
   let component = (<div>

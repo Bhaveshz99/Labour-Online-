@@ -32,9 +32,9 @@ const CategorySection = () => {
         <div className='category_section'>
             <h3 className='title'>Categories</h3>
             <div className='category_list'>
-                {categoryData.map((category) => {
+                {categoryData.map((category: any, i: number) => {
                     return (
-                        <CategoryCard categoryId={category?._id} categoryName={category?.name} imgs={category?.img} />
+                        <CategoryCard key={'d' + i} categoryId={category?._id} categoryName={category?.name} imgs={category?.img} />
                     )
                 })}
 

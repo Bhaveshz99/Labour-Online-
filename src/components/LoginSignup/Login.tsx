@@ -26,7 +26,6 @@ const Login = () => {
   const [otp, setOtp] = useState<string>('');
   const [messageApi, contextHolder] = message.useMessage();
   const [loginWith, setLoginWith] = useState<boolean>(true);
-  console.log("🚀 ~ file: Login.tsx:29 ~ Login ~ loginWith", loginWith)
 
   const navigate = useNavigate();
 
@@ -53,9 +52,8 @@ const Login = () => {
         dispatch(addUser(result.data?.data));
         messagePopup('success', 'Login successfully');
         localStorage.setItem('token', result.data.token)
-        if (result.data.data.role === 'user') {
-          navigate('/')
-        }
+        if (result.data.data.role === 'user') navigate('/')
+        else navigate('/')
       }).catch((error: any) => messagePopup('error', error.message))
     } else {
       messagePopup('error', 'Email is required');
@@ -69,9 +67,7 @@ const Login = () => {
         messagePopup('success', 'Login successfully');
         // setSignUpStep(2)
         localStorage.setItem('token', result.data.token)
-        // if (result.data.data.role === 'user') {
-        navigate('/')
-        // }
+        navigate('/');
       }).catch((error: any) => messagePopup('error', error.message))
     }
     else {

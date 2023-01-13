@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes } from "react-router-dom";
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
@@ -24,24 +24,25 @@ function App() {
 
   const dispatch = useDispatch();
 
-  let user: any, userData: any;
+  const [userData, setUserData] = useState<any>("");
+
+  let user: any
   let hasToken = getTokenPass();
   useEffect(() => {
     if (hasToken && !user) {
       callGet('/user/userDetails').then((res: any) => {
-        if (res.status === 200) {
-          dispatch(addUser(res?.data.data));
-          userData = res?.data.data
-        }
+        console.log('🚀 ~ file: App.tsx:32 ~ callGet ~ res', res);
+        dispatch(addUser(res?.data.data));
+        setUserData(res?.data.data);
       })
     }
   }, []);
 
-  user = userData;
+  console.log('🚀 ~ file: App.tsx:60 ~ App ~ userData', userData);
 
   return (
     <div>
-      <Header userData={user} />
+      <Header userData={userData} />
       <Routes>
         <Route path='' element={<HomeScreen userData={user} />} />
         <Route path='/service-list/:id' element={<ServiceListPage userData={user} />} />

@@ -20,7 +20,6 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
     }
 
     const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
-        console.log(rowData);
         setSelectedIndex(ind)
         setModalType(confirmRequest ? 'accept' : 'cancel')
     }
@@ -93,7 +92,7 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
                         <div className="service-requests">
                             {data.length > 0 && data.map((item, i) => {
                                 return (
-                                    <Card
+                                    <Card key={'d'+i}
                                         className='request-card'
                                     // actions={[
                                     //     <div className='accept-requests' onClick={() => { handleRequestAction(item, true, i) }}> Accept </div>,

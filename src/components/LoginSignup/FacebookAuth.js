@@ -20,7 +20,6 @@ export const FacebookAuth = ({ googleWith }) => {
     };
 
     const responseFacebook = async (response) => {
-        console.log('🚀 ~ file: FacebookAuth.js:22 ~ responseFacebook ~ response', response);
         if (response.status == "unknown") console.log();
         const Obj = {
             userName: response?.name,
@@ -32,7 +31,6 @@ export const FacebookAuth = ({ googleWith }) => {
                 // messagePopup('success', 'Login success fully');
                 navigate('/');
             }).catch((error) => {
-                console.log('🚀 ~ file: GoogleAuth.tsx:50 ~ awaitcallPost ~ error', error);
                 // messagePopup('error', error.message);
             })
         } else {
@@ -41,7 +39,6 @@ export const FacebookAuth = ({ googleWith }) => {
                 // messagePopup('success', 'Signup success fully');
                 navigate('/');
             }).catch((error) => {
-                console.log('🚀 ~ file: FacebookAuth.js:45 ~ awaitcallPost ~ error', error);
                 // messagePopup('error', error.message);
             })
         }

@@ -16,11 +16,12 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
   const [messageApi, contextHolder] = message.useMessage();
 
   const [bookingStep, setBookingStep] = useState('address')
-  const [selectedAddress, setSelectedAddress] = useState('');
+  const [selectedAddressId, setSelectedAddressId] = useState<string>('');
   const [addressMode, setAddressMode] = useState('selection');
   const [selectDateAndTime, setSelectDateAndTime] = useState(Date.now());
-  const [addressList, setAddressList] = useState([1, 2, 3]);
+  const [addressList, setAddressList] = useState<any>([]);
   const [addressSave, setAddressSave] = useState<string>('');
+  const [value, setValue] = useState(0);
 
   const { socket } = useContext(SocketContext)
 
@@ -31,12 +32,12 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
 
   const fetchAddress = () => {
     callGet('/address/get').then((res: any) => {
-      setAddressList(res?.data);
+      setAddressList(res?.data?.data);
     })
   }
 
   const onSaveAddress = () => {
-    callPost('/address/post', { address: addressSave }).then((res) => {
+    callPost('/address/add', { address: addressSave }).then((res) => {
       messageApi.open({
         type: 'success',
         content: 'This is a success message',
@@ -60,13 +61,15 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
 
   const handleSendRequest = (selectDateAndTime: any) => {
     const Obj = {
-      to: props?.data?.id,
+      to: props?.data?._id,
       categoryId: id,
+      addressId: selectedAddressId,
       date: selectDateAndTime,
       price: props?.data?.price
     }
+    console.log("🚀 ~ file: ServiceRequestModal.tsx:70 ~ handleSendRequest ~ Obj", Obj)
 
-    socket.emit('createRequest', { data: Obj });
+    socket.emit('createRequest', Obj);
     socket.on('resendRequest', (data: any) => {
       console.log('🚀 ~ file: ServiceRequestModal.tsx:72 ~ socket.on ~ data', data);
     });
@@ -80,16 +83,16 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
           <h4>Select Address</h4>
           <div>
             <span className='add_address' onClick={() => setAddressMode('addition')}> + add </span>
-            <Radio.Group className='address_selection' onChange={(e: RadioChangeEvent) => setSelectedAddress(e.target.value)} value={addressList[0]}>
+            <Radio.Group className='address_selection' onChange={(e: RadioChangeEvent) => setSelectedAddressId(addressList[e.target.value]?._id)}>
               {
                 addressList?.map((d: any, i: any) => {
-                  return <Radio value={i}> {d?.address}</Radio>
+                  return <Radio key={'d' + i} value={i}> {d?.address}</Radio>
                 })
               }
             </Radio.Group>
           </div>
           <Button onClick={() => { setAddress() }}
-          // disabled={selectedAddress ? false : true} 
+            disabled={selectedAddressId == '' ? true : false}
           > Proceed </Button>
         </div>}
 
@@ -98,7 +101,7 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
           <Form>
             <Input size="small" type="text" onChange={(e: any) => setAddressSave(e.target.value)} />
           </Form>
-          <Button style={{ marginTop: '10px' }} onClick={onSaveAddress} >
+          <Button style={{ marginTop: '10px' }} onClick={onSaveAddress}>
             Save
           </Button>
 
@@ -110,7 +113,8 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
     {bookingStep === 'selectDateTime' &&
       <div>
         <DatePicker showTime={{ format: "HH:mm" }} onChange={(date: any) => {
-          setSelectDateAndTime(date?._d)
+          let data = date?._d, d = data.replace('(India Standard Time)', '');
+          setSelectDateAndTime(d)
         }} disabledDate={disabledDate} />
 
         <Button type="primary" style={{ marginTop: "10px" }} onClick={() => { handleSendRequest(selectDateAndTime) }} block>

@@ -19,7 +19,6 @@ const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
     callPost('/user/getLabourContractorList', { id, page: 1, limit: 20 }).then((res: any) => {
       setData(res?.data?.data);
       setLoader(true);
-      // console.log('🚀 ~ file: ServiceListPage.tsx:25 ~ callPost ~ res', res);
     }).catch((error: any) => {
       console.log('🚀 ~ file: ServiceListPage.tsx:24 ~ callPost ~ error', error);
     })
@@ -30,7 +29,7 @@ const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
     <div className='service_list_wrapper'>
       <div className="container">
         <div className='header'>
-          <h3>Carpenter</h3>
+          {/* <h3>Carpenter</h3> */}
         </div>
         <div className="list_section">
 
@@ -39,7 +38,7 @@ const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
           </Spin>
             :
             data?.map((data: any, i: number) => {
-              return <ServiceProviderCard key={i} data={data} />
+              return <ServiceProviderCard key={'d' + i} data={data} />
             })
           }
         </div>

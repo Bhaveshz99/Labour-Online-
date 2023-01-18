@@ -31,14 +31,12 @@ function App() {
   useEffect(() => {
     if (hasToken && !user) {
       callGet('/user/userDetails').then((res: any) => {
-        console.log('🚀 ~ file: App.tsx:32 ~ callGet ~ res', res);
         dispatch(addUser(res?.data.data));
         setUserData(res?.data.data);
       })
     }
   }, []);
 
-  console.log('🚀 ~ file: App.tsx:60 ~ App ~ userData', userData);
 
   return (
     <div>

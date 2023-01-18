@@ -50,7 +50,6 @@ const GoogleAuth: React.FC<googleAuth> = ({ googleWith, role }) => {
     }
 
     const responseGoogleSuccess = async (res: any) => {
-        console.log("🚀 ~ file: GoogleAuth.tsx:54 ~ responseGoogle ~ res", res)
         let googleUser: any = res?.profileObj;
         const Obj: userSignup = {
             userName: googleUser?.givenName,
@@ -75,7 +74,6 @@ const GoogleAuth: React.FC<googleAuth> = ({ googleWith, role }) => {
         }
     };
     const responseGoogleError = (err: any) => {
-        console.log("🚀 ~ file: GoogleAuth.tsx:82 ~ onFailure ~ err", err)
     };
 
     return (<>

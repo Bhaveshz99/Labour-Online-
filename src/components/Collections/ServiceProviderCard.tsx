@@ -15,7 +15,6 @@ interface serviceProviderCardTypes extends IUser {
 const ServiceProviderCard = (props: any, key: number) => {
 
     const { data } = props;
-    console.log('🚀 ~ file: ServiceProviderCard.tsx:18 ~ ServiceProviderCard ~ data', data);
 
     let hasToken = getTokenPass()
     const [showRequestModal, setShowRequestModal] = useState<boolean>(false)
@@ -52,9 +51,9 @@ const ServiceProviderCard = (props: any, key: number) => {
                                 {data?.price && <p> <label>Rate :-</label> ₹ {data?.price}/Day </p>}
                                 <p> <label>Mother Tongue :- </label> English </p>
                                 <p> <label > Service Locations :- </label> {
-                                    data?.needsLocationId?.map((d: any) => {
+                                    data?.needsLocationId?.map((d: any, i: number) => {
                                         return (
-                                            <span>{d?.name},{d?.state} </span>
+                                            <span key={'d' + i}>{d?.name},{d?.state} </span>
                                         )
                                     })
                                 } </p>

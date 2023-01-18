@@ -75,7 +75,6 @@ const Signup: React.FC = () => {
   };
 
   const handleCustomUpload: UploadProps['customRequest'] = (info) => {
-    console.log(info);
     getBase64(info.file as RcFile, (url) => {
       setImageUrl(url);
     });

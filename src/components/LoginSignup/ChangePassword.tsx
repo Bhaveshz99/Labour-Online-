@@ -7,7 +7,6 @@ const ChangePassword: React.FC<UserProps> = (props: UserProps) => {
     const [confirmPassword, setConfirmPassword] = useState<string>('')
     const [submitLoading, setSubmitLoading] = useState<boolean>(false)
     const handleSubmit = () => {
-        console.log();
 
 
 

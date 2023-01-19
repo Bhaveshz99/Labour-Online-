@@ -8,7 +8,7 @@ import {
 } from "react-router-dom";
 import { Provider } from 'react-redux';
 import store from "./Redux/store";
-import { SocketState } from './context/socket/socketState';
+import SocketState from './context/socket/socketState';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

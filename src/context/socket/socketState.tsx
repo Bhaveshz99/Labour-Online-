@@ -1,16 +1,24 @@
 import { SocketContext } from "./socketContext";
 import * as io from 'socket.io-client';
+import { useEffect } from "react";
 
-export const SocketState = (props: any) => {
+const SocketState = (props: any) => {
+
+    let token: any = localStorage.getItem('token');
 
     const socket: any = io.connect('http://localhost:8080', {
         transports: ["websocket"],
-        auth: {
-            token: "Bearer authorization_token_here"
-        },
+        auth: { token },
         upgrade: false,
         reconnection: true,
     });
+
+
+    useEffect(() => {
+        socket.on('sendRequest', (data: any) => {
+            // console.log('🚀 ~ file: ServiceRequestModal.tsx:38 ~ socket.on ~ data', data);
+        });
+    }, [socket]);
 
     return (
         <SocketContext.Provider value={{ socket }}>
@@ -18,3 +26,5 @@ export const SocketState = (props: any) => {
         </SocketContext.Provider>
     )
 }
+
+export default SocketState;

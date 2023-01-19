@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Avatar, Card, Col, Row, Rate, Button, Drawer, Modal } from 'antd'
+import { Avatar, Card, Carousel, Col, Row, Rate, Button, Drawer, Modal } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
@@ -7,21 +7,21 @@ import ImgSrc from '../CommonComponents/ImgSrc'
 import ServiceReviewsModal from './ServiceReviewsModal'
 import ServiceRequestModal from './ServiceRequestModal'
 import { getTokenPass, errorToast } from '../../utils'
-
-interface serviceProviderCardTypes {
+import { IUser } from "../../interfaces/user";
+interface serviceProviderCardTypes extends IUser {
     labourId: Number
 }
 
-const ServiceProviderCard = (props: serviceProviderCardTypes) => {
+const ServiceProviderCard = (props: any, key: number) => {
+
+    const { data } = props;
+
     let hasToken = getTokenPass()
     const [showRequestModal, setShowRequestModal] = useState<boolean>(false)
     const [showReviewsModal, setShowReviewsModal] = useState<boolean>(false)
 
     const user = useSelector((store: any) => store.users);
     const navigate = useNavigate();
-    const onServiceRequest = () => {
-
-    }
 
     // const handle
 
@@ -29,7 +29,7 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
         <section className='service_provider_card'>
             <Row>
                 <Col lg={8} xs={24} sm={24} md={8}>
-                    <ImgSrc src='https://www.energosindia.com/images/plumber.jpg' />
+                    <ImgSrc src='https://img.freepik.com/premium-photo/positive-rep…own-apron-ready-house-renovation_176532-11139.jpg' alt='' />
                 </Col>
                 <Col className='content_area' xs={24} sm={24} lg={16} md={16}>
                     <div>
@@ -38,7 +38,7 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
                                 <Avatar size="large" icon={<UserAddOutlined />} />
                             </div>
                             <div className='name_section'>
-                                <h3 className='name'>Rakesh Ojha</h3>
+                                <h3 className='name'>{data?.fullName}</h3>
                                 <div className='rate_review'>
                                     <Rate value={3} />
                                     <span > 218 Reviews</span>
@@ -48,12 +48,18 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
                         <div className='details'>
                             <div>
 
-                                <p> <label>Rate :-</label> ₹ 400/Day </p>
-                                <p> <label>Mother Tongue :- </label> Gujarati </p>
-                                <p> <label > Service Locations :- </label> Ghatloadia, Satellite, Vejalpur </p>
+                                {data?.price && <p> <label>Rate :-</label> ₹ {data?.price}/Day </p>}
+                                <p> <label>Mother Tongue :- </label> English </p>
+                                <p> <label > Service Locations :- </label> {
+                                    data?.needsLocationId?.map((d: any, i: number) => {
+                                        return (
+                                            <span key={'d' + i}>{d?.name},{d?.state} </span>
+                                        )
+                                    })
+                                } </p>
                                 <div className='actions'>
                                     <Button onClick={() => {
-                                        if (hasToken) { setShowRequestModal(true) }
+                                        if (hasToken) setShowRequestModal(true)
                                         else {
                                             errorToast('Please Login')
                                             navigate('/login')
@@ -72,7 +78,7 @@ const ServiceProviderCard = (props: serviceProviderCardTypes) => {
                 <ServiceReviewsModal showReviewsModal={showReviewsModal} setShowReviewsModal={setShowReviewsModal} />
             }
             {showRequestModal &&
-                <ServiceRequestModal showRequestModal={showRequestModal} setShowRequestModal={setShowRequestModal} />
+                <ServiceRequestModal data={data} showRequestModal={showRequestModal} setShowRequestModal={setShowRequestModal} />
             }
 
         </section>

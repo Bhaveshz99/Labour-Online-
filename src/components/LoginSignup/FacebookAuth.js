@@ -20,20 +20,17 @@ export const FacebookAuth = ({ googleWith }) => {
     };
 
     const responseFacebook = async (response) => {
-        console.log('🚀 ~ file: FacebookAuth.js:22 ~ responseFacebook ~ response', response);
         if (response.status == "unknown") console.log();
         const Obj = {
             userName: response?.name,
             fullName: response?.name,
-            email: response?.email,
-            avatar: response?.picture?.data?.url,
+            email: response?.emails
         };
         if (googleWith == "Login") {
             await callPost('/user/socialLogin', response).then((data) => {
                 // messagePopup('success', 'Login success fully');
                 navigate('/');
             }).catch((error) => {
-                console.log('🚀 ~ file: GoogleAuth.tsx:50 ~ awaitcallPost ~ error', error);
                 // messagePopup('error', error.message);
             })
         } else {
@@ -42,7 +39,6 @@ export const FacebookAuth = ({ googleWith }) => {
                 // messagePopup('success', 'Signup success fully');
                 navigate('/');
             }).catch((error) => {
-                console.log('🚀 ~ file: FacebookAuth.js:45 ~ awaitcallPost ~ error', error);
                 // messagePopup('error', error.message);
             })
         }

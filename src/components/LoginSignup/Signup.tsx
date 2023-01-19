@@ -75,7 +75,6 @@ const Signup: React.FC = () => {
   };
 
   const handleCustomUpload: UploadProps['customRequest'] = (info) => {
-    console.log(info);
     getBase64(info.file as RcFile, (url) => {
       setImageUrl(url);
     });
@@ -109,7 +108,7 @@ const Signup: React.FC = () => {
 
   const handleSignUp = async () => {
     const input = {
-      mobile: mobileNumber,
+      email,
       role: userRole
     }
     await callPost('/user/signup', input).then((res: any) => {
@@ -121,7 +120,7 @@ const Signup: React.FC = () => {
   }
   const handleOtpSubmit = async () => {
     let input = {
-      mobile: mobileNumber,
+      email,
       otp
     };
     await callPost('/user/loginWithOtp', input).then((res: any) => {
@@ -151,35 +150,35 @@ const Signup: React.FC = () => {
             </div>
           }
           {signUpStep === 1 && <>
-            <Form.Item label='Mobile No.'>
-              <Input value={mobileNumber} maxLength={10} minLength={10} onChange={(e) => { setMobileNumber(e.target.value) }} />
+            <Form.Item label='Email'>
+              <Input value={email} type={email} onChange={(e) => { setEmail(e.target.value) }} />
 
             </Form.Item>
             <Form.Item label="Who are you?">
               <Radio.Group value={userRole} className='role_selection' onChange={(e) => { setUserRole(e.target.value) }}>
                 <Radio value="user"> <div>
-                  <ImgSrc src={'./Assets/avatar/avatar6.svg'} />
+                  <ImgSrc src={'./Assets/avatar/avatar6.svg'} alt='' />
                   <p>  Customer</p>
                 </div>
                 </Radio>
 
                 <Radio value="contractor">
                   <div>
-                    <ImgSrc src={'./Assets/avatar/avatar20.svg'} />
+                    <ImgSrc src={'./Assets/avatar/avatar20.svg'} alt='' />
                     <p>Contractor</p>
                   </div>
                 </Radio>
                 <Radio value="labour">
                   <div>
-                    <ImgSrc src={'./Assets/avatar/avatar7.svg'} />
+                    <ImgSrc src={'./Assets/avatar/avatar7.svg'} alt='' />
                     <p>    Labour</p>
                   </div>
                 </Radio>
               </Radio.Group>
-              <GoogleAuth googleWith={"signUp"} />
-              <FacebookAuth googleWith={"signUp"} />
             </Form.Item>
             <Form.Item>
+              {/* <GoogleAuth googleWith={"signUp"} />
+              <FacebookAuth googleWith={"signUp"} /> */}
               <div>
                 <Button onClick={handleSignUp} size='large' loading={submitLoading}> Proceed </Button>
               </div>

@@ -1,33 +1,33 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '../rootReducer';
 
-const initialState: any = {};
+let initialState: any = [];
 
 const userSlice = createSlice({
-    name: 'users',
+    name: 'user',
     initialState,
     reducers: {
         addUser: (state, action) => {
-            return action.payload
+            // return action.payload
+            state.push(action.payload)
+            return state
         },
         editUser: (state, action) => {
-            const { id, name, email } = action.payload;
-            const existingUsers = state.find((user: any) => user.id === id);
-            if (existingUsers) {
-                existingUsers.name = name;
-                existingUsers.email = email;
-            }
+            const { id } = action.payload;
+            const existingUsers = state.findIndex((user: any) => user.id === id);
+            state[existingUsers] = action.payload;
+            return state
         },
         deleteUser: (state, action) => {
             const { id } = action.payload;
             const existingUsers = state.find((user: any) => user.id === id);
             if (existingUsers) {
-                return state.filter((user: any) => user.id !== id);
+                state.filter((user: any) => user.id !== id);
             }
         }
     }
 });
 
 export const { addUser, editUser, deleteUser } = userSlice.actions;
-export const users = (state: RootState) => state.user
+export const user = (state: RootState) => state.user
 export default userSlice.reducer;

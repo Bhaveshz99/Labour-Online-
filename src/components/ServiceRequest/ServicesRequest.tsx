@@ -1,14 +1,21 @@
 import { UserOutlined, CheckOutlined, CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Button, List, Table, Modal, Result, Typography, Card, Avatar } from 'antd'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { UserProps } from '../../interfaces/user'
 import './request-list.scss'
+import { useSelector } from "react-redux";
+import { callGet } from '../../services/Apis';
 const { Paragraph, Text } = Typography
 const { Meta } = Card;
 const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 	const [modelType, setModalType] = useState<string>('');
+	const user = useSelector((store: any) => store.user[0]);
+
+	useEffect(() => {
+		callGet('/request/get');
+	}, [])
 
 	interface DataType {
 		avatar: JSX.Element,
@@ -20,7 +27,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 	}
 
 	const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
-		console.log(rowData);
+		console.log("🚀 ~ file: ServicesRequest.tsx:23 ~ handleRequestAction ~ rowData:-", rowData, "confirmRequest:-", confirmRequest, "ind:-", ind)
 		setSelectedIndex(ind)
 		setModalType(confirmRequest ? 'accept' : 'cancel')
 	}
@@ -34,8 +41,6 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		setModalType('')
 	}
 
-
-
 	let data = [
 		{
 			avatar: <UserOutlined />,
@@ -43,13 +48,23 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			date_time: '12/12/2022',
 			price: 300,
 			address: 'London No. 1 Lake Park',
-			status: 'pending'
+			status: 'pending',
+			ok: true
+		},
+		{
+			avatar: <UserOutlined />,
+			customer_name: 'Rahul',
+			date_time: '12/12/2022',
+			price: 300,
+			address: 'London No. 1 Lake Park',
+			status: 'pending',
+			ok: false
 		}
 	]
 	let columns = [
 		{
 			dataIndex: "avatar",
-			title: ""
+			title: "Image"
 		},
 		{
 			dataIndex: "customer_name",
@@ -72,7 +87,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			title: "Actions",
 			render: (text: any, record: any, index: any) => (
 				<>
-					<Button type="primary" onClick={() => { handleRequestAction(record, true, index) }}> <CheckOutlined /> </Button>
+					{record?.ok ? <Button style={{ marginRight: '10px' }} type="primary" onClick={() => { handleRequestAction(record, true, index) }}> <CheckOutlined /> </Button> : ''}
 					<Button type="primary" onClick={() => { handleRequestAction(record, false, index) }} > <CloseOutlined />  </Button>
 				</>
 			)
@@ -88,13 +103,14 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 				</div>
 				<div className="content">
 					<div className='xs-hide'>
-						<Table dataSource={data} columns={columns} />
+						<Table rowClassName={(record) => record.ok ? 'active-row' : ''} dataSource={data} columns={columns} />
 					</div>
 					<div className="xs-show">
+
 						<div className="service-requests">
 							{data.length > 0 && data.map((item, i) => {
 								return (
-									<Card
+									<Card key={'d' + i}
 										className='request-card'
 										actions={[
 											<div className='accept-requests' onClick={() => { handleRequestAction(item, true, i) }}> Accept </div>,

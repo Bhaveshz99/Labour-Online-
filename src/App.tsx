@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes } from "react-router-dom";
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
@@ -23,24 +23,27 @@ import PrivateRouter from './components/LoginSignup/PrivateRouter';
 function App() {
 
   const dispatch = useDispatch();
-  const user = useSelector((store: any) => store.users);
 
-  let hasToken = getTokenPass()
+  const [userData, setUserData] = useState<any>("");
+
+  let user: any
+  let hasToken = getTokenPass();
   useEffect(() => {
-    if (hasToken) {
+    if (hasToken && !user) {
       callGet('/user/userDetails').then((res: any) => {
-        if (res.data.status === 200) {
-          dispatch(addUser(res?.data.data));
-        }
+        dispatch(addUser(res?.data.data));
+        setUserData(res?.data.data);
       })
     }
-  }, [])
+  }, []);
+
+
   return (
     <div>
-      <Header />
+      <Header userData={userData} />
       <Routes>
-        <Route path='' element={<HomeScreen />} />
-        <Route path='/service-list' element={<ServiceListPage userData={user} />} />
+        <Route path='' element={<HomeScreen userData={user} />} />
+        <Route path='/service-list/:id' element={<ServiceListPage userData={user} />} />
         <Route path='/profile' element={<PrivateRouter><UserProfile userData={user} /></PrivateRouter>} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/login' element={<Login />} />

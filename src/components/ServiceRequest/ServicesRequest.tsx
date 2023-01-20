@@ -2,6 +2,7 @@ import { UserOutlined, CheckOutlined, CloseOutlined, CloseCircleOutlined } from 
 import { Button, List, Table, Modal, Result, Typography, Card, Avatar } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { UserProps } from '../../interfaces/user'
+import moment from 'moment';
 import './request-list.scss'
 import { useSelector } from "react-redux";
 import { callGet } from '../../services/Apis';
@@ -11,20 +12,25 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 	const [modelType, setModalType] = useState<string>('');
+	const [serviceList, setserviceList] = useState<any>([]);
 	const user = useSelector((store: any) => store.user[0]);
 
 	useEffect(() => {
-		callGet('/request/get');
+		callGet('/request/get').then((result: any) => {
+			const data: any = result?.data?.data;
+			for (let i in data) {
+				setserviceList([...serviceList, {
+					userId: user?._id,
+					avatar: data[i]?.to?.avatar || <UserOutlined />,
+					name: data[i]?.to?.fullName,
+					date: moment(data[i]?.date).format('DD/MM/YYYY HH:mm:ss'),
+					address: data[i]?.addressId?.address,
+					price: data[i]?.to?.price,
+					status: data[i]?.status
+				}]);
+			}
+		})
 	}, [])
-
-	interface DataType {
-		avatar: JSX.Element,
-		customer_name: string,
-		date_time: DataType,
-		address: string,
-		price: number,
-		status: string
-	}
 
 	const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
 		console.log("🚀 ~ file: ServicesRequest.tsx:23 ~ handleRequestAction ~ rowData:-", rowData, "confirmRequest:-", confirmRequest, "ind:-", ind)
@@ -41,37 +47,17 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		setModalType('')
 	}
 
-	let data = [
-		{
-			avatar: <UserOutlined />,
-			customer_name: 'Rahul',
-			date_time: '12/12/2022',
-			price: 300,
-			address: 'London No. 1 Lake Park',
-			status: 'pending',
-			ok: true
-		},
-		{
-			avatar: <UserOutlined />,
-			customer_name: 'Rahul',
-			date_time: '12/12/2022',
-			price: 300,
-			address: 'London No. 1 Lake Park',
-			status: 'pending',
-			ok: false
-		}
-	]
 	let columns = [
 		{
 			dataIndex: "avatar",
 			title: "Image"
 		},
 		{
-			dataIndex: "customer_name",
-			title: "Customer name",
+			dataIndex: "name",
+			title: "Name",
 		},
 		{
-			dataIndex: "date_time",
+			dataIndex: "date",
 			title: "Date Time",
 		},
 		{
@@ -87,14 +73,14 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			title: "Actions",
 			render: (text: any, record: any, index: any) => (
 				<>
-					{record?.ok ? <Button style={{ marginRight: '10px' }} type="primary" onClick={() => { handleRequestAction(record, true, index) }}> <CheckOutlined /> </Button> : ''}
+					{record.userId == user?._id ? <Button style={{ marginRight: '10px' }} type="primary" onClick={() => { handleRequestAction(record, true, index) }}> <CheckOutlined /> </Button> : ''}
 					<Button type="primary" onClick={() => { handleRequestAction(record, false, index) }} > <CloseOutlined />  </Button>
 				</>
 			)
 		},
 
 	]
-
+	// moment(data[i]?.date).format('DD/MM/YYYY HH:mm:ss')
 	return (
 		<div className='request_list_wrapper'>
 			<div className="container">
@@ -103,12 +89,12 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 				</div>
 				<div className="content">
 					<div className='xs-hide'>
-						<Table rowClassName={(record) => record.ok ? 'active-row' : ''} dataSource={data} columns={columns} />
+						<Table rowClassName={(record) => record.userId == user?._id ? 'active-row' : ''} dataSource={serviceList} columns={columns} />
 					</div>
 					<div className="xs-show">
 
-						<div className="service-requests">
-							{data.length > 0 && data.map((item, i) => {
+						{/* <div className="service-requests">
+							{serviceList.length > 0 && serviceList.map((item: any, i: number) => {
 								return (
 									<Card key={'d' + i}
 										className='request-card'
@@ -119,11 +105,12 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 									>
 										<Meta
 											avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
-											title={`${item.customer_name}`}
+											title={`${item.name}`}
 											description={
 												<div>
 													<div>
-														<label> Date :-</label> <label>{item.date_time}</label>
+														<label> Date :-</label> <label>{item.date}</label>
+
 													</div>
 													<div>
 														<label> Price :-</label> <label>{item.price}</label>
@@ -139,7 +126,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 									</Card>
 								)
 							})}
-						</div>
+						</div> */}
 					</div>
 				</div>
 			</div>
@@ -163,28 +150,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 							</Button>
 						]}
 					>
-						<div className="desc">
-							<Paragraph>
-								<Text
-									strong
-									style={{
-										fontSize: 16,
-									}}
-								>
-									The content you submitted has the following error:
-								</Text>
-							</Paragraph>
-							<Paragraph>
-								<CloseCircleOutlined className="site-result-demo-error-icon" /> Your account has been
-								frozen.
-							</Paragraph>
-							<Paragraph>
-								<CloseCircleOutlined className="site-result-demo-error-icon" /> Your account is not yet
-								eligible to apply.
-							</Paragraph>
-						</div>
 					</Result>
-
 				</Modal>
 			</>}
 

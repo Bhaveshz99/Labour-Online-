@@ -1,6 +1,7 @@
 import { UserOutlined, CheckOutlined, CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Button, List, Table, Modal, Result, Typography, Card, Avatar, Tag } from 'antd'
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react';
+import { useNavigate } from "react-router-dom"
 import { UserProps } from '../../interfaces/user'
 import moment from 'moment';
 import SocketContext from "../../context/socket/socketContext";
@@ -15,16 +16,23 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 	const [modelType, setModalType] = useState<string>('');
 	const [serviceList, setserviceList] = useState<any>([]);
+	const [oridata, setOridata] = useState<any>([])
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [reqObj, setReqObj] = useState({});
 	const user = useSelector((store: any) => store.user[0]);
+
+	const navigate = useNavigate();
 	let serviceData: any = [];
 
 	const { socket } = useContext(SocketContext);
-	useEffect(() => {
-		callGet('/request/get').then((result: any) => {
+
+	const getData = async () => {
+		await callGet('/request/get').then((result: any) => {
 			const data: any = result?.data?.data;
-			console.log("🚀 ~ file: ServicesRequest.tsx:25 ~ callGet ~ data", data)
+			setOridata(data);
 			for (let i in data) {
 				serviceData?.push({
+					_id: data[i]._id,
 					by: data[i]?.by?._id,
 					to: data[i]?.to?._id,
 					avatar: data[i]?.to?.avatar || <UserOutlined />,
@@ -37,11 +45,14 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			}
 			setserviceList(serviceData);
 		})
+	}
+	useEffect(() => {
+		getData();
 	}, [])
 
 	socket.on('resendRequest', (data: any) => {
-		console.log("🚀 ~ file: ServicesRequest.tsx:43 ~ socket.on ~ data -------->", data)
 		setserviceList((oldArray: any) => [...oldArray, {
+			_id: data?._id,
 			by: data?.by?._id,
 			to: data?.to?._id,
 			avatar: data?.to?.avatar || <UserOutlined />,
@@ -52,6 +63,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			status: data?.status
 		}]);
 		serviceData?.push({
+			_id: data?._id,
 			by: data?.by?._id,
 			to: data?.to?._id,
 			avatar: data?.to?.avatar || <UserOutlined />,
@@ -64,24 +76,46 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 	})
 
 	const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
-		console.log("🚀 ~ file: ServicesRequest.tsx:23 ~ handleRequestAction ~ rowData:-", rowData, "confirmRequest:-", confirmRequest, "ind:-", ind)
 		setSelectedIndex(ind)
 		setModalType(confirmRequest ? 'accept' : 'cancel')
-		let Obj: any = {};
+		let Obj: any = {
+			_id: rowData?._id,
+			date: oridata[ind]?.date,
+			by: rowData?.by,
+			to: rowData?.to,
+			price: rowData?.price,
+			categoryId: oridata[ind]?.categoryId?._id,
+			addressId: oridata[ind]?.addressId?._id,
+		};
 		if (confirmRequest) {
+			socket.emit("requestTrue", Obj)
+			socket.on("sendrequestTrue", (data: any) => {
+				if (data?.status) {
+					navigate("/bookings")
+				} else {
+					setIsModalOpen(false);
+				}
+			})
 
 		} else {
-			user?._id == rowData?.to && (Obj.status = 'reject');;
+			user?._id == rowData?.to && (Obj.status = 'reject');
 			user?._id == rowData?.by && (Obj.isDeleted = true);
-			socket.emit("requestFalse", Obj)
-			socket.on("sendRequestFalse", (data: any) => {
-				console.log("🚀 ~ file: ServicesRequest.tsx:63 ~ socket.on ~ data", data)
-			})
+			setReqObj(Obj);
 		}
 	}
 
 	const handleAcceptRequest = (requestAction: boolean) => {
-
+		socket.emit("requestFalse", reqObj)
+		socket.on("sendRequestFalse", (data: any) => {
+			if (data?.status) {
+				setIsModalOpen(false);
+				onModalClose();
+				setserviceList([]);
+				getData();
+			} else {
+				setIsModalOpen(false);
+			}
+		})
 	}
 
 	const onModalClose = () => {

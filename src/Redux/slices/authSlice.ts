@@ -20,9 +20,9 @@ const userSlice = createSlice({
         },
         deleteUser: (state, action) => {
             const { id } = action.payload;
-            const existingUsers = state.find((user: any) => user.id === id);
+            const existingUsers = state.find((user: any) => user._id === id);
             if (existingUsers) {
-                state.filter((user: any) => user.id !== id);
+                return state.filter((user: any) => user._id !== id);
             }
         }
     }

@@ -7,19 +7,21 @@ import './header.scss'
 import ImgSrc from '../CommonComponents/ImgSrc';
 import { getTokenPass, successToast } from '../../utils';
 import { UserProps } from '../../interfaces/user'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser } from '../../Redux/slices/authSlice'
 const Header: React.FC<UserProps> = (props: UserProps) => {
   const naviagte = useNavigate()
   let hasToken = getTokenPass()
   const dispatch = useDispatch();
+  const user = useSelector((store: any) => store.user[0]);
 
   let token = localStorage.getItem('token');
 
-  const onLogout = () => {
+  const onLogout = (e: any) => {
+    e.preventDefault();
     localStorage.clear();
     naviagte('/login')
-    dispatch(deleteUser(null));
+    dispatch(deleteUser({ id: user?._id }));
     successToast('User Logged Out')
   }
 
@@ -38,9 +40,9 @@ const Header: React.FC<UserProps> = (props: UserProps) => {
       type: 'divider',
     }, {
       label: (
-        <Link to="/profile">
+        <Link to="/login" onClick={onLogout}>
           <Space>
-            <LogoutOutlined onClick={onLogout} />
+            <LogoutOutlined />
             Sign out
           </Space>
         </Link>
@@ -72,7 +74,7 @@ const Header: React.FC<UserProps> = (props: UserProps) => {
               {/* <div id="change-language"></div> */}
               <div>
                 {props.userData ?
-                  <PoweroffOutlined className='logout' onClick={() => { onLogout() }} />
+                  <PoweroffOutlined className='logout' onClick={onLogout} />
                   : <Link to='/login'> <LoginOutlined /> </Link>
                 }
               </div>

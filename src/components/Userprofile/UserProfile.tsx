@@ -59,6 +59,7 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
 
     const [messageApi, contextHolder] = message.useMessage();
 
+    const baseUrl = process.env.REACT_APP_BASE_URL;
     useEffect(() => {
         if (user) {
             setEmail(user?.email);
@@ -172,7 +173,8 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
                         <Row justify="space-between" align="middle" gutter={[24, 0]}>
                             <Col span={24} md={12} className="col-info">
                                 <Avatar.Group>
-                                    <Avatar style={{ marginRight: "10px" }} size={74} shape="square" src={<Image src="./Assets/avatar/avatar1.svg" />} />
+                                    <Avatar style={{ marginRight: "10px" }} size={74} shape="square" src={<Image src={`${baseUrl}/${user?.avatar}`} />} />
+                                    {/* "./Assets/avatar/avatar1.svg" */}
                                     {/* <Avatar size={74} shape="square" src={"./Assets/avatar/avatar1.svg"} /> */}
                                     <div>
 

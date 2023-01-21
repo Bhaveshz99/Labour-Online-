@@ -25,8 +25,8 @@ function App() {
   const dispatch = useDispatch();
 
   const [userData, setUserData] = useState<any>("");
+  const user = useSelector((store: any) => store.user[0]);
 
-  let user: any
   let hasToken = getTokenPass();
   useEffect(() => {
     if (hasToken && !user) {
@@ -40,7 +40,7 @@ function App() {
 
   return (
     <div>
-      <Header userData={userData} />
+      <Header userData={userData || user} />
       <Routes>
         <Route path='' element={<HomeScreen userData={user} />} />
         <Route path='/service-list/:id' element={<ServiceListPage userData={user} />} />

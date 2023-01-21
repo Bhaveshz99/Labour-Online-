@@ -1,14 +1,18 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { UserOutlined, CheckOutlined, CloseOutlined, EyeOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import { Button, List, Table, Modal, Result, Typography, Card, Avatar } from 'antd'
 import { UserProps } from '../../interfaces/user'
-import './bookings.scss'
+import './bookings.scss';
+import moment from 'moment';
+import { callGet } from '../../services/Apis';
 
 const { Paragraph, Text } = Typography
 const { Meta } = Card;
 const Bookings: React.FC<UserProps> = (props: UserProps) => {
     const [selectedIndex, setSelectedIndex] = useState<number>(-1);
     const [modelType, setModalType] = useState<string>('');
+    const [booking, setBooking] = useState<any>([]);
+    const [tableData, setTableData] = useState([])
 
     interface DataType {
         avatar: JSX.Element,
@@ -18,6 +22,16 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
         price: number,
         status: string
     }
+
+    const getBookingList = async () => {
+        await callGet('/order/get').then((result: any) => {
+            let data = result?.data?.data;
+        });
+    }
+
+    useEffect(() => {
+        getBookingList();
+    }, [])
 
     const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
         setSelectedIndex(ind)
@@ -33,7 +47,7 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
         setModalType('')
     }
 
-
+    // let data = [];
 
     let data = [
         {
@@ -57,6 +71,10 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
         {
             dataIndex: "date_time",
             title: "Date Time",
+        },
+        {
+            dataIndex: "mobile",
+            title: "Mobile",
         },
         {
             dataIndex: "price",
@@ -92,7 +110,7 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
                         <div className="service-requests">
                             {data.length > 0 && data.map((item, i) => {
                                 return (
-                                    <Card key={'d'+i}
+                                    <Card key={'d' + i}
                                         className='request-card'
                                     // actions={[
                                     //     <div className='accept-requests' onClick={() => { handleRequestAction(item, true, i) }}> Accept </div>,
@@ -145,26 +163,6 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
                             </Button>
                         ]}
                     >
-                        <div className="desc">
-                            <Paragraph>
-                                <Text
-                                    strong
-                                    style={{
-                                        fontSize: 16,
-                                    }}
-                                >
-                                    The content you submitted has the following error:
-                                </Text>
-                            </Paragraph>
-                            <Paragraph>
-                                <CloseCircleOutlined className="site-result-demo-error-icon" /> Your account has been
-                                frozen.
-                            </Paragraph>
-                            <Paragraph>
-                                <CloseCircleOutlined className="site-result-demo-error-icon" /> Your account is not yet
-                                eligible to apply.
-                            </Paragraph>
-                        </div>
                     </Result>
 
                 </Modal>

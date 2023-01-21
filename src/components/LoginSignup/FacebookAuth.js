@@ -20,7 +20,6 @@ export const FacebookAuth = ({ googleWith }) => {
     };
 
     const responseFacebook = async (response) => {
-        if (response.status == "unknown") console.log();
         const Obj = {
             userName: response?.name,
             fullName: response?.name,

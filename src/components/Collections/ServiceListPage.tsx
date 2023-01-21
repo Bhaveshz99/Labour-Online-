@@ -20,7 +20,6 @@ const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
       setData(res?.data?.data);
       setLoader(true);
     }).catch((error: any) => {
-      console.log('🚀 ~ file: ServiceListPage.tsx:24 ~ callPost ~ error', error);
     })
   }, [])
 

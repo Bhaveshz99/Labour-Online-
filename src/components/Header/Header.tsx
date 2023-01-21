@@ -1,25 +1,56 @@
 import React from 'react'
-import { Input } from 'antd';
+import { Input, Dropdown, Space } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
-import { NotificationOutlined, SearchOutlined, AppstoreOutlined, BookOutlined, FileUnknownOutlined, UserOutlined, PoweroffOutlined, LoginOutlined } from '@ant-design/icons'
-// import Logo from '../../assets/images/man.png'
+import { NotificationOutlined, SearchOutlined, AppstoreOutlined, BookOutlined, FileUnknownOutlined, UserOutlined, PoweroffOutlined, LoginOutlined, LogoutOutlined } from '@ant-design/icons'
+import type { MenuProps } from 'antd';
 import './header.scss'
 import ImgSrc from '../CommonComponents/ImgSrc';
 import { getTokenPass, successToast } from '../../utils';
 import { UserProps } from '../../interfaces/user'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteUser } from '../../Redux/slices/authSlice'
 const Header: React.FC<UserProps> = (props: UserProps) => {
   const naviagte = useNavigate()
   let hasToken = getTokenPass()
   const dispatch = useDispatch();
+  const user = useSelector((store: any) => store.user[0]);
 
-  const onLogout = () => {
-    localStorage.removeItem('token')
-    naviagte('/')
-    dispatch(deleteUser(null));
+  let token = localStorage.getItem('token');
+
+  const onLogout = (e: any) => {
+    e.preventDefault();
+    localStorage.clear();
+    naviagte('/login')
+    dispatch(deleteUser({ id: user?._id }));
     successToast('User Logged Out')
   }
+
+  const items: MenuProps['items'] = [
+    {
+      label: (
+        <Link to="/profile">
+          <Space>
+            <UserOutlined /> Profile
+          </Space>
+        </Link>
+      ),
+      key: '0',
+    },
+    {
+      type: 'divider',
+    }, {
+      label: (
+        <Link to="/login" onClick={onLogout}>
+          <Space>
+            <LogoutOutlined />
+            Sign out
+          </Space>
+        </Link>
+      ),
+      key: '1',
+    }
+
+  ]
 
   return (
     <header className='header_wrapper'>
@@ -43,7 +74,7 @@ const Header: React.FC<UserProps> = (props: UserProps) => {
               {/* <div id="change-language"></div> */}
               <div>
                 {props.userData ?
-                  <PoweroffOutlined className='logout' onClick={() => { onLogout() }} />
+                  <PoweroffOutlined className='logout' onClick={onLogout} />
                   : <Link to='/login'> <LoginOutlined /> </Link>
                 }
               </div>
@@ -82,9 +113,13 @@ const Header: React.FC<UserProps> = (props: UserProps) => {
                 </Link>}
               </div>
               <div>
-                {props.userData ? <PoweroffOutlined className='logout' onClick={() => { onLogout() }} /> : <Link to='/login'>
-                  <LoginOutlined />
-                </Link>}
+                {token ?
+                  <Dropdown menu={{ items }} placement="bottom">
+                    <PoweroffOutlined className='logout' />
+                  </ Dropdown>
+                  : <Link to='/login'>
+                    <LoginOutlined />
+                  </Link>}
               </div>
             </div>
           </div>

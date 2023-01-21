@@ -9,7 +9,7 @@ import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import ImgSrc from '../CommonComponents/ImgSrc';
 import './signup.scss';
 import { callPost } from "../../services/Apis";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addUser } from "../../Redux/slices/authSlice";
 import { GoogleLogin } from 'react-google-login';
 import { gapi } from 'gapi-script';

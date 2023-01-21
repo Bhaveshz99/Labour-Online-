@@ -13,13 +13,6 @@ const SocketState = (props: any) => {
         reconnection: true,
     });
 
-
-    useEffect(() => {
-        socket.on('sendRequest', (data: any) => {
-            // console.log('🚀 ~ file: ServiceRequestModal.tsx:38 ~ socket.on ~ data', data);
-        });
-    }, [socket]);
-
     return (
         <SocketContext.Provider value={{ socket }}>
             {props.children}

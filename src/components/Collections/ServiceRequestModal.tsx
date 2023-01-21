@@ -67,12 +67,7 @@ const ServiceRequestModal = (props: ServiceRequestModalTypes) => {
       date: selectDateAndTime,
       price: props?.data?.price
     }
-    console.log("🚀 ~ file: ServiceRequestModal.tsx:70 ~ handleSendRequest ~ Obj", Obj)
-
     socket.emit('createRequest', Obj);
-    socket.on('resendRequest', (data: any) => {
-      console.log('🚀 ~ file: ServiceRequestModal.tsx:72 ~ socket.on ~ data', data);
-    });
     props.setShowRequestModal(false)
   }
 

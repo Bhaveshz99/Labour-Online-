@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Avatar, Card, Carousel, Col, Row, Rate, Button, Drawer, Modal } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
 import ImgSrc from '../CommonComponents/ImgSrc'
 import ServiceReviewsModal from './ServiceReviewsModal'
 import ServiceRequestModal from './ServiceRequestModal'
@@ -20,7 +19,6 @@ const ServiceProviderCard = (props: any, key: number) => {
     const [showRequestModal, setShowRequestModal] = useState<boolean>(false)
     const [showReviewsModal, setShowReviewsModal] = useState<boolean>(false)
 
-    const user = useSelector((store: any) => store.users);
     const navigate = useNavigate();
 
     // const handle

@@ -6,7 +6,7 @@ const config: any = {
     headers: { Authorization: `Bearer ${token}` }
 };
 
-const baseUrl = process.env.REACT_APP_BASE_URL || "https://menonlinebe.onrender.com";
+const baseUrl = process.env.REACT_APP_BASE_URL || 'https://menonlinebe.onrender.com';
 
 export const callGet = (path: string) => {
     return new Promise(async (resolve, reject) => {

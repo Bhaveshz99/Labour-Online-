@@ -15,19 +15,19 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 	const [modelType, setModalType] = useState<string>('');
-	const [serviceList, setserviceList] = useState<any>([]);
+	const [serviceList, setServiceList] = useState<any>([]);
 	const [oridata, setOridata] = useState<any>([])
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [reqObj, setReqObj] = useState({});
 	const user = useSelector((store: any) => store.user[0]);
 
 	const navigate = useNavigate();
-	let serviceData: any = [];
 
 	const { socket } = useContext(SocketContext);
 
 	const getData = async () => {
 		await callGet('/request/get').then((result: any) => {
+			let serviceData: any = [];
 			const data: any = result?.data?.data;
 			setOridata(data);
 			for (let i in data) {
@@ -43,7 +43,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 					status: data[i]?.status
 				});
 			}
-			setserviceList(serviceData);
+			setServiceList(serviceData);
 		})
 	}
 	useEffect(() => {
@@ -51,7 +51,8 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 	}, [])
 
 	socket.on('resendRequest', (data: any) => {
-		setserviceList((oldArray: any) => [...oldArray, {
+		console.log('🚀 ~ file: ServicesRequest.tsx:54 ~ socket.on ~ data', data);
+		setServiceList((oldArray: any) => [...oldArray, {
 			_id: data?._id,
 			by: data?.by?._id,
 			to: data?.to?._id,
@@ -62,17 +63,6 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			price: data?.to?.price,
 			status: data?.status
 		}]);
-		serviceData?.push({
-			_id: data?._id,
-			by: data?.by?._id,
-			to: data?.to?._id,
-			avatar: data?.to?.avatar || <UserOutlined />,
-			name: user?._id == data?.by?._id ? data?.to?.fullName : data?.by?.fullName,
-			date: moment(data?.date).format('DD/MM/YYYY HH:mm:ss'),
-			address: data?.addressId?.address,
-			price: data?.to?.price,
-			status: data?.status
-		});
 	})
 
 	const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
@@ -90,6 +80,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		if (confirmRequest) {
 			socket.emit("requestTrue", Obj)
 			socket.on("sendrequestTrue", (data: any) => {
+				console.log('🚀 ~ file: ServicesRequest.tsx:83 ~ socket.on ~ data', data);
 				if (data?.status) {
 					navigate("/bookings")
 				} else {
@@ -110,7 +101,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			if (data?.status) {
 				setIsModalOpen(false);
 				onModalClose();
-				setserviceList([]);
+				setServiceList([]);
 				getData();
 			} else {
 				setIsModalOpen(false);
@@ -194,7 +185,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 				</div>
 				<div className="content">
 					<div className='xs-hide'>
-						<Table rowClassName={(record) => (record?.to == user?._id) ? 'active-row' : ''} dataSource={serviceList || serviceData} columns={columns} />
+						<Table rowClassName={(record) => (record?.to == user?._id) ? 'active-row' : ''} dataSource={serviceList} columns={columns} />
 					</div>
 				</div>
 			</div>

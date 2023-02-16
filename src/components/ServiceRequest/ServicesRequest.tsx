@@ -16,6 +16,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 	const [modelType, setModalType] = useState<string>('');
 	const [serviceList, setServiceList] = useState<any>([]);
+	console.log('🚀 ~ file: ServicesRequest.tsx:19 ~ serviceList', serviceList);
 	const [oridata, setOridata] = useState<any>([])
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [reqObj, setReqObj] = useState({});
@@ -50,9 +51,9 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		getData();
 	}, [])
 
-	socket.on('resendRequest', (data: any) => {
+	socket.off('resendRequest').on('resendRequest', ({ status, data }: any) => {
 		console.log('🚀 ~ file: ServicesRequest.tsx:54 ~ socket.on ~ data', data);
-		setServiceList((oldArray: any) => [...oldArray, {
+		setServiceList((oldArray: any) => oldArray.concat({
 			_id: data?._id,
 			by: data?.by?._id,
 			to: data?.to?._id,
@@ -62,7 +63,18 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			address: data?.addressId?.address,
 			price: data?.to?.price,
 			status: data?.status
-		}]);
+		}));
+		console.log('🚀 ~ file: ServicesRequest.tsx:67 ~ setServiceList ~ {}', {
+			_id: data?._id,
+			by: data?.by?._id,
+			to: data?.to?._id,
+			avatar: data?.to?.avatar || <UserOutlined />,
+			name: user?._id == data?.by?._id ? data?.to?.fullName : data?.by?.fullName,
+			date: moment(data?.date).format('DD/MM/YYYY HH:mm:ss'),
+			address: data?.addressId?.address,
+			price: data?.to?.price,
+			status: data?.status
+		});
 	})
 
 	const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
@@ -79,14 +91,6 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		};
 		if (confirmRequest) {
 			socket.emit("requestTrue", Obj)
-			socket.on("sendrequestTrue", (data: any) => {
-				console.log('🚀 ~ file: ServicesRequest.tsx:83 ~ socket.on ~ data', data);
-				if (data?.status) {
-					navigate("/bookings")
-				} else {
-					setIsModalOpen(false);
-				}
-			})
 
 		} else {
 			user?._id == rowData?.to && (Obj.status = 'reject');
@@ -95,19 +99,29 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		}
 	}
 
+	socket.off('sendrequestTrue').on("sendrequestTrue", (data: any) => {
+		console.log('🚀 ~ file: ServicesRequest.tsx:83 ~ socket.on ~ data', data);
+		if (data?.status) {
+			navigate("/bookings")
+		} else {
+			setIsModalOpen(false);
+		}
+	})
+
 	const handleAcceptRequest = (requestAction: boolean) => {
 		socket.emit("requestFalse", reqObj)
-		socket.on("sendRequestFalse", (data: any) => {
-			if (data?.status) {
-				setIsModalOpen(false);
-				onModalClose();
-				setServiceList([]);
-				getData();
-			} else {
-				setIsModalOpen(false);
-			}
-		})
 	}
+
+	socket.off('sendRequestFalse').on("sendRequestFalse", (data: any) => {
+		if (data?.status) {
+			setIsModalOpen(false);
+			onModalClose();
+			setServiceList([]);
+			getData();
+		} else {
+			setIsModalOpen(false);
+		}
+	})
 
 	const onModalClose = () => {
 		setSelectedIndex(-1);

@@ -49,7 +49,7 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
     const [gsLoading, setGsLoading] = useState<boolean>(false)
     const [wpLoading, setWpLoading] = useState<boolean>(false)
     const [loading, setLoading] = useState<boolean>(true);
-    const [workShip, setWorkShip] = useState<boolean>(user?.role == 'user' ? false : true);
+    const [workShip, setWorkShip] = useState<boolean>(user?.role === 'user' ? false : true);
     // const [workShip, setWorkShip] = useState<boolean>(true);
     const [updateProfilePic, setupdateProfilePic] = useState<boolean>(false)
     const [imgLoading, setImgLoading] = useState(false);
@@ -126,6 +126,8 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
         if (info.file.status === 'done') {
             // Get this url from response in real world.
             getBase64(info.file.originFileObj as RcFile, (url) => {
+                console.log('🚀 ~ file: UserProfile.tsx:129 ~ getBase64 ~ info.file.originFileObj', info.file.originFileObj);
+                console.log('🚀 ~ file: UserProfile.tsx:129 ~ getBase64 ~ url', url);
                 setImgLoading(false);
                 setImageUrl(url);
             });

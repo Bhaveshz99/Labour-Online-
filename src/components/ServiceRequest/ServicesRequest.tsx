@@ -16,7 +16,6 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 	const [modelType, setModalType] = useState<string>('');
 	const [serviceList, setServiceList] = useState<any>([]);
-	console.log('🚀 ~ file: ServicesRequest.tsx:19 ~ serviceList', serviceList);
 	const [oridata, setOridata] = useState<any>([])
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [reqObj, setReqObj] = useState({});
@@ -37,7 +36,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 					by: data[i]?.by?._id,
 					to: data[i]?.to?._id,
 					avatar: data[i]?.to?.avatar || <UserOutlined />,
-					name: user?._id == data[i]?.by?._id ? data[i]?.to?.fullName : data[i]?.by?.fullName,
+					name: user?._id === data[i]?.by?._id ? data[i]?.to?.fullName : data[i]?.by?.fullName,
 					date: moment(data[i]?.date).format('DD/MM/YYYY HH:mm:ss'),
 					address: data[i]?.addressId?.address,
 					price: data[i]?.to?.price,
@@ -58,23 +57,12 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			by: data?.by?._id,
 			to: data?.to?._id,
 			avatar: data?.to?.avatar || <UserOutlined />,
-			name: user?._id == data?.by?._id ? data?.to?.fullName : data?.by?.fullName,
+			name: user?._id === data?.by?._id ? data?.to?.fullName : data?.by?.fullName,
 			date: moment(data?.date).format('DD/MM/YYYY HH:mm:ss'),
 			address: data?.addressId?.address,
 			price: data?.to?.price,
 			status: data?.status
 		}));
-		console.log('🚀 ~ file: ServicesRequest.tsx:67 ~ setServiceList ~ {}', {
-			_id: data?._id,
-			by: data?.by?._id,
-			to: data?.to?._id,
-			avatar: data?.to?.avatar || <UserOutlined />,
-			name: user?._id == data?.by?._id ? data?.to?.fullName : data?.by?.fullName,
-			date: moment(data?.date).format('DD/MM/YYYY HH:mm:ss'),
-			address: data?.addressId?.address,
-			price: data?.to?.price,
-			status: data?.status
-		});
 	})
 
 	const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
@@ -93,8 +81,8 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			socket.emit("requestTrue", Obj)
 
 		} else {
-			user?._id == rowData?.to && (Obj.status = 'reject');
-			user?._id == rowData?.by && (Obj.isDeleted = true);
+			user?._id === rowData?.to && (Obj.status = 'reject');
+			user?._id === rowData?.by && (Obj.isDeleted = true);
 			setReqObj(Obj);
 		}
 	}
@@ -139,6 +127,14 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		status: string
 	}
 
+	const handleCancle = () => {
+
+	}
+
+	const handleAccpt = () => {
+
+	}
+
 	let columns: ColumnsType<DataType> = [
 		{
 			dataIndex: "avatar",
@@ -171,9 +167,9 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			title: "Status",
 			render: (_, record: DataType) => (
 				<>
-					{record?.status == "pending" && <Tag color='yellow'>{record?.status}</Tag>}
-					{record?.status == "success" && <Tag color='green'>{record?.status}</Tag>}
-					{record?.status == "reject" && <Tag color='red'>{record?.status}</Tag>}
+					{record?.status === "pending" && <Tag color='yellow'>{record?.status}</Tag>}
+					{record?.status === "success" && <Tag color='green'>{record?.status}</Tag>}
+					{record?.status === "reject" && <Tag color='red'>{record?.status}</Tag>}
 				</>
 			),
 		},
@@ -183,7 +179,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			title: "Actions",
 			render: (text: any, record: any, index: any) => (
 				<>
-					{record?.to == user?._id ? <Button style={{ marginRight: '10px' }} type="primary" onClick={() => { handleRequestAction(record, true, index) }}> <CheckOutlined /> </Button> : ''}
+					{record?.to === user?._id ? <Button style={{ marginRight: '10px' }} type="primary" onClick={() => { handleRequestAction(record, true, index) }}> <CheckOutlined /> </Button> : ''}
 					<Button type="primary" onClick={() => { handleRequestAction(record, false, index) }} > <CloseOutlined />  </Button>
 				</>
 			)
@@ -199,7 +195,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 				</div>
 				<div className="content">
 					<div className='xs-hide'>
-						<Table rowClassName={(record) => (record?.to == user?._id) ? 'active-row' : ''} dataSource={serviceList} columns={columns} />
+						<Table rowClassName={(record) => (record?.to === user?._id) ? 'active-row' : ''} dataSource={serviceList} columns={columns} />
 					</div>
 				</div>
 			</div>

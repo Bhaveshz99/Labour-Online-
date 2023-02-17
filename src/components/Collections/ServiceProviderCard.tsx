@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Avatar, Card, Carousel, Col, Row, Rate, Button, Drawer, Modal } from 'antd'
-import { UserAddOutlined } from '@ant-design/icons'
+import { Avatar, Card, Carousel, Col, Row, Rate, Button, Drawer, Modal, Space } from 'antd'
+import { UserAddOutlined, } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import ImgSrc from '../CommonComponents/ImgSrc'
 import ServiceReviewsModal from './ServiceReviewsModal'
@@ -18,10 +18,20 @@ const ServiceProviderCard = (props: any, key: number) => {
     let hasToken = getTokenPass()
     const [showRequestModal, setShowRequestModal] = useState<boolean>(false)
     const [showReviewsModal, setShowReviewsModal] = useState<boolean>(false)
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
 
-    // const handle
+    const showModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleOk = () => {
+        setIsModalOpen(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+    };
 
     return (
         <section className='service_provider_card'>
@@ -56,15 +66,18 @@ const ServiceProviderCard = (props: any, key: number) => {
                                     })
                                 } </p>
                                 <div className='actions'>
-                                    <Button onClick={() => {
-                                        if (hasToken) setShowRequestModal(true)
-                                        else {
-                                            errorToast('Please Login')
-                                            navigate('/login')
-                                        }
-                                    }}>
-                                        Request
-                                    </Button>
+                                    <Space>
+                                        <Button onClick={showModal}>Show Details</Button>
+                                        <Button onClick={() => {
+                                            if (hasToken) setShowRequestModal(true)
+                                            else {
+                                                errorToast('Please Login')
+                                                navigate('/login')
+                                            }
+                                        }}>
+                                            Request
+                                        </Button>
+                                    </Space>
                                     <p className='reviews' onClick={() => { setShowReviewsModal(true) }}> <u> Reviews </u> </p>
                                 </div>
                             </div>
@@ -72,6 +85,16 @@ const ServiceProviderCard = (props: any, key: number) => {
                     </div>
                 </Col>
             </Row>
+
+            <Modal title="Profile" open={isModalOpen} onOk={handleOk} onCancel={handleCancel}>
+
+                <p><b>Full Name : </b> {data?.fullName}</p>
+                <p><b>Email : </b>{data?.email}</p>
+                <p><b>Mobile : </b> <a href={`tel:${data?.mobile}`}>{data?.mobile} </a></p>
+                {data?.price && <p><b>Price : </b>{data?.price}</p>}
+                {/* <p><b>Price : </b>{data?.price}</p> */}
+
+            </Modal>
             {showReviewsModal &&
                 <ServiceReviewsModal showReviewsModal={showReviewsModal} setShowReviewsModal={setShowReviewsModal} />
             }

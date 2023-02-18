@@ -1,0 +1,97 @@
+@import './mixin.scss';
+@import './variables.scss';
+
+body{
+    background-color: #f5f5f5;
+}
+* {
+    p {
+        font-size: 24px;
+
+        @include mq('lap') {
+            font-size: 14px;
+        }
+    }
+}
+
+h1 {
+    font-size: 40px;
+    @include mq('phone'){
+        font-size: 30px;
+    }
+}
+
+h2 {
+    font-size: 32px;
+    @include mq('phone'){
+        font-size: 24px;
+    }
+}
+
+h3 {
+    font-size: 24px;
+    @include mq('phone'){
+        font-size: 18px;
+    }
+}
+
+h4 {
+    font-size: 18px;
+    @include mq('phone'){
+        font-size: 14px;
+    }
+}
+
+h5 {
+    font-size: 14px;
+    @include mq('phone'){
+        font-size: 12px;
+    }
+}
+
+h6 {
+    font-size: 12px;
+    @include mq('phone'){
+        font-size: 8px;
+    }
+}
+
+.active{
+    @include mq('phone'){
+        color: #6446EC;
+    }
+}
+
+.align-center{
+    text-align: center;
+}
+
+.container {
+    padding: 0px 15px;
+    background-color: #FAFAFA;
+    @include mq('phone') {
+        padding: 0 10px;
+    }
+}
+
+@include mq('tablet-and-up') {
+    .xs-show{
+        display: none;
+    }
+    
+}
+
+@include mq('phone'){
+    .xs-show{
+        display: block;
+    }
+    .xs-hide{
+        display: none;
+    }
+}
+
+.xs .img {
+    img {
+        width: 100%;
+    }
+}

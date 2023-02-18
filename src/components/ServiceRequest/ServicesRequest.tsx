@@ -1,5 +1,5 @@
 import { UserOutlined, CheckOutlined, CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
-import { Button, List, Table, Modal, Result, Typography, Card, Avatar, Tag } from 'antd'
+import { Button, List, Table, Modal, Result, Typography, Card, Avatar, Tag, message } from 'antd'
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom"
 import { UserProps } from '../../interfaces/user'
@@ -13,17 +13,26 @@ const { Paragraph, Text } = Typography
 const { Meta } = Card;
 const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
+	const navigate = useNavigate();
+	const [messageApi, contextHolder] = message.useMessage();
+
+	const { socket } = useContext(SocketContext);
+	const user = useSelector((store: any) => store.user[0]);
+
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 	const [modelType, setModalType] = useState<string>('');
 	const [serviceList, setServiceList] = useState<any>([]);
 	const [oridata, setOridata] = useState<any>([])
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [reqObj, setReqObj] = useState({});
-	const user = useSelector((store: any) => store.user[0]);
 
-	const navigate = useNavigate();
+	const Message = (type: any, content: any) => {
+		messageApi.open({
+			type,
+			content
+		})
+	}
 
-	const { socket } = useContext(SocketContext);
 
 	const getData = async () => {
 		await callGet('/request/get').then((result: any) => {
@@ -39,6 +48,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 					name: user?._id === data[i]?.by?._id ? data[i]?.to?.fullName : data[i]?.by?.fullName,
 					date: moment(data[i]?.date).format('DD/MM/YYYY HH:mm:ss'),
 					address: data[i]?.addressId?.address,
+					category: data[i]?.categoryId?.name,
 					price: data[i]?.to?.price,
 					status: data[i]?.status
 				});
@@ -51,18 +61,42 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 	}, [])
 
 	socket.off('resendRequest').on('resendRequest', ({ status, data }: any) => {
-		console.log('🚀 ~ file: ServicesRequest.tsx:54 ~ socket.on ~ data', data);
-		setServiceList((oldArray: any) => oldArray.concat({
-			_id: data?._id,
-			by: data?.by?._id,
-			to: data?.to?._id,
-			avatar: data?.to?.avatar || <UserOutlined />,
-			name: user?._id === data?.by?._id ? data?.to?.fullName : data?.by?.fullName,
-			date: moment(data?.date).format('DD/MM/YYYY HH:mm:ss'),
-			address: data?.addressId?.address,
-			price: data?.to?.price,
-			status: data?.status
-		}));
+		if (status) {
+			setServiceList((oldArray: any) => oldArray.concat({
+				_id: data?._id,
+				by: data?.by?._id,
+				to: data?.to?._id,
+				avatar: (user?._id === data?.by?._id ? data?.to?.avatar : data?.by?.avatar) || <UserOutlined />,
+				name: user?._id === data?.by?._id ? data?.to?.fullName : data?.by?.fullName,
+				date: moment(data?.date).format('DD/MM/YYYY HH:mm:ss'),
+				address: data?.addressId?.address,
+				category: data?.categoryId?.name,
+				price: data?.to?.price,
+				status: data?.status
+			}));
+		} else {
+			Message('error', 'Something went wrong')
+		}
+	})
+
+	socket.off('requestTrue').on('requestTrue', ({ status, data }: any) => {
+		console.log('🚀 ~ file: ServicesRequest.tsx:81 ~ socket.off ~ data', data);
+		if (status) {
+			setServiceList(serviceList.filter((item: any) => item?._id !== data?._id));
+		} else {
+			Message('error', 'Something went wrong')
+		}
+
+	})
+
+	socket.off('requestFalse').on('requestFalse', ({ status, data }: any) => {
+		console.log('🚀 ~ file: ServicesRequest.tsx:90 ~ socket.off ~ data', data);
+		if (status) {
+			setServiceList(serviceList.filter((item: any) => item?._id !== data?._id));
+		} else {
+			Message('error', 'Something went wrong')
+		}
+
 	})
 
 	const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
@@ -127,14 +161,6 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		status: string
 	}
 
-	const handleCancle = () => {
-
-	}
-
-	const handleAccpt = () => {
-
-	}
-
 	let columns: ColumnsType<DataType> = [
 		{
 			dataIndex: "avatar",
@@ -155,6 +181,11 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			dataIndex: "price",
 			key: "price",
 			title: "Price",
+		},
+		{
+			dataIndex: "category",
+			key: "category",
+			title: "Category",
 		},
 		{
 			dataIndex: "address",
@@ -189,6 +220,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
 	return (
 		<div className='request_list_wrapper'>
+			{contextHolder}
 			<div className="container">
 				<div className='header'>
 					<h3> Service Requests </h3>

@@ -4,8 +4,8 @@ import "./userProfile.css"
 import { useSelector, useDispatch } from "react-redux";
 import { UserProps } from '../../interfaces/user'
 // import rootReducer from '../../Redux/store';
-import { Alert, Spin, Switch, message, Upload } from 'antd';
-import { callGet, callPost, callPut } from '../../services/Apis';
+import { Spin, message, Upload } from 'antd';
+import { callPost, callPut } from '../../services/Apis';
 import { editUser } from '../../Redux/slices/authSlice';
 import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import type { UploadChangeParam } from 'antd/es/upload';
@@ -13,23 +13,13 @@ import { LoadingOutlined, PlusOutlined, EyeInvisibleOutlined, EyeTwoTone } from 
 import cityJson from './city.json';
 const { Panel } = Collapse;
 
-const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result as string));
-    reader.readAsDataURL(img);
-};
-
-const beforeUpload = (file: RcFile) => {
-    const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-    if (!isJpgOrPng) {
-        message.error('You can only upload JPG/PNG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
-    }
-    return isJpgOrPng && isLt2M;
-};
+const getBase64 = (file: RcFile): Promise<string> =>
+    new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = (error) => reject(error);
+    });
 
 const UserProfile: React.FC<UserProps> = (props: UserProps) => {
 
@@ -56,10 +46,11 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
     const [imageUrl, setImageUrl] = useState<string>();
     const [password, setPassword] = useState<string>('');
     const [conPassword, setConPassword] = useState<string>('');
+    const [fileList, setFileList] = useState<UploadFile[]>([]);
+    console.log("🚀 ~ file: UserProfile.tsx:50 ~ fileList", fileList)
 
     const [messageApi, contextHolder] = message.useMessage();
 
-    const baseUrl = process.env.REACT_APP_BASE_URL;
     useEffect(() => {
         if (user) {
             setEmail(user?.email);
@@ -86,7 +77,7 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
     }
 
     const handleGeneralSettingsChange = () => {
-        const Obj = {
+        const Obj: any = {
             fullName,
             email,
             mobile,
@@ -95,11 +86,13 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
             city,
             pincode
         }
+        fileList.length && (Obj.avatar = fileList[0]?.thumbUrl);
+        // avatar
         callPut('/user/update', Obj).then((res: any) => {
             dispatch(editUser(res?.data?.data))
             sendMessage('success', 'User profile updated successFully')
         }).catch((error: any) => {
-            sendMessage('error', error.message)
+            sendMessage('error', "Enter a valid data")
         })
     }
 
@@ -116,23 +109,7 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
         })
     }
 
-    // uplaod image
-
-    const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
-        if (info.file.status === 'uploading') {
-            setImgLoading(true);
-            return;
-        }
-        if (info.file.status === 'done') {
-            // Get this url from response in real world.
-            getBase64(info.file.originFileObj as RcFile, (url) => {
-                console.log('🚀 ~ file: UserProfile.tsx:129 ~ getBase64 ~ info.file.originFileObj', info.file.originFileObj);
-                console.log('🚀 ~ file: UserProfile.tsx:129 ~ getBase64 ~ url', url);
-                setImgLoading(false);
-                setImageUrl(url);
-            });
-        }
-    };
+    const handleChange: UploadProps["onChange"] = ({ fileList: newFileList }) => setFileList(newFileList);
 
     const uploadButton = (
         <div>
@@ -175,22 +152,19 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
                         <Row justify="space-between" align="middle" gutter={[24, 0]}>
                             <Col span={24} md={12} className="col-info">
                                 <Avatar.Group>
-                                    <Avatar style={{ marginRight: "10px" }} size={74} shape="square" src={<Image src={"./Assets/avatar/avatar1.svg"} />} />
+                                    <Avatar style={{ marginRight: "10px" }} size={74} shape="square" src={<Image src={`${process.env.REACT_APP_BASE_URL}/${user?.avatar}`} />} />
+                                    {/* <Avatar style={{ marginRight: "10px" }} size={74} shape="square" src={<Image src={"./Assets/avatar/avatar1.svg"} />} /> */}
                                     {/* "./Assets/avatar/avatar1.svg" */}
                                     {/* <Avatar size={74} shape="square" src={"./Assets/avatar/avatar1.svg"} /> */}
                                     <div>
 
                                         {!updateProfilePic ? <Button onClick={() => setupdateProfilePic(true)}>Update profile pic</Button> :
                                             <Upload
-                                                name="avatar"
-                                                listType="picture-card"
-                                                className="avatar-uploader"
-                                                showUploadList={false}
                                                 action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-                                                beforeUpload={beforeUpload}
+                                                listType="picture-card"
                                                 onChange={handleChange}
                                             >
-                                                {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : uploadButton}
+                                                {imageUrl ? <img src={imageUrl} alt="avatar" style={{ width: '100%' }} /> : (fileList.length >= 1 ? null : uploadButton)}
                                             </Upload>}
                                     </div>
                                     <div className="avatar-info">
@@ -253,7 +227,7 @@ const UserProfile: React.FC<UserProps> = (props: UserProps) => {
 
                                 <Col xs={24} sm={24} md={12} lg={12} span={12} >
                                     <Form.Item label='Pincode'>
-                                        <Input value={pincode} onChange={(e) => { setPincode(e.target.value) }} />
+                                        <Input value={pincode} type="number" onChange={(e) => { setPincode(e.target.value) }} />
                                     </Form.Item>
                                 </Col>
                             </Row>

@@ -75,7 +75,6 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
     }
 
     socket.off('sendOrderTrue').on('sendOrderTrue', ({ status, data }: any) => {
-        console.log('🚀 ~ file: Bookings.tsx:88 ~ socket.off ~ status, data ', status, data);
         if (status) {
             setTableData(tableData.filter((item: any) => item?._id !== data?._id));
             const ind: number = tableData.findIndex((i: any) => i?._id == data?._id);
@@ -88,7 +87,6 @@ const Bookings: React.FC<UserProps> = (props: UserProps) => {
     })
 
     socket.off('sendOrderFalse').on('sendOrderFalse', ({ status, data }: any) => {
-        console.log('🚀 ~ file: Bookings.tsx:88 ~ socket.off ~ status, data ', status, data);
         if (status) {
             setTableData(tableData.filter((item: any) => item?._id !== data?._id));
         } else {

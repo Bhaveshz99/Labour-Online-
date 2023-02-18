@@ -54,7 +54,7 @@ const Login = () => {
         localStorage.setItem('token', result.data.token)
         if (result.data.data.role === 'user') navigate('/')
         else navigate('/')
-      }).catch((error: any) => messagePopup('error', error.message))
+      }).catch((error: any) => messagePopup('error', "Enter a valid Email or Password"))
     } else {
       messagePopup('error', 'Email is required');
     }
@@ -68,7 +68,7 @@ const Login = () => {
         // setSignUpStep(2)
         localStorage.setItem('token', result.data.token)
         navigate('/');
-      }).catch((error: any) => messagePopup('error', error.message))
+      }).catch((error: any) => messagePopup('error', "Enter a valid otp"))
     }
     else {
       messagePopup('error', 'Otp is required');

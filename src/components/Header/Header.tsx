@@ -81,7 +81,7 @@ const Header: React.FC<UserProps> = (props: UserProps) => {
             </div>
           </div>
           <div className='search_area'>
-            <Input className='search_service' size='small' placeholder="Search For Services" prefix={<SearchOutlined />} />
+            {/* <Input className='search_service' size='small' placeholder="Search For Services" prefix={<SearchOutlined />} /> */}
           </div>
         </>
       }
@@ -96,7 +96,7 @@ const Header: React.FC<UserProps> = (props: UserProps) => {
               </Link>
               <div className='search_area'>
                 <div className=''>
-                  <Input size='small' className='search_service' placeholder="Search For Services" prefix={<SearchOutlined />} />
+                  {/* <Input size='small' className='search_service' placeholder="Search For Services" prefix={<SearchOutlined />} /> */}
                 </div>
               </div>
             </div>

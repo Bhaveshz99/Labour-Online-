@@ -1,5 +1,9 @@
 import { UserOutlined, CheckOutlined, CloseOutlined, CloseCircleOutlined } from '@ant-design/icons';
+<<<<<<< HEAD
 import { Button, List, Table, Modal, Result, Typography, Card, Avatar, Tag } from 'antd'
+=======
+import { Button, List, Table, Modal, Result, Typography, Card, Avatar, Tag, message } from 'antd'
+>>>>>>> a7677b389573f57166ce2c9b1186ea38bff63f9a
 import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from "react-router-dom"
 import { UserProps } from '../../interfaces/user'
@@ -13,6 +17,7 @@ const { Paragraph, Text } = Typography
 const { Meta } = Card;
 const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
+<<<<<<< HEAD
 	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
 	const [modelType, setModalType] = useState<string>('');
 	const [serviceList, setserviceList] = useState<any>([]);
@@ -28,6 +33,32 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
 	const getData = async () => {
 		await callGet('/request/get').then((result: any) => {
+=======
+	const navigate = useNavigate();
+	const [messageApi, contextHolder] = message.useMessage();
+
+	const { socket } = useContext(SocketContext);
+	const user = useSelector((store: any) => store.user[0]);
+
+	const [selectedIndex, setSelectedIndex] = useState<number>(-1);
+	const [modelType, setModalType] = useState<string>('');
+	const [serviceList, setServiceList] = useState<any>([]);
+	const [oridata, setOridata] = useState<any>([])
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [reqObj, setReqObj] = useState({});
+
+	const Message = (type: any, content: any) => {
+		messageApi.open({
+			type,
+			content
+		})
+	}
+
+
+	const getData = async () => {
+		await callGet('/request/get').then((result: any) => {
+			let serviceData: any = [];
+>>>>>>> a7677b389573f57166ce2c9b1186ea38bff63f9a
 			const data: any = result?.data?.data;
 			setOridata(data);
 			for (let i in data) {
@@ -36,20 +67,32 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 					by: data[i]?.by?._id,
 					to: data[i]?.to?._id,
 					avatar: data[i]?.to?.avatar || <UserOutlined />,
+<<<<<<< HEAD
 					name: user?._id == data[i]?.by?._id ? data[i]?.to?.fullName : data[i]?.by?.fullName,
 					date: moment(data[i]?.date).format('DD/MM/YYYY HH:mm:ss'),
 					address: data[i]?.addressId?.address,
+=======
+					name: user?._id === data[i]?.by?._id ? data[i]?.to?.fullName : data[i]?.by?.fullName,
+					date: moment(data[i]?.date).format('DD/MM/YYYY HH:mm:ss'),
+					address: data[i]?.addressId?.address,
+					category: data[i]?.categoryId?.name,
+>>>>>>> a7677b389573f57166ce2c9b1186ea38bff63f9a
 					price: data[i]?.to?.price,
 					status: data[i]?.status
 				});
 			}
+<<<<<<< HEAD
 			setserviceList(serviceData);
+=======
+			setServiceList(serviceData);
+>>>>>>> a7677b389573f57166ce2c9b1186ea38bff63f9a
 		})
 	}
 	useEffect(() => {
 		getData();
 	}, [])
 
+<<<<<<< HEAD
 	socket.on('resendRequest', (data: any) => {
 		setserviceList((oldArray: any) => [...oldArray, {
 			_id: data?._id,
@@ -73,6 +116,45 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			price: data?.to?.price,
 			status: data?.status
 		});
+=======
+	socket.off('resendRequest').on('resendRequest', ({ status, data }: any) => {
+		if (status) {
+			setServiceList((oldArray: any) => oldArray.concat({
+				_id: data?._id,
+				by: data?.by?._id,
+				to: data?.to?._id,
+				avatar: (user?._id === data?.by?._id ? data?.to?.avatar : data?.by?.avatar) || <UserOutlined />,
+				name: user?._id === data?.by?._id ? data?.to?.fullName : data?.by?.fullName,
+				date: moment(data?.date).format('DD/MM/YYYY HH:mm:ss'),
+				address: data?.addressId?.address,
+				category: data?.categoryId?.name,
+				price: data?.to?.price,
+				status: data?.status
+			}));
+		} else {
+			Message('error', 'Something went wrong')
+		}
+	})
+
+	socket.off('requestTrue').on('requestTrue', ({ status, data }: any) => {
+		console.log('🚀 ~ file: ServicesRequest.tsx:81 ~ socket.off ~ data', data);
+		if (status) {
+			setServiceList(serviceList.filter((item: any) => item?._id !== data?._id));
+		} else {
+			Message('error', 'Something went wrong')
+		}
+
+	})
+
+	socket.off('requestFalse').on('requestFalse', ({ status, data }: any) => {
+		console.log('🚀 ~ file: ServicesRequest.tsx:90 ~ socket.off ~ data', data);
+		if (status) {
+			setServiceList(serviceList.filter((item: any) => item?._id !== data?._id));
+		} else {
+			Message('error', 'Something went wrong')
+		}
+
+>>>>>>> a7677b389573f57166ce2c9b1186ea38bff63f9a
 	})
 
 	const handleRequestAction = (rowData: any, confirmRequest: boolean, ind: number) => {
@@ -89,6 +171,7 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		};
 		if (confirmRequest) {
 			socket.emit("requestTrue", Obj)
+<<<<<<< HEAD
 			socket.on("sendrequestTrue", (data: any) => {
 				if (data?.status) {
 					navigate("/bookings")
@@ -100,12 +183,28 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 		} else {
 			user?._id == rowData?.to && (Obj.status = 'reject');
 			user?._id == rowData?.by && (Obj.isDeleted = true);
+=======
+
+		} else {
+			user?._id === rowData?.to && (Obj.status = 'reject');
+			user?._id === rowData?.by && (Obj.isDeleted = true);
+>>>>>>> a7677b389573f57166ce2c9b1186ea38bff63f9a
 			setReqObj(Obj);
 		}
 	}
 
+	socket.off('sendrequestTrue').on("sendrequestTrue", (data: any) => {
+		console.log('🚀 ~ file: ServicesRequest.tsx:83 ~ socket.on ~ data', data);
+		if (data?.status) {
+			navigate("/bookings")
+		} else {
+			setIsModalOpen(false);
+		}
+	})
+
 	const handleAcceptRequest = (requestAction: boolean) => {
 		socket.emit("requestFalse", reqObj)
+<<<<<<< HEAD
 		socket.on("sendRequestFalse", (data: any) => {
 			if (data?.status) {
 				setIsModalOpen(false);
@@ -116,7 +215,20 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 				setIsModalOpen(false);
 			}
 		})
+=======
+>>>>>>> a7677b389573f57166ce2c9b1186ea38bff63f9a
 	}
+
+	socket.off('sendRequestFalse').on("sendRequestFalse", (data: any) => {
+		if (data?.status) {
+			setIsModalOpen(false);
+			onModalClose();
+			setServiceList([]);
+			getData();
+		} else {
+			setIsModalOpen(false);
+		}
+	})
 
 	const onModalClose = () => {
 		setSelectedIndex(-1);
@@ -156,6 +268,11 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			title: "Price",
 		},
 		{
+			dataIndex: "category",
+			key: "category",
+			title: "Category",
+		},
+		{
 			dataIndex: "address",
 			key: "address",
 			title: "Address",
@@ -166,9 +283,15 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			title: "Status",
 			render: (_, record: DataType) => (
 				<>
+<<<<<<< HEAD
 					{record?.status == "pending" && <Tag color='yellow'>{record?.status}</Tag>}
 					{record?.status == "success" && <Tag color='green'>{record?.status}</Tag>}
 					{record?.status == "reject" && <Tag color='red'>{record?.status}</Tag>}
+=======
+					{record?.status === "pending" && <Tag color='yellow'>{record?.status}</Tag>}
+					{record?.status === "success" && <Tag color='green'>{record?.status}</Tag>}
+					{record?.status === "reject" && <Tag color='red'>{record?.status}</Tag>}
+>>>>>>> a7677b389573f57166ce2c9b1186ea38bff63f9a
 				</>
 			),
 		},
@@ -178,7 +301,11 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 			title: "Actions",
 			render: (text: any, record: any, index: any) => (
 				<>
+<<<<<<< HEAD
 					{record?.to == user?._id ? <Button style={{ marginRight: '10px' }} type="primary" onClick={() => { handleRequestAction(record, true, index) }}> <CheckOutlined /> </Button> : ''}
+=======
+					{record?.to === user?._id ? <Button style={{ marginRight: '10px' }} type="primary" onClick={() => { handleRequestAction(record, true, index) }}> <CheckOutlined /> </Button> : ''}
+>>>>>>> a7677b389573f57166ce2c9b1186ea38bff63f9a
 					<Button type="primary" onClick={() => { handleRequestAction(record, false, index) }} > <CloseOutlined />  </Button>
 				</>
 			)
@@ -188,13 +315,18 @@ const ServicesRequest: React.FC<UserProps> = (props: UserProps) => {
 
 	return (
 		<div className='request_list_wrapper'>
+			{contextHolder}
 			<div className="container">
 				<div className='header'>
 					<h3> Service Requests </h3>
 				</div>
 				<div className="content">
 					<div className='xs-hide'>
+<<<<<<< HEAD
 						<Table rowClassName={(record) => (record?.to == user?._id) ? 'active-row' : ''} dataSource={serviceList || serviceData} columns={columns} />
+=======
+						<Table rowClassName={(record) => (record?.to === user?._id) ? 'active-row' : ''} dataSource={serviceList} columns={columns} />
+>>>>>>> a7677b389573f57166ce2c9b1186ea38bff63f9a
 					</div>
 				</div>
 			</div>

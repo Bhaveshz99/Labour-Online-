@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { List, Avatar } from 'antd';
-import { UserAddOutlined, IconProvider } from '@ant-design/icons';
 import ServiceProviderCard from './ServiceProviderCard'
+import { useSelector } from 'react-redux'
 import './servicelist.scss'
-import Icon from '@ant-design/icons/lib/components/AntdIcon';
 import { UserProps } from '../../interfaces/user';
-import { Alert, Space, Spin } from 'antd';
+import { Spin } from 'antd';
 import { callPost } from '../../services/Apis';
 const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
 
   const [data, setData] = useState<any>([1, 2, 3, 4, 5]);
   const [loader, setLoader] = useState(true);
+  const user = useSelector((store: any) => store.user[0]);
 
   const { id } = useParams();
 
@@ -21,8 +20,7 @@ const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
       setLoader(true);
     }).catch((error: any) => {
     })
-  }, [])
-
+  }, []);
 
   return (
     <div className='service_list_wrapper'>
@@ -37,9 +35,10 @@ const ServiceListPage: React.FC<UserProps> = (props: UserProps) => {
           </Spin>
             :
             data?.map((data: any, i: number) => {
-              return <ServiceProviderCard key={'d' + i} data={data} />
+              return user?._id !== data?._id && <ServiceProviderCard key={'d' + i} data={data} />
             })
           }
+
         </div>
       </div>
       <div className='content'></div>
